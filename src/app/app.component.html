@@ -4,7 +4,7 @@
   class="example-form"
   [formGroup]="form"
   (ngSubmit)="handleSubmit(formGroupDirective)"
-  autocomplete="off"
+  autocomplete="none"
 >
   <div>
     <mat-form-field>
@@ -13,7 +13,7 @@
         type="text"
         matInput
         formControlName="raceName"
-        autocomplete="off"
+        autocomplete="none"
       />
     </mat-form-field>
   </div>
@@ -25,6 +25,7 @@
         matInput
         formControlName="townName"
         [matAutocomplete]="auto"
+        autocomplete="none"
       />
       <mat-autocomplete
         #auto="matAutocomplete"

@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -8,7 +8,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { Observable, startWith, map, of } from 'rxjs';
-import { CreateRace, Race, RaceService } from './services/race.service';
+import { CreateRace, RaceService } from './services/race.service';
+import { Town, TownService } from './services/town.service';
 
 @Component({
   selector: 'app-root',
@@ -16,17 +17,13 @@ import { CreateRace, Race, RaceService } from './services/race.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  options: any[] = [
-    { name: 'Enfield', id: 5 },
-    { name: 'Windsor', id: 3 },
-    { name: 'Simsbury', id: 4 },
-  ];
+  towns = computed(() => this.townService.towns());
 
   form = new FormGroup({
     raceName: new FormControl('', [Validators.required]),
     townName: new FormControl<string | any>('', [
       Validators.required,
-      this.mustExistValidator(this.options),
+      this.townMustExistValidator(),
     ]),
     distanceValue: new FormControl(null, [Validators.required]),
     kilometers: new FormControl(true),
@@ -41,21 +38,26 @@ export class AppComponent {
 
   filteredOptions: Observable<any[]> = of([]);
 
-  constructor(private raceService: RaceService) {}
+  constructor(
+    private townService: TownService,
+    private raceService: RaceService
+  ) {}
 
   ngOnInit() {
+    this.townService.loadTowns();
+
     this.filteredOptions =
       this.form.get('townName')?.valueChanges.pipe(
         startWith(''),
         map((value) => {
           const name = typeof value === 'string' ? value : value?.name;
-          return name ? this._filter(name as string) : this.options.slice();
+          return name ? this._filter(name as string) : this.towns().slice();
         })
       ) ?? of([]);
   }
 
-  displayFn(user: any): string {
-    return user && user.name ? user.name : '';
+  displayFn(town: Town): string {
+    return town?.name ? town.name : '';
   }
 
   handleSubmit(directive: FormGroupDirective): void {
@@ -83,24 +85,23 @@ export class AppComponent {
         },
       });
     }
-    console.log(this.form);
   }
 
   private _filter(name: string): any[] {
     const filterValue = name.toLowerCase();
 
-    return this.options.filter((option) =>
-      option.name.toLowerCase().includes(filterValue)
+    return this.towns().filter((town: Town) =>
+      town.name.toLowerCase().includes(filterValue)
     );
   }
 
-  mustExistValidator(options: any[]): ValidatorFn {
+  townMustExistValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
       const selectedValue = control.value;
       if (selectedValue) {
-        const foundOption = options.find((option) => option === selectedValue);
+        const foundOption = this.towns().find((town) => town === selectedValue);
         if (!foundOption) {
-          return { mustExist: true }; // Validation fails if the option is not found
+          return { townMustExist: true }; // Validation fails if the option is not found
         }
       }
       return null; // Validation passes
