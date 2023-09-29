@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { BehaviorSubject, take } from 'rxjs';
+import { take } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 export interface Town {
@@ -21,9 +21,16 @@ export class TownService {
    * Load towns from the cache if possible, so that we don't need to call
    * the backend, since CT towns never update. If the user doesn't have the
    * data yet, then we will call the backend and cache it.
+   *
+   * @remarks development environment will always call the backend
    */
   loadTowns(): void {
-    const cachedTowns = null; //localStorage.getItem('ct_towns');
+    if (environment.isDevelopment) {
+      this.cacheTownsFromBackend();
+      return;
+    }
+
+    const cachedTowns = localStorage.getItem('ct_towns');
 
     if (cachedTowns) {
       this.towns.set(JSON.parse(cachedTowns));

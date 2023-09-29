@@ -1,4 +1,4 @@
-import { Component, computed } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -7,9 +7,14 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { Observable, startWith, map, of } from 'rxjs';
-import { CreateRace, RaceService } from './services/race.service';
+import { Observable, startWith, map, of, take } from 'rxjs';
+import { CreateRace, Race, RaceService } from './services/race.service';
 import { Town, TownService } from './services/town.service';
+import {
+  CreateRaceResult,
+  RaceResult,
+  RaceResultService,
+} from './services/race-result.service';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +23,16 @@ import { Town, TownService } from './services/town.service';
 })
 export class AppComponent {
   towns = computed(() => this.townService.towns());
+  races = computed(() => this.raceService.races());
+
+  submitRaceForm = new FormGroup({
+    race: new FormControl<string | any>('', [Validators.required]),
+    bibNumber: new FormControl<string>(''),
+    totalTime: new FormControl<string>('', [
+      Validators.maxLength(8),
+      Validators.minLength(8),
+    ]),
+  });
 
   form = new FormGroup({
     raceName: new FormControl('', [Validators.required]),
@@ -37,14 +52,17 @@ export class AppComponent {
   });
 
   filteredOptions: Observable<any[]> = of([]);
+  filteredRaces = signal<Race[]>([]);
 
   constructor(
     private townService: TownService,
-    private raceService: RaceService
+    private raceService: RaceService,
+    private raceResultService: RaceResultService
   ) {}
 
   ngOnInit() {
     this.townService.loadTowns();
+    this.raceService.loadRaces();
 
     this.filteredOptions =
       this.form.get('townName')?.valueChanges.pipe(
@@ -54,10 +72,29 @@ export class AppComponent {
           return name ? this._filter(name as string) : this.towns().slice();
         })
       ) ?? of([]);
+
+    this.submitRaceForm
+      .get('race')
+      ?.valueChanges.pipe(
+        startWith(''),
+        map((value) => {
+          const name = typeof value === 'string' ? value : value?.name;
+          return name ? this._filterRaces(name as string) : this.races();
+        })
+      )
+      .subscribe({
+        next: (value) => {
+          this.filteredRaces.set(value);
+        },
+      });
   }
 
   displayFn(town: Town): string {
     return town?.name ? town.name : '';
+  }
+
+  raceDisplayFn(race: Race): string {
+    return race?.name ? race.name : '';
   }
 
   handleSubmit(directive: FormGroupDirective): void {
@@ -85,6 +122,42 @@ export class AppComponent {
         },
       });
     }
+  }
+
+  submitRace(directive: FormGroupDirective): void {
+    if (this.submitRaceForm.invalid) {
+      return;
+    }
+
+    const result: CreateRaceResult = {
+      race_id: this.submitRaceForm.get('race')?.value!.id,
+      user_id: 3,
+      hours: Number(this.submitRaceForm.get('totalTime')?.value!.slice(0, 2)),
+      minutes: Number(this.submitRaceForm.get('totalTime')?.value!.slice(3, 5)),
+      seconds: Number(this.submitRaceForm.get('totalTime')?.value!.slice(-2)),
+      bib_number: this.submitRaceForm.get('bibNumber')?.value!,
+    };
+
+    this.raceResultService
+      .create(result)
+      .pipe(take(1))
+      .subscribe({
+        next: (response) => {
+          console.log(response);
+          this.submitRaceForm.reset();
+          directive.resetForm();
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
+  }
+
+  private _filterRaces(name: string): any[] {
+    const filterValue = name.toLowerCase();
+    return this.races().filter((race: Race) => {
+      return race.name.toLowerCase().includes(filterValue);
+    });
   }
 
   private _filter(name: string): any[] {

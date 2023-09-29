@@ -1,5 +1,6 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, signal } from '@angular/core';
+import { take } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 export interface Race {
@@ -26,6 +27,8 @@ export interface CreateRace
   providedIn: 'root',
 })
 export class RaceService {
+  races = signal<Race[]>([]);
+
   constructor(private http: HttpClient) {}
 
   create(race: CreateRace) {
@@ -35,5 +38,19 @@ export class RaceService {
           'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJleHAiOjE2OTY1NDQ4OTl9.JcmRgCS2GDoM6Rx9pHPt-89CzeEvAGS266zlcEqdWOg',
       },
     });
+  }
+
+  loadRaces(): void {
+    this.http
+      .get<Race[]>(`${environment.backendUrl}/races`)
+      .pipe(take(1))
+      .subscribe({
+        next: (races: Race[]) => {
+          this.races.set(races);
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
   }
 }
