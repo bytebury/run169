@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { AuthenticationService } from './authentication.service';
 
 export interface RaceResult {
   id: number;
@@ -22,13 +22,15 @@ export interface CreateRaceResult {
   providedIn: 'root',
 })
 export class RaceResultService {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private authenticationService: AuthenticationService
+  ) {}
 
   create(result: CreateRaceResult) {
     return this.http.post(`${environment.backendUrl}/results`, result, {
       headers: {
-        Authorization:
-          'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJleHAiOjE2OTY1NDQ4OTl9.JcmRgCS2GDoM6Rx9pHPt-89CzeEvAGS266zlcEqdWOg',
+        Authorization: this.authenticationService.token() ?? '',
       },
     });
   }

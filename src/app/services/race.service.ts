@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { take } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { AuthenticationService } from './authentication.service';
 
 export interface Race {
   id: number;
@@ -29,13 +30,15 @@ export interface CreateRace
 export class RaceService {
   races = signal<Race[]>([]);
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private authenticationService: AuthenticationService
+  ) {}
 
   create(race: CreateRace) {
     return this.http.post(`${environment.backendUrl}/races`, race, {
       headers: {
-        Authorization:
-          'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJleHAiOjE2OTY1NDQ4OTl9.JcmRgCS2GDoM6Rx9pHPt-89CzeEvAGS266zlcEqdWOg',
+        Authorization: this.authenticationService.token() ?? '',
       },
     });
   }

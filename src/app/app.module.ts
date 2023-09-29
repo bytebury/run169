@@ -13,6 +13,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [AppComponent, TimeFormatDirective],
@@ -21,6 +22,7 @@ import { MatInputModule } from '@angular/material/input';
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    RouterModule,
     BrowserAnimationsModule,
     MatFormFieldModule,
     MatButtonModule,

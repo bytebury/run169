@@ -12,9 +12,9 @@ import { CreateRace, Race, RaceService } from './services/race.service';
 import { Town, TownService } from './services/town.service';
 import {
   CreateRaceResult,
-  RaceResult,
   RaceResultService,
 } from './services/race-result.service';
+import { AuthenticationService } from './services/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -24,14 +24,22 @@ import {
 export class AppComponent {
   towns = computed(() => this.townService.towns());
   races = computed(() => this.raceService.races());
+  isLoggedIn = computed(() => this.authenticationService.isLoggedIn());
+  currentUser = computed(() => this.authenticationService.currentUser());
+  authErrorMessage = computed(() => this.authenticationService.errorMessage());
 
   submitRaceForm = new FormGroup({
     race: new FormControl<string | any>('', [Validators.required]),
-    bibNumber: new FormControl<string>(''),
-    totalTime: new FormControl<string>('', [
+    bibNumber: new FormControl(''),
+    totalTime: new FormControl('', [
       Validators.maxLength(8),
       Validators.minLength(8),
     ]),
+  });
+
+  loginForm = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required]),
   });
 
   form = new FormGroup({
@@ -57,7 +65,8 @@ export class AppComponent {
   constructor(
     private townService: TownService,
     private raceService: RaceService,
-    private raceResultService: RaceResultService
+    private raceResultService: RaceResultService,
+    private authenticationService: AuthenticationService
   ) {}
 
   ngOnInit() {
@@ -122,6 +131,17 @@ export class AppComponent {
         },
       });
     }
+  }
+
+  login(): void {
+    const email = this.loginForm.get('email')?.value ?? '';
+    const password = this.loginForm.get('password')?.value ?? '';
+
+    this.authenticationService.login(email, password);
+  }
+
+  logout(): void {
+    this.authenticationService.logout();
   }
 
   submitRace(directive: FormGroupDirective): void {
