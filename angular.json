@@ -87,6 +87,12 @@
             "tsConfig": "tsconfig.spec.json",
             "polyfills": ["zone.js", "zone.js/testing"]
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {
+            "cname": "run169.org"
+          }
         }
       }
     }
