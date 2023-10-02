@@ -1,8 +1,7 @@
-<div *ngIf="isLoggedIn()" style="display: block">
-  {{ currentUser() | json }}
+<div *ngIf="true" style="display: block">
   <button (click)="logout()">Logout</button>
 </div>
-<div *ngIf="!isLoggedIn()" style="display: block">
+<div *ngIf="true" style="display: block">
   <h1>Login</h1>
   {{ authErrorMessage() }}
   <form [formGroup]="loginForm" (ngSubmit)="login()" autocomplete="none">

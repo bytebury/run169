@@ -2,14 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { take } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { AuthenticationService } from './authentication.service';
 
 export interface Race {
   id: number;
   name: string;
   start_date: Date | string;
   town: { id: number; name: string };
-  distance: { value: string; unit: 'mile' | 'kilometer' };
+  distance: { value: string; unit: 'mi' | 'km' };
   results_url?: string;
   website_url?: string;
   address_line_one?: string;
@@ -21,7 +20,7 @@ export interface CreateRace
   extends Omit<Race, 'id' | 'created_at' | 'updated_at' | 'distance' | 'town'> {
   town_id: number;
   distance: string | number;
-  distance_unit: 'mile' | 'kilometer';
+  distance_unit: 'mi' | 'km';
 }
 
 @Injectable({
@@ -30,17 +29,10 @@ export interface CreateRace
 export class RaceService {
   races = signal<Race[]>([]);
 
-  constructor(
-    private http: HttpClient,
-    private authenticationService: AuthenticationService
-  ) {}
+  constructor(private http: HttpClient) {}
 
   create(race: CreateRace) {
-    return this.http.post(`${environment.backendUrl}/races`, race, {
-      headers: {
-        Authorization: this.authenticationService.token() ?? '',
-      },
-    });
+    return this.http.post(`${environment.backendUrl}/races`, race);
   }
 
   loadRaces(): void {

@@ -24,8 +24,6 @@ import { AuthenticationService } from './services/authentication.service';
 export class AppComponent {
   towns = computed(() => this.townService.towns());
   races = computed(() => this.raceService.races());
-  isLoggedIn = computed(() => this.authenticationService.isLoggedIn());
-  currentUser = computed(() => this.authenticationService.currentUser());
   authErrorMessage = computed(() => this.authenticationService.errorMessage());
 
   submitRaceForm = new FormGroup({
@@ -51,7 +49,7 @@ export class AppComponent {
     distanceValue: new FormControl(null, [Validators.required]),
     kilometers: new FormControl(true),
     startTime: new FormControl(
-      new Date().toISOString().slice(0, 10) + 'T08:30',
+      new Date().toISOString().slice(0, 10) + 'T09:00',
       [Validators.required]
     ),
     addressLineOne: new FormControl(''),
@@ -113,9 +111,7 @@ export class AppComponent {
         town_id: this.form.get('townName')?.value.id!,
         start_date: this.form.get('startTime')?.value!,
         distance: this.form.get('distanceValue')?.value!,
-        distance_unit: this.form.get('kilometers')?.value!
-          ? 'kilometer'
-          : 'mile',
+        distance_unit: this.form.get('kilometers')?.value! ? 'km' : 'mi',
         address_line_one: this.form.get('addressLineOne')?.value ?? '',
         website_url: this.form.get('websiteUrl')?.value ?? '',
         results_url: this.form.get('resultsUrl')?.value ?? '',
@@ -188,7 +184,7 @@ export class AppComponent {
     );
   }
 
-  townMustExistValidator(): ValidatorFn {
+  private townMustExistValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
       const selectedValue = control.value;
       if (selectedValue) {
