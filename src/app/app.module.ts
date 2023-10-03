@@ -15,6 +15,9 @@ import { MatInputModule } from '@angular/material/input';
 import { RouterModule } from '@angular/router';
 import { AuthenticationInterceptor } from './interceptors/authentication.interceptor';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,6 +34,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatSlideToggleModule,
     MatAutocompleteModule,
     MatSnackBarModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatSidenavModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [

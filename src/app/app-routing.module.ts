@@ -17,6 +17,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./views/races/races.module').then((m) => m.RacesModule),
   },
+  {
+    path: 'runners',
+    loadChildren: () =>
+      import('./views/runners/runners.module').then((m) => m.RunnersModule),
+  },
 ];
 
 @NgModule({

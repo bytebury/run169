@@ -1,56 +1,84 @@
-<main>
-  <div class="container">
-    <div *ngIf="isLoggedIn()" style="display: block">
-      <div class="profile-block">
+<mat-drawer-container [hasBackdrop]="true">
+  <mat-drawer #drawer>
+    <div class="app-drawer">
+      <div class="close-button-container">
+        <button mat-icon-button (click)="drawer.close()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <div class="profile-details-container">
         <div>
-          <img [src]="currentUser()!.avatar_url ?? ''" alt="profile image" />
+          <img
+            class="profile-image"
+            [src]="currentUser()?.avatar_url"
+            alt="Profile image"
+          />
         </div>
         <div>
-          <h1>
+          <div class="name">
             {{ currentUser()?.first_name }} {{ currentUser()?.last_name }}
-          </h1>
-          <button mat-flat-button color="warn" (click)="logout()">
-            Logout
-          </button>
+          </div>
+          <span class="runner-id"> #{{ currentUser()?.runner_id }}</span>
         </div>
       </div>
-      <div class="nav-links">
+      <div *ngIf="isLoggedIn()" class="nav-links">
         <button mat-stroked-button routerLink="create-race">
           Create a Race
         </button>
         <button mat-stroked-button routerLink="submit-result">
           Submit a Town
         </button>
+        <button mat-flat-button color="warn" (click)="logout()">Logout</button>
       </div>
     </div>
-    <div *ngIf="!isLoggedIn()" style="display: block">
-      <h1>Login</h1>
-      <form [formGroup]="loginForm" (ngSubmit)="login()" autocomplete="none">
-        <div>
-          <mat-form-field class="full-width">
-            <mat-label>E-mail</mat-label>
-            <input
-              type="email"
-              matInput
-              formControlName="email"
-              autocomplete="none"
-            />
-          </mat-form-field>
+  </mat-drawer>
+  <mat-drawer-content>
+    <nav>
+      <mat-toolbar color="primary">
+        <button *ngIf="isLoggedIn()" mat-icon-button (click)="drawer.toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <span>Run 169</span>
+      </mat-toolbar>
+    </nav>
+    <main>
+      <div class="container">
+        <div *ngIf="!isLoggedIn()" style="display: block">
+          <h1>Login</h1>
+          <form
+            [formGroup]="loginForm"
+            (ngSubmit)="login()"
+            autocomplete="none"
+          >
+            <div>
+              <mat-form-field class="full-width">
+                <mat-label>E-mail</mat-label>
+                <input
+                  type="email"
+                  matInput
+                  formControlName="email"
+                  autocomplete="none"
+                />
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field class="full-width">
+                <mat-label>Password</mat-label>
+                <input
+                  type="password"
+                  matInput
+                  formControlName="password"
+                  autocomplete="none"
+                />
+              </mat-form-field>
+            </div>
+            <button mat-raised-button color="primary" type="submit">
+              Login
+            </button>
+          </form>
         </div>
-        <div>
-          <mat-form-field class="full-width">
-            <mat-label>Password</mat-label>
-            <input
-              type="password"
-              matInput
-              formControlName="password"
-              autocomplete="none"
-            />
-          </mat-form-field>
-        </div>
-        <button mat-raised-button color="primary" type="submit">Login</button>
-      </form>
-    </div>
-    <router-outlet></router-outlet>
-  </div>
-</main>
+        <router-outlet></router-outlet>
+      </div>
+    </main>
+  </mat-drawer-content>
+</mat-drawer-container>

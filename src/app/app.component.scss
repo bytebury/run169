@@ -1,4 +1,4 @@
-img {
+img.profile-image {
   height: 5rem;
   width: 5rem;
   border-radius: 100%;
@@ -6,7 +6,7 @@ img {
 
 .profile-block {
   display: flex;
-  align-items: start;
+  align-items: flex-start;
   gap: 1rem;
 
   div:last-child {
@@ -26,4 +26,38 @@ img {
   button {
     margin-top: 0.25rem;
   }
+}
+
+.app-drawer {
+  display: block;
+  padding: 1rem;
+  box-sizing: border-box;
+
+  .close-button-container {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.profile-details-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  div.name {
+    font-size: 1.25rem;
+    font-weight: 900;
+    margin-bottom: 0.25rem;
+  }
+
+  span {
+    color: #666;
+  }
+}
+
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 1rem 0;
 }
