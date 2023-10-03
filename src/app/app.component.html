@@ -124,11 +124,11 @@
           type="text"
           matInput
           formControlName="townName"
-          [matAutocomplete]="auto"
+          [matAutocomplete]="autoTown"
           autocomplete="none"
         />
         <mat-autocomplete
-          #auto="matAutocomplete"
+          #autoTown="matAutocomplete"
           autoActiveFirstOption
           [requireMatch]="true"
           [displayWith]="displayFn"
