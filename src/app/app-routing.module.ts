@@ -4,6 +4,11 @@ import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
+    path: '',
+    loadChildren: () =>
+      import('./views/auth/auth.module').then((m) => m.AuthModule),
+  },
+  {
     path: 'submit-result',
     canActivate: [AuthGuard],
     loadChildren: () =>
@@ -21,6 +26,11 @@ const routes: Routes = [
     path: 'runners',
     loadChildren: () =>
       import('./views/runners/runners.module').then((m) => m.RunnersModule),
+  },
+  {
+    path: '**',
+    loadChildren: () =>
+      import('./views/auth/auth.module').then((m) => m.AuthModule),
   },
 ];
 

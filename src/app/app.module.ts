@@ -9,12 +9,8 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { RouterModule } from '@angular/router';
 import { AuthenticationInterceptor } from './interceptors/authentication.interceptor';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -28,12 +24,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     ReactiveFormsModule,
     RouterModule,
     BrowserAnimationsModule,
-    MatFormFieldModule,
     MatButtonModule,
-    MatInputModule,
     MatSlideToggleModule,
-    MatAutocompleteModule,
-    MatSnackBarModule,
+
     MatToolbarModule,
     MatIconModule,
     MatSidenavModule,
