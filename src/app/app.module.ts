@@ -15,6 +15,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { RouterModule } from '@angular/router';
 import { AuthenticationInterceptor } from './interceptors/authentication.interceptor';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [AppComponent, TimeFormatDirective],
@@ -30,6 +31,7 @@ import { AuthenticationInterceptor } from './interceptors/authentication.interce
     MatInputModule,
     MatSlideToggleModule,
     MatAutocompleteModule,
+    MatSnackBarModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [

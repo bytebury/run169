@@ -1,4 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, effect, signal } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -15,6 +15,7 @@ import {
   RaceResultService,
 } from './services/race-result.service';
 import { AuthenticationService } from './services/authentication.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-root',
@@ -65,8 +66,26 @@ export class AppComponent {
     private townService: TownService,
     private raceService: RaceService,
     private raceResultService: RaceResultService,
-    private authenticationService: AuthenticationService
-  ) {}
+    private authenticationService: AuthenticationService,
+    private snackbar: MatSnackBar
+  ) {
+    effect(() => {
+      if (this.authErrorMessage()) {
+        this.snackbar
+          .open(this.authErrorMessage(), 'Dismiss', {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            duration: 3_000,
+          })
+          .afterDismissed()
+          .subscribe({
+            next: () => {
+              this.authenticationService.errorMessage.set('');
+            },
+          });
+      }
+    });
+  }
 
   ngOnInit() {
     this.townService.loadTowns();
