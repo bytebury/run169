@@ -1,0 +1,90 @@
+<div style="display: block">
+  <h1>Create a Race</h1>
+  <form
+    #formGroupDirective="ngForm"
+    class="example-form"
+    [formGroup]="form"
+    (ngSubmit)="handleSubmit(formGroupDirective)"
+    autocomplete="none"
+  >
+    <div>
+      <mat-form-field class="full-width">
+        <mat-label>Name of Race</mat-label>
+        <input
+          type="text"
+          matInput
+          formControlName="raceName"
+          autocomplete="none"
+        />
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field class="full-width">
+        <mat-label>Town</mat-label>
+        <input
+          type="text"
+          matInput
+          formControlName="townName"
+          [matAutocomplete]="autoTown"
+          autocomplete="none"
+        />
+        <mat-autocomplete
+          #autoTown="matAutocomplete"
+          autoActiveFirstOption
+          [requireMatch]="true"
+          [displayWith]="displayFn"
+        >
+          <mat-option
+            *ngFor="let option of filteredOptions | async"
+            [value]="option"
+          >
+            {{ option.name }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field class="full-width">
+        <mat-label>Distance</mat-label>
+        <input
+          type="number"
+          step=".01"
+          matInput
+          formControlName="distanceValue"
+          matNativeControl
+        />
+      </mat-form-field>
+      <mat-slide-toggle
+        color="primary"
+        [checked]="form.get('kilometers')?.value ?? true"
+        formControlName="kilometers"
+        >Kilometers?</mat-slide-toggle
+      >
+    </div>
+    <div>
+      <mat-form-field class="full-width">
+        <mat-label>Start Time</mat-label>
+        <input type="datetime-local" matInput formControlName="startTime" />
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field class="full-width">
+        <mat-label>Address Line One</mat-label>
+        <input type="text" matInput formControlName="addressLineOne" />
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field class="full-width">
+        <mat-label>Website URL</mat-label>
+        <input type="text" matInput formControlName="websiteUrl" />
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field class="full-width">
+        <mat-label>Results URL</mat-label>
+        <input type="text" matInput formControlName="resultsUrl" />
+      </mat-form-field>
+    </div>
+    <button mat-raised-button color="primary" type="submit">Create Race</button>
+  </form>
+</div>

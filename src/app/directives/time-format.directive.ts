@@ -2,6 +2,7 @@ import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 
 @Directive({
   selector: '[appTimeFormat]',
+  standalone: true,
 })
 export class TimeFormatDirective {
   time = '';

@@ -5,7 +5,6 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { TimeFormatDirective } from './directives/time-format.directive';
 
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -18,7 +17,7 @@ import { AuthenticationInterceptor } from './interceptors/authentication.interce
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
-  declarations: [AppComponent, TimeFormatDirective],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

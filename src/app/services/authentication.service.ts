@@ -4,17 +4,19 @@ import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
+interface BasicUserInformation {
+  id: number;
+  runner_id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationService {
-  currentUser = signal<{
-    id: number;
-    runner_id: string;
-    first_name: string;
-    last_name: string;
-    email: string;
-  } | null>(null);
+  currentUser = signal<BasicUserInformation | null>(null);
   isLoggedIn = computed(() => !!this.currentUser());
   errorMessage = signal('');
 
@@ -40,7 +42,7 @@ export class AuthenticationService {
           localStorage.setItem('auth_token', response.token);
           localStorage.setItem('current_user', JSON.stringify(response.user));
           this.currentUser.set(response.user);
-          this.router.navigateByUrl('');
+          this.router.navigateByUrl('/submit-result');
         },
         error: (error: any) => {
           console.error(error);
