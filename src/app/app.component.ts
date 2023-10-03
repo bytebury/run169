@@ -149,7 +149,7 @@ export class AppComponent {
 
     const result: CreateRaceResult = {
       race_id: this.submitRaceForm.get('race')?.value!.id,
-      user_id: 3,
+      user_id: this.authenticationService.currentUser()?.id ?? 0,
       hours: Number(this.submitRaceForm.get('totalTime')?.value!.slice(0, 2)),
       minutes: Number(this.submitRaceForm.get('totalTime')?.value!.slice(3, 5)),
       seconds: Number(this.submitRaceForm.get('totalTime')?.value!.slice(-2)),
