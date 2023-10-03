@@ -1,7 +1,8 @@
-import { Component, computed, effect } from '@angular/core';
+import { Component, ViewChild, computed, effect } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from './services/authentication.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDrawer } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,8 @@ export class AppComponent {
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
   });
+
+  @ViewChild('drawer') drawerRef!: MatDrawer;
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -48,6 +51,7 @@ export class AppComponent {
   }
 
   logout(): void {
+    this.drawerRef.close();
     this.authenticationService.logout();
   }
 }
