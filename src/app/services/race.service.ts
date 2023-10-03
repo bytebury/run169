@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment';
 export interface Race {
   id: number;
   name: string;
-  start_date: Date | string;
+  start_time: Date | string;
   town: { id: number; name: string };
   distance: { value: string; unit: 'mi' | 'km' };
   results_url?: string;
@@ -21,6 +21,7 @@ export interface CreateRace
   town_id: number;
   distance: string | number;
   distance_unit: 'mi' | 'km';
+  start_time: string;
 }
 
 @Injectable({

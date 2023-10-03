@@ -22,6 +22,7 @@ import { AuthenticationService } from './services/authentication.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+  isLoggedIn = computed(() => this.authenticationService.isLoggedIn());
   towns = computed(() => this.townService.towns());
   races = computed(() => this.raceService.races());
   authErrorMessage = computed(() => this.authenticationService.errorMessage());
@@ -109,7 +110,7 @@ export class AppComponent {
       const race: CreateRace = {
         name: this.form.get('raceName')?.value!,
         town_id: this.form.get('townName')?.value.id!,
-        start_date: this.form.get('startTime')?.value!,
+        start_time: this.form.get('startTime')?.value!,
         distance: this.form.get('distanceValue')?.value!,
         distance_unit: this.form.get('kilometers')?.value! ? 'km' : 'mi',
         address_line_one: this.form.get('addressLineOne')?.value ?? '',
@@ -120,6 +121,7 @@ export class AppComponent {
       this.raceService.create(race).subscribe({
         next: (_response) => {
           this.form.reset();
+          this.raceService.loadRaces();
           directive.resetForm();
         },
         error: (error) => {

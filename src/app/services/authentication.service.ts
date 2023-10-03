@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, signal } from '@angular/core';
+import { Injectable, computed, effect, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -8,17 +8,38 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class AuthenticationService {
+  currentUser = signal<{
+    id: number;
+    runner_id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+  } | null>(null);
+  isLoggedIn = computed(() => !!this.currentUser());
   errorMessage = signal('');
-  isLoggedIn = false;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {
+    effect(
+      () => {
+        const current_user = localStorage.getItem('current_user');
+
+        if (current_user) {
+          this.currentUser.set(JSON.parse(current_user));
+        }
+      },
+      { allowSignalWrites: true }
+    );
+  }
 
   login(email: string, password: string): void {
     this.http
       .post(`${environment.backendUrl}/login`, { email, password })
       .pipe(take(1))
       .subscribe({
-        next: (_response: any) => {
+        next: (response: any) => {
+          localStorage.setItem('auth_token', response.token);
+          localStorage.setItem('current_user', JSON.stringify(response.user));
+          this.currentUser.set(response.user);
           this.router.navigateByUrl('');
         },
         error: (error: any) => {
@@ -29,10 +50,9 @@ export class AuthenticationService {
   }
 
   logout(): void {
-    this.http
-      .delete(`${environment.backendUrl}/logout`)
-      .pipe(take(1))
-      .subscribe();
+    localStorage.removeItem('auth_token');
+    localStorage.removeItem('current_user');
+    this.currentUser.set(null);
     this.router.navigateByUrl('');
   }
 }

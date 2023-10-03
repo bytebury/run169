@@ -1,7 +1,7 @@
-<div *ngIf="true" style="display: block">
+<div *ngIf="isLoggedIn()" style="display: block">
   <button (click)="logout()">Logout</button>
 </div>
-<div *ngIf="true" style="display: block">
+<div *ngIf="!isLoggedIn()" style="display: block">
   <h1>Login</h1>
   {{ authErrorMessage() }}
   <form [formGroup]="loginForm" (ngSubmit)="login()" autocomplete="none">
@@ -39,7 +39,7 @@
     autocomplete="none"
   >
     <div>
-      <mat-form-field class="example-full-width">
+      <mat-form-field class="full-width">
         <mat-label>Race</mat-label>
         <input
           type="text"
@@ -61,7 +61,7 @@
             >
               {{ race.name }}
               <span style="font-size: 0.75rem; color: gray">
-                ({{ race.start_date.toString().slice(0, 10) }})
+                ({{ race.start_time.toString().slice(0, 10) }})
               </span>
             </div>
           </mat-option>
@@ -69,7 +69,7 @@
       </mat-form-field>
     </div>
     <div>
-      <mat-form-field>
+      <mat-form-field class="full-width">
         <mat-label>Bib Number</mat-label>
         <input
           type="text"
@@ -80,7 +80,7 @@
       </mat-form-field>
     </div>
     <div>
-      <mat-form-field>
+      <mat-form-field class="full-width">
         <mat-label>Total Time</mat-label>
         <input
           type="text"
@@ -107,7 +107,7 @@
     autocomplete="none"
   >
     <div>
-      <mat-form-field>
+      <mat-form-field class="full-width">
         <mat-label>Name of Race</mat-label>
         <input
           type="text"
@@ -118,7 +118,7 @@
       </mat-form-field>
     </div>
     <div>
-      <mat-form-field class="example-full-width">
+      <mat-form-field class="full-width">
         <mat-label>Town</mat-label>
         <input
           type="text"
@@ -143,7 +143,7 @@
       </mat-form-field>
     </div>
     <div>
-      <mat-form-field>
+      <mat-form-field class="full-width">
         <mat-label>Distance</mat-label>
         <input
           type="number"
@@ -161,25 +161,25 @@
       >
     </div>
     <div>
-      <mat-form-field>
+      <mat-form-field class="full-width">
         <mat-label>Start Time</mat-label>
         <input type="datetime-local" matInput formControlName="startTime" />
       </mat-form-field>
     </div>
     <div>
-      <mat-form-field>
+      <mat-form-field class="full-width">
         <mat-label>Address Line One</mat-label>
         <input type="text" matInput formControlName="addressLineOne" />
       </mat-form-field>
     </div>
     <div>
-      <mat-form-field>
+      <mat-form-field class="full-width">
         <mat-label>Website URL</mat-label>
         <input type="text" matInput formControlName="websiteUrl" />
       </mat-form-field>
     </div>
     <div>
-      <mat-form-field>
+      <mat-form-field class="full-width">
         <mat-label>Results URL</mat-label>
         <input type="text" matInput formControlName="resultsUrl" />
       </mat-form-field>
