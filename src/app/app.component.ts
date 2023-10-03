@@ -1,15 +1,5 @@
 import { Component, computed, effect } from '@angular/core';
-import {
-  AbstractControl,
-  FormControl,
-  FormGroup,
-  FormGroupDirective,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
-import { Observable, startWith, map, of, take } from 'rxjs';
-import { CreateRace, Race, RaceService } from './services/race.service';
-import { Town, TownService } from './services/town.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from './services/authentication.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -21,6 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class AppComponent {
   isLoggedIn = computed(() => this.authenticationService.isLoggedIn());
   authErrorMessage = computed(() => this.authenticationService.errorMessage());
+  currentUser = computed(() => this.authenticationService.currentUser());
 
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -28,7 +19,6 @@ export class AppComponent {
   });
 
   constructor(
-    private townService: TownService,
     private authenticationService: AuthenticationService,
     private snackbar: MatSnackBar
   ) {
