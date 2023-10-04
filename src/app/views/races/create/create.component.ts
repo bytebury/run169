@@ -31,6 +31,7 @@ export class CreateComponent implements OnInit {
       [Validators.required]
     ),
     addressLineOne: new FormControl(''),
+    logoUrl: new FormControl(''),
     websiteUrl: new FormControl(''),
     resultsUrl: new FormControl(''),
   });
@@ -64,6 +65,7 @@ export class CreateComponent implements OnInit {
         distance: this.form.get('distanceValue')?.value!,
         distance_unit: this.form.get('kilometers')?.value! ? 'km' : 'mi',
         address_line_one: this.form.get('addressLineOne')?.value ?? '',
+        logo_url: this.form.get('logoUrl')?.value ?? '',
         website_url: this.form.get('websiteUrl')?.value ?? '',
         results_url: this.form.get('resultsUrl')?.value ?? '',
       };

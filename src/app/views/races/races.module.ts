@@ -10,9 +10,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ShowComponent } from './show/show.component';
+import { MatIconModule } from '@angular/material/icon';
+import { DistancePipe } from '../../pipes/distance.pipe';
 
 @NgModule({
   declarations: [CreateComponent, ShowComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
     RacesRoutingModule,
@@ -23,7 +26,8 @@ import { ShowComponent } from './show/show.component';
     MatSlideToggleModule,
     MatAutocompleteModule,
     MatSnackBarModule,
+    MatIconModule,
+    DistancePipe,
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class RacesModule {}

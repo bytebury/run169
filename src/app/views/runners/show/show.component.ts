@@ -9,6 +9,17 @@ import { RunnerInfo, RunnerService } from 'src/app/services/runner.service';
 export class ShowComponent implements OnInit {
   runnerInfo: RunnerInfo = {} as RunnerInfo;
 
+  readonly displayColumns = [
+    'name',
+    'town',
+    'bib',
+    'total-time',
+    'distance',
+    'mile-pace',
+    'kilometer-pace',
+    'date-only',
+  ];
+
   constructor(
     private runner: RunnerService,
     private activatedRoute: ActivatedRoute

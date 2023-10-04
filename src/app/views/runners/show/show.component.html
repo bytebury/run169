@@ -24,7 +24,7 @@
           [dataSource]="runnerInfo.results"
           class="mat-elevation-z8"
         >
-          <ng-container matColumnDef="bib_number">
+          <ng-container matColumnDef="bib">
             <th mat-header-cell *matHeaderCellDef>Bib</th>
             <td mat-cell *matCellDef="let element">{{ element.bib_number }}</td>
           </ng-container>
@@ -32,12 +32,20 @@
           <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef>Name</th>
             <td mat-cell *matCellDef="let element">
-              <strong>{{ element.name }}</strong>
-              <div>{{ element.town_name }}, CT</div>
+              <a class="race-link" [routerLink]="['/', 'races', element.id]">
+                {{ element.name }}
+              </a>
             </td>
           </ng-container>
 
-          <ng-container matColumnDef="total_time">
+          <ng-container matColumnDef="town">
+            <th mat-header-cell *matHeaderCellDef>Town</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.town_name }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="total-time">
             <th mat-header-cell *matHeaderCellDef>Total Time</th>
             <td mat-cell *matCellDef="let element">
               {{ element.hours }}:{{ element.minutes }}:{{ element.seconds }}
@@ -47,58 +55,34 @@
           <ng-container matColumnDef="distance">
             <th mat-header-cell *matHeaderCellDef>Distance</th>
             <td mat-cell *matCellDef="let element">
-              {{ element.distance }} {{ element.distance_unit }}
+              {{ element.distance | number : "1.0-3"
+              }}{{ element.distance_unit | distance }}
             </td>
           </ng-container>
 
-          <ng-container matColumnDef="mile_pace">
+          <ng-container matColumnDef="mile-pace">
             <th mat-header-cell *matHeaderCellDef>Mile Pace</th>
             <td mat-cell *matCellDef="let element">
               {{ element.mile_pace }}
             </td>
           </ng-container>
 
-          <ng-container matColumnDef="kilometer_pace">
+          <ng-container matColumnDef="kilometer-pace">
             <th mat-header-cell *matHeaderCellDef>Kilometer Pace</th>
             <td mat-cell *matCellDef="let element">
               {{ element.kilometer_pace }}
             </td>
           </ng-container>
 
-          <ng-container matColumnDef="date_only">
+          <ng-container matColumnDef="date-only">
             <th mat-header-cell *matHeaderCellDef>Date</th>
             <td mat-cell *matCellDef="let element">
               {{ element.date_only | date }}
             </td>
           </ng-container>
 
-          <tr
-            mat-header-row
-            *matHeaderRowDef="[
-              'name',
-              'bib_number',
-              'total_time',
-              'distance',
-              'mile_pace',
-              'kilometer_pace',
-              'date_only'
-            ]"
-          ></tr>
-          <tr
-            mat-row
-            *matRowDef="
-              let row;
-              columns: [
-                'name',
-                'bib_number',
-                'total_time',
-                'distance',
-                'mile_pace',
-                'kilometer_pace',
-                'date_only'
-              ]
-            "
-          ></tr>
+          <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayColumns"></tr>
         </table>
       </mat-tab>
       <mat-tab>

@@ -9,6 +9,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { DistancePipe } from '../../pipes/distance.pipe';
 
 @NgModule({
   declarations: [ShowComponent, IndexComponent],
@@ -21,6 +23,8 @@ import { MatInputModule } from '@angular/material/input';
     MatFormFieldModule,
     ReactiveFormsModule,
     MatInputModule,
+    MatButtonModule,
+    DistancePipe,
   ],
 })
 export class RunnersModule {}
