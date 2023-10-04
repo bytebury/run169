@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable, startWith, map, of, take, last } from 'rxjs';
+import { Observable, startWith, map, of, take } from 'rxjs';
 import { Runner, RunnerService } from 'src/app/services/runner.service';
 
 @Component({
@@ -33,6 +33,10 @@ export class IndexComponent implements OnInit {
 
   goToProfile(runnerId: string): void {
     this.router.navigate(['runners', runnerId]);
+  }
+
+  onSubmit(): void {
+    this.goToProfile((this.myControl.getRawValue() as Runner).runner_id);
   }
 
   displayFn(runner: Runner): string {

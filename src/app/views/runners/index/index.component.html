@@ -1,7 +1,7 @@
 <h1>
   Search Members <span *ngIf="runners.length > 0">({{ runners.length }})</span>
 </h1>
-<form class="form">
+<form class="form" (keydown.enter)="onSubmit()">
   <mat-form-field class="full-width">
     <mat-label>Search</mat-label>
     <input
