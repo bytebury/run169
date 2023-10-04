@@ -3,17 +3,19 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
+export interface Runner {
+  id: number;
+  runner_id: string;
+  first_name: string;
+  last_name: string;
+  avatar_url?: string;
+  town_id: number;
+  hometown_name: string;
+  sex: 'male' | 'female';
+}
+
 export interface RunnerInfo {
-  user: {
-    id: number;
-    runner_id: string;
-    first_name: string;
-    last_name: string;
-    avatar_url?: string;
-    town_id: number;
-    hometown_name: string;
-    sex: 'male' | 'female';
-  };
+  user: Runner;
   results: {
     id: number;
     race_id: number;
@@ -53,5 +55,9 @@ export class RunnerService {
     return this.http.get<RunnerInfo>(
       `${environment.backendUrl}/runners/${runnerId}`
     );
+  }
+
+  findAll(): Observable<Runner[]> {
+    return this.http.get<Runner[]>(`${environment.backendUrl}/runners`);
   }
 }

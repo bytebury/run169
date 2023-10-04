@@ -1,0 +1,25 @@
+.runner-search-result {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+
+  img {
+    height: 3rem;
+    width: 3rem;
+    border-radius: 100%;
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+
+    .full-name {
+      font-weight: bold;
+    }
+
+    .hometown {
+      font-size: 0.8rem;
+    }
+  }
+}

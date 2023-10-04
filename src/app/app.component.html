@@ -25,13 +25,29 @@
         <button
           mat-stroked-button
           [routerLink]="['runners', currentUser()?.runner_id]"
+          (click)="drawer.close()"
         >
-          View Runner Profile
+          My Profile
         </button>
-        <button mat-stroked-button routerLink="create-race">
+        <button
+          mat-stroked-button
+          routerLink="runners"
+          (click)="drawer.close()"
+        >
+          Members
+        </button>
+        <button
+          mat-stroked-button
+          routerLink="create-race"
+          (click)="drawer.close()"
+        >
           Create a Race
         </button>
-        <button mat-stroked-button routerLink="submit-result">
+        <button
+          mat-stroked-button
+          routerLink="submit-result"
+          (click)="drawer.close()"
+        >
           Submit a Town
         </button>
         <button mat-flat-button color="warn" (click)="logout()">Logout</button>
