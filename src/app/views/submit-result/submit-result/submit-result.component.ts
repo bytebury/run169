@@ -37,7 +37,7 @@ export class SubmitResultComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.raceService.loadRaces();
+    this.raceService.loadPreviousRaces();
 
     this.submitRaceForm
       .get('race')

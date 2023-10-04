@@ -17,7 +17,7 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'create-race',
+    path: 'races',
     canActivate: [AuthGuard],
     loadChildren: () =>
       import('./views/races/races.module').then((m) => m.RacesModule),

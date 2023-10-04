@@ -1,11 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { CreateRaceComponent } from './create-race/create-race.component';
+import { CreateComponent } from './create/create.component';
+import { ShowComponent } from './show/show.component';
 
 const routes: Routes = [
   {
-    path: '',
-    component: CreateRaceComponent,
+    path: 'create',
+    pathMatch: 'full',
+    component: CreateComponent,
+  },
+  {
+    path: ':id',
+    component: ShowComponent,
   },
 ];
 

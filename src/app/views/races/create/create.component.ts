@@ -12,10 +12,10 @@ import { CreateRace, RaceService } from 'src/app/services/race.service';
 import { Town, TownService } from 'src/app/services/town.service';
 
 @Component({
-  templateUrl: './create-race.component.html',
-  styleUrls: ['./create-race.component.scss'],
+  templateUrl: './create.component.html',
+  styleUrls: ['./create.component.scss'],
 })
-export class CreateRaceComponent implements OnInit {
+export class CreateComponent implements OnInit {
   towns = computed(() => this.townService.towns());
 
   form = new FormGroup({
@@ -71,7 +71,7 @@ export class CreateRaceComponent implements OnInit {
       this.raceService.create(race).subscribe({
         next: (_response) => {
           this.form.reset();
-          this.raceService.loadRaces();
+          this.raceService.loadPreviousRaces();
           directive.resetForm();
         },
         error: (error) => {

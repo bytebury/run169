@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { take } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 export interface Race {
@@ -36,9 +36,13 @@ export class RaceService {
     return this.http.post(`${environment.backendUrl}/races`, race);
   }
 
-  loadRaces(): void {
+  find(raceId: string): Observable<Race> {
+    return this.http.get<Race>(`${environment.backendUrl}/races/${raceId}`);
+  }
+
+  loadPreviousRaces(): void {
     this.http
-      .get<Race[]>(`${environment.backendUrl}/races`)
+      .get<Race[]>(`${environment.backendUrl}/races/previous`)
       .pipe(take(1))
       .subscribe({
         next: (races: Race[]) => {
