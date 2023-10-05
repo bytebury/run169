@@ -28,9 +28,10 @@ export class CreateComponent implements OnInit {
     ]),
     distanceValue: new FormControl(null, [Validators.required]),
     kilometers: new FormControl(true),
-    startTime: new FormControl(moment().utc().format().slice(0, 16), [
-      Validators.required,
-    ]),
+    startTime: new FormControl(
+      moment().utc().tz('America/New_York').format().slice(0, 16),
+      [Validators.required]
+    ),
     addressLineOne: new FormControl(''),
     logoUrl: new FormControl(''),
     websiteUrl: new FormControl(''),
