@@ -47,6 +47,8 @@ img.race-logo {
 
 table {
   .mat-column-runner {
+    white-space: nowrap;
+
     > a {
       display: inline-flex;
       align-items: center;
