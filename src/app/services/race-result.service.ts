@@ -6,6 +6,9 @@ export interface RaceResult {
   id: number;
   bib_number?: string;
   total_time?: string;
+  hours: number;
+  minutes: number;
+  seconds: number;
 }
 
 export interface CreateRaceResult {

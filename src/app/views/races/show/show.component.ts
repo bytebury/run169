@@ -1,6 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { mergeMap } from 'rxjs';
+import { map, mergeMap } from 'rxjs';
 import { RaceResult } from 'src/app/services/race-result.service';
 import { Race, RaceService } from 'src/app/services/race.service';
 
@@ -11,7 +11,6 @@ import { Race, RaceService } from 'src/app/services/race.service';
 export class ShowComponent implements OnInit {
   readonly displayColumns = [
     'place',
-    'bib',
     'total-time',
     'runner',
     'sex',
@@ -39,6 +38,7 @@ export class ShowComponent implements OnInit {
             return this.raceService.findResultsByRace(race.id);
           })
         )
+        .pipe(map((results) => this.sortResults(results)))
         .subscribe({
           next: (results) => {
             this.results.set(results);
@@ -48,5 +48,15 @@ export class ShowComponent implements OnInit {
           },
         });
     });
+  }
+
+  sortResults(results: RaceResult[]): RaceResult[] {
+    const resultsWithTimes = results.filter(
+      (result) => result.hours || result.minutes || result.seconds
+    );
+    const resultsWithNoTimes = results.filter(
+      (result) => !result.hours && !result.minutes && !result.seconds
+    );
+    return [...resultsWithTimes, ...resultsWithNoTimes];
   }
 }
