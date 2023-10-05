@@ -22,7 +22,7 @@
       <th mat-header-cell *matHeaderCellDef>Name</th>
       <td mat-cell *matCellDef="let element">
         <a [routerLink]="['/races/', element.id]">
-          {{ element.name | titlecase }}
+          {{ element.name }}
         </a>
       </td>
     </ng-container>
