@@ -22,7 +22,6 @@
           *ngIf="runnerInfo.results"
           mat-table
           [dataSource]="runnerInfo.results"
-          class="mat-elevation-z8"
         >
           <ng-container matColumnDef="bib">
             <th mat-header-cell *matHeaderCellDef>Bib</th>
@@ -35,13 +34,7 @@
               <a class="race-link" [routerLink]="['/', 'races', element.id]">
                 {{ element.name }}
               </a>
-            </td>
-          </ng-container>
-
-          <ng-container matColumnDef="town">
-            <th mat-header-cell *matHeaderCellDef>Town</th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.town_name }}
+              <div>{{ element.town_name }}</div>
             </td>
           </ng-container>
 

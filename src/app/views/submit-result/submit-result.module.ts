@@ -10,9 +10,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TimeFormatDirective } from 'src/app/directives/time-format.directive';
+import { DistancePipe } from '../../pipes/distance.pipe';
 
 @NgModule({
   declarations: [SubmitResultComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
     SubmitResultRoutingModule,
@@ -24,7 +26,7 @@ import { TimeFormatDirective } from 'src/app/directives/time-format.directive';
     MatSlideToggleModule,
     MatAutocompleteModule,
     MatSnackBarModule,
+    DistancePipe,
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class SubmitResultModule {}

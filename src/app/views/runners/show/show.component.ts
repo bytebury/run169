@@ -11,7 +11,6 @@ export class ShowComponent implements OnInit {
 
   readonly displayColumns = [
     'name',
-    'town',
     'bib',
     'total-time',
     'distance',

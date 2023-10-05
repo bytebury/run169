@@ -23,14 +23,17 @@
           [displayWith]="raceDisplayFn"
         >
           <mat-option *ngFor="let race of filteredRaces()" [value]="race">
-            <div
-              class="race-option"
-              style="display: inline-flex; align-items: center"
-            >
-              {{ race.name }}
-              <span style="font-size: 0.75rem; color: gray">
-                ({{ race.start_time.toString().slice(0, 10) }})
-              </span>
+            <div class="race-option">
+              <div>
+                {{ race.name }}
+                ({{ race.distance | number : "1.0-3"
+                }}{{ race.distance_unit | distance }})
+              </div>
+              <div class="extra-info">
+                {{ race.town_name }}
+                |
+                {{ race.start_time | date : "MMMM dd, yyyy" }}
+              </div>
             </div>
           </mat-option>
         </mat-autocomplete>

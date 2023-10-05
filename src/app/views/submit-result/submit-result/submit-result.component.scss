@@ -1,0 +1,10 @@
+.race-option {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  .extra-info {
+    color: #444;
+    font-size: 0.9rem;
+  }
+}
