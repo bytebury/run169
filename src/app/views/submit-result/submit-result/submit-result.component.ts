@@ -79,9 +79,9 @@ export class SubmitResultComponent implements OnInit {
     const result: CreateRaceResult = {
       race_id: this.resultForm.get('race')?.value!.id,
       user_id: this.authenticationService.currentUser()?.id ?? 0,
-      hours: Number(this.resultForm.get('totalTime')?.value!.slice(0, 2)),
-      minutes: Number(this.resultForm.get('totalTime')?.value!.slice(3, 5)),
-      seconds: Number(this.resultForm.get('totalTime')?.value!.slice(-2)),
+      hours: Number(this.resultForm.get('totalTime')?.value?.slice(0, 2)),
+      minutes: Number(this.resultForm.get('totalTime')?.value?.slice(3, 5)),
+      seconds: Number(this.resultForm.get('totalTime')?.value?.slice(-2)),
       bib_number: this.resultForm.get('bibNumber')?.value!,
     };
 
@@ -89,8 +89,7 @@ export class SubmitResultComponent implements OnInit {
       .create(result)
       .pipe(take(1))
       .subscribe({
-        next: (response) => {
-          console.log(response);
+        next: (_response) => {
           this.resultForm.reset();
           directive.resetForm();
         },
