@@ -3,11 +3,13 @@ import { Routes, RouterModule } from '@angular/router';
 import { CreateComponent } from './create/create.component';
 import { ShowComponent } from './show/show.component';
 import { UpcomingComponent } from './upcoming/upcoming.component';
+import { AuthGuard } from 'src/app/guards/auth.guard';
 
 const routes: Routes = [
   {
     path: 'create',
     pathMatch: 'full',
+    canActivate: [AuthGuard],
     component: CreateComponent,
   },
   {

@@ -8,6 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import * as moment from 'moment-timezone';
 import { Observable, of, startWith, map } from 'rxjs';
 import { CreateRace, RaceService } from 'src/app/services/race.service';
 import { Town, TownService } from 'src/app/services/town.service';
@@ -27,10 +28,9 @@ export class CreateComponent implements OnInit {
     ]),
     distanceValue: new FormControl(null, [Validators.required]),
     kilometers: new FormControl(true),
-    startTime: new FormControl(
-      new Date().toISOString().slice(0, 10) + 'T09:00',
-      [Validators.required]
-    ),
+    startTime: new FormControl(moment().utc().format().slice(0, 16), [
+      Validators.required,
+    ]),
     addressLineOne: new FormControl(''),
     logoUrl: new FormControl(''),
     websiteUrl: new FormControl(''),
@@ -68,7 +68,9 @@ export class CreateComponent implements OnInit {
       const race: CreateRace = {
         name: this.form.get('raceName')?.value!,
         town_id: this.form.get('townName')?.value.id!,
-        start_time: this.form.get('startTime')?.value!,
+        start_time: moment(this.form.get('startTime')?.value!)
+          .tz('America/New_York')
+          .format(),
         distance: this.form.get('distanceValue')?.value!,
         distance_unit: this.form.get('kilometers')?.value! ? 'km' : 'mi',
         address_line_one: this.form.get('addressLineOne')?.value ?? '',

@@ -18,7 +18,6 @@ const routes: Routes = [
   },
   {
     path: 'races',
-    canActivate: [AuthGuard],
     loadChildren: () =>
       import('./views/races/races.module').then((m) => m.RacesModule),
   },

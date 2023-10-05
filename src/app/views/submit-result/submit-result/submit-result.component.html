@@ -25,7 +25,7 @@
           <mat-option *ngFor="let race of filteredRaces()" [value]="race">
             <div class="race-option">
               <div>
-                {{ race.name }}
+                {{ race.name | titlecase }}
                 ({{ race.distance | number : "1.0-3"
                 }}{{ race.distance_unit | distance }})
               </div>
