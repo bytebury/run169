@@ -1,10 +1,13 @@
-import { Component, OnInit, computed, signal } from '@angular/core';
+import { Component, OnInit, computed, effect, signal } from '@angular/core';
 import {
   FormGroup,
   FormControl,
   Validators,
   FormGroupDirective,
+  ValidatorFn,
+  AbstractControl,
 } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { map, startWith, take } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import {
@@ -21,8 +24,11 @@ export class SubmitResultComponent implements OnInit {
   filteredRaces = signal<Race[]>([]);
   races = computed(() => this.raceService.races());
 
-  submitRaceForm = new FormGroup({
-    race: new FormControl<string | any>('', [Validators.required]),
+  resultForm = new FormGroup({
+    race: new FormControl<string | any>('', [
+      Validators.required,
+      this.raceMustExistValidator(),
+    ]),
     bibNumber: new FormControl(''),
     totalTime: new FormControl('', [
       Validators.maxLength(8),
@@ -33,13 +39,23 @@ export class SubmitResultComponent implements OnInit {
   constructor(
     private raceResultService: RaceResultService,
     private raceService: RaceService,
-    private authenticationService: AuthenticationService
-  ) {}
+    private authenticationService: AuthenticationService,
+    private snackBar: MatSnackBar
+  ) {
+    effect(
+      () => {
+        if (this.races().length > 0) {
+          this.resultForm.get('race')?.setValue('');
+        }
+      },
+      { allowSignalWrites: true }
+    );
+  }
 
   ngOnInit(): void {
     this.raceService.loadPreviousRaces();
 
-    this.submitRaceForm
+    this.resultForm
       .get('race')
       ?.valueChanges.pipe(
         startWith(''),
@@ -56,17 +72,17 @@ export class SubmitResultComponent implements OnInit {
   }
 
   submitRace(directive: FormGroupDirective): void {
-    if (this.submitRaceForm.invalid) {
+    if (this.resultForm.invalid) {
       return;
     }
 
     const result: CreateRaceResult = {
-      race_id: this.submitRaceForm.get('race')?.value!.id,
+      race_id: this.resultForm.get('race')?.value!.id,
       user_id: this.authenticationService.currentUser()?.id ?? 0,
-      hours: Number(this.submitRaceForm.get('totalTime')?.value!.slice(0, 2)),
-      minutes: Number(this.submitRaceForm.get('totalTime')?.value!.slice(3, 5)),
-      seconds: Number(this.submitRaceForm.get('totalTime')?.value!.slice(-2)),
-      bib_number: this.submitRaceForm.get('bibNumber')?.value!,
+      hours: Number(this.resultForm.get('totalTime')?.value!.slice(0, 2)),
+      minutes: Number(this.resultForm.get('totalTime')?.value!.slice(3, 5)),
+      seconds: Number(this.resultForm.get('totalTime')?.value!.slice(-2)),
+      bib_number: this.resultForm.get('bibNumber')?.value!,
     };
 
     this.raceResultService
@@ -75,11 +91,11 @@ export class SubmitResultComponent implements OnInit {
       .subscribe({
         next: (response) => {
           console.log(response);
-          this.submitRaceForm.reset();
+          this.resultForm.reset();
           directive.resetForm();
         },
-        error: (error) => {
-          console.error(error);
+        error: ({ error }) => {
+          this.snackBar.open(error.message, 'Dismiss');
         },
       });
   }
@@ -93,5 +109,18 @@ export class SubmitResultComponent implements OnInit {
     return this.races().filter((race: Race) => {
       return race.name.toLowerCase().includes(filterValue);
     });
+  }
+
+  private raceMustExistValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const selectedValue = control.value;
+      if (selectedValue) {
+        const foundOption = this.races().find((race) => race === selectedValue);
+        if (!foundOption) {
+          return { townMustExist: true }; // Validation fails if the option is not found
+        }
+      }
+      return null; // Validation passes
+    };
   }
 }

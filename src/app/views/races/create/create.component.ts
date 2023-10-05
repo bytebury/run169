@@ -1,4 +1,4 @@
-import { Component, OnInit, computed } from '@angular/core';
+import { Component, OnInit, computed, effect } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -7,6 +7,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, of, startWith, map } from 'rxjs';
 import { CreateRace, RaceService } from 'src/app/services/race.service';
 import { Town, TownService } from 'src/app/services/town.service';
@@ -40,12 +41,18 @@ export class CreateComponent implements OnInit {
 
   constructor(
     private townService: TownService,
-    private raceService: RaceService
-  ) {}
+    private raceService: RaceService,
+    private snackbar: MatSnackBar
+  ) {
+    effect(() => {
+      if (this.towns().length > 0) {
+        this.form.get('townName')?.setValue('');
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.townService.loadTowns();
-
     this.filteredOptions =
       this.form.get('townName')?.valueChanges.pipe(
         startWith(''),
@@ -76,8 +83,8 @@ export class CreateComponent implements OnInit {
           this.raceService.loadPreviousRaces();
           directive.resetForm();
         },
-        error: (error) => {
-          console.error(error);
+        error: ({ error }) => {
+          this.snackbar.open(error.message, 'Dismiss');
         },
       });
     }

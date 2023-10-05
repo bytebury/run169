@@ -14,6 +14,7 @@ import { AuthenticationInterceptor } from './interceptors/authentication.interce
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [AppComponent],
@@ -36,6 +37,14 @@ import { MatSidenavModule } from '@angular/material/sidenav';
       provide: HTTP_INTERCEPTORS,
       useClass: AuthenticationInterceptor,
       multi: true,
+    },
+    {
+      provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
+      useValue: {
+        duration: 6_000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      },
     },
   ],
   bootstrap: [AppComponent],

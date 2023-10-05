@@ -7,7 +7,7 @@
   />
   <div class="race-details">
     <h1>
-      {{ race.name }} ({{ race.distance | number : "1.0-3"
+      {{ race.name | titlecase }} ({{ race.distance | number : "1.0-3"
       }}{{ race.distance_unit | distance }})
     </h1>
     <div>

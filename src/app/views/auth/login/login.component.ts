@@ -24,11 +24,7 @@ export class LoginComponent implements OnInit {
     effect(() => {
       if (this.errorMessages()) {
         this.snackbar
-          .open(this.errorMessages(), 'Dismiss', {
-            horizontalPosition: 'center',
-            verticalPosition: 'top',
-            duration: 3_000,
-          })
+          .open(this.errorMessages(), 'Dismiss')
           .afterDismissed()
           .subscribe({
             next: () => {
