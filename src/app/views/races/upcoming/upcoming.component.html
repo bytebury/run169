@@ -1,0 +1,48 @@
+<h1>Upcoming Races</h1>
+<div class="disclaimer">
+  Please be aware that this list is not complete and may also be inaccurate. If
+  you don't see a race listed, you can
+  <a routerLink="/races/create">create a race</a>.
+</div>
+<div>
+  <table
+    *ngIf="upcomingRaces()?.length! > 0"
+    mat-table
+    [dataSource]="upcomingRaces()"
+    class="mat-elevation-z8"
+  >
+    <ng-container matColumnDef="town">
+      <th mat-header-cell *matHeaderCellDef>Town</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.town_name }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let element">
+        <a [routerLink]="['/races/', element.id]">
+          {{ element.name }}
+        </a>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="distance">
+      <th mat-header-cell *matHeaderCellDef>Distance</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.distance | number : "1.0-3"
+        }}{{ element.distance_unit | distance }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="start-time">
+      <th mat-header-cell *matHeaderCellDef>Date</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.start_time | date : "MMMM dd, yyyy 'at' h:mm a" }}
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayColumns"></tr>
+  </table>
+</div>

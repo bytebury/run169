@@ -12,9 +12,11 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ShowComponent } from './show/show.component';
 import { MatIconModule } from '@angular/material/icon';
 import { DistancePipe } from '../../pipes/distance.pipe';
+import { UpcomingComponent } from './upcoming/upcoming.component';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
-  declarations: [CreateComponent, ShowComponent],
+  declarations: [CreateComponent, ShowComponent, UpcomingComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
@@ -24,6 +26,7 @@ import { DistancePipe } from '../../pipes/distance.pipe';
     MatButtonModule,
     MatInputModule,
     MatSlideToggleModule,
+    MatTableModule,
     MatAutocompleteModule,
     MatSnackBarModule,
     MatIconModule,
