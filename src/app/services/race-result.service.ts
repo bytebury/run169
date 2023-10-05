@@ -9,6 +9,7 @@ export interface RaceResult {
   hours: number;
   minutes: number;
   seconds: number;
+  time_in_seconds: number;
 }
 
 export interface CreateRaceResult {
