@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Observable, take } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { RaceResult } from './race-result.service';
 
 export interface Race {
   id: number;
@@ -45,6 +46,12 @@ export class RaceService {
 
   findUpcomingRaces(): Observable<Race[]> {
     return this.http.get<Race[]>(`${environment.backendUrl}/races/upcoming`);
+  }
+
+  findResultsByRace(raceId: string | number): Observable<RaceResult[]> {
+    return this.http.get<RaceResult[]>(
+      `${environment.backendUrl}/races/${raceId}/results`
+    );
   }
 
   loadPreviousRaces(): void {

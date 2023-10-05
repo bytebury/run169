@@ -3,6 +3,7 @@
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+  margin-bottom: 3rem;
 }
 
 .race-details {
@@ -37,4 +38,48 @@ img.race-logo {
   border-radius: 1rem;
   border: 0.5rem solid white;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  .mat-column-runner {
+    > a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    img {
+      height: 2rem;
+      width: 2rem;
+      border-radius: 100%;
+    }
+  }
+}
+
+a {
+  color: #3f51b5;
+}
+
+.placement {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: bold;
+}
+
+.gold {
+  color: #f4c23a;
+}
+
+.silver {
+  color: #a2a2a2;
+}
+
+.bronze {
+  color: #ab6133;
 }

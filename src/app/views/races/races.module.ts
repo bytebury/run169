@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { DistancePipe } from '../../pipes/distance.pipe';
 import { UpcomingComponent } from './upcoming/upcoming.component';
 import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [CreateComponent, ShowComponent, UpcomingComponent],
@@ -31,6 +32,7 @@ import { MatTableModule } from '@angular/material/table';
     MatSnackBarModule,
     MatIconModule,
     DistancePipe,
+    MatTabsModule,
   ],
 })
 export class RacesModule {}

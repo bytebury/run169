@@ -26,7 +26,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     BrowserAnimationsModule,
     MatButtonModule,
     MatSlideToggleModule,
-
     MatToolbarModule,
     MatIconModule,
     MatSidenavModule,
