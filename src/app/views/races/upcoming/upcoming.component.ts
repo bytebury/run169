@@ -8,7 +8,7 @@ import { Race, RaceService } from 'src/app/services/race.service';
 })
 export class UpcomingComponent implements OnInit {
   upcomingRaces = signal<Race[]>([]);
-  displayColumns = ['town', 'name', 'distance', 'start-time'];
+  displayColumns = ['start-time', 'town', 'name', 'distance'];
 
   constructor(private raceService: RaceService) {}
 
