@@ -82,6 +82,7 @@ export class CreateComponent implements OnInit {
           this.form.reset();
           this.raceService.loadPreviousRaces();
           directive.resetForm();
+          this.snackbar.open('Successfully created your race', 'Dismiss');
         },
         error: ({ error }) => {
           this.snackbar.open(error.message, 'Dismiss');

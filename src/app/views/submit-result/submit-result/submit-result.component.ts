@@ -92,6 +92,10 @@ export class SubmitResultComponent implements OnInit {
         next: (_response) => {
           this.resultForm.reset();
           directive.resetForm();
+          this.snackBar.open(
+            'Successfully submitted your race to Run169Towns',
+            'Dismiss'
+          );
         },
         error: ({ error }) => {
           this.snackBar.open(error.message, 'Dismiss');
