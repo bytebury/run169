@@ -57,7 +57,7 @@
 </div>
 <mat-tab-group>
   <mat-tab>
-    <ng-template mat-tab-label> Results </ng-template>
+    <ng-template mat-tab-label> Results ({{ results().length }}) </ng-template>
     <table *ngIf="results().length > 0" mat-table [dataSource]="results()">
       <ng-container matColumnDef="place">
         <th mat-header-cell *matHeaderCellDef>Place</th>
