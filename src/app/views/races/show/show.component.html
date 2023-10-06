@@ -16,7 +16,7 @@
       </span>
     </div>
   </div>
-  <div>
+  <div class="primary-buttons">
     <a
       href="https://www.google.com/maps/search/{{ race.address_line_one }} {{
         race.town_name
@@ -29,6 +29,9 @@
       <mat-icon>pin_drop</mat-icon>
       {{ race.town_name }}, CT
     </a>
+    <button mat-flat-button color="accent" (click)="watch()">
+      <mat-icon>visibility</mat-icon>Watch
+    </button>
   </div>
   <div *ngIf="race.website_url || race.results_url">
     <ul>

@@ -3,6 +3,7 @@ import { Injectable, signal } from '@angular/core';
 import { Observable, take } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { RaceResult } from './race-result.service';
+import { AuthenticationService } from './authentication.service';
 
 export interface Race {
   id: number;
@@ -34,7 +35,7 @@ export interface CreateRace
 export class RaceService {
   races = signal<Race[]>([]);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private auth: AuthenticationService) {}
 
   create(race: CreateRace) {
     return this.http.post(`${environment.backendUrl}/races`, race);
@@ -51,6 +52,27 @@ export class RaceService {
   findResultsByRace(raceId: string | number): Observable<RaceResult[]> {
     return this.http.get<RaceResult[]>(
       `${environment.backendUrl}/races/${raceId}/results`
+    );
+  }
+
+  watch(raceId: string | number): Observable<any> {
+    return this.http.post<any>(
+      `${environment.backendUrl}/races/${raceId}/watchers`,
+      {
+        race_id: raceId,
+        user_id: this.auth.currentUser()?.id,
+      }
+    );
+  }
+
+  removeWatch(raceId: string | number): Observable<any> {
+    return this.http.delete<any>(
+      `${environment.backendUrl}/races/${raceId}/watchers`,
+      {
+        body: {
+          user_id: this.auth.currentUser()?.id,
+        },
+      }
     );
   }
 

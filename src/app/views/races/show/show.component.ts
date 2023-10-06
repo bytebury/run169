@@ -50,6 +50,19 @@ export class ShowComponent implements OnInit {
     });
   }
 
+  watch(): void {
+    if (this.race) {
+      this.raceService.removeWatch(this.race.id).subscribe({
+        next: () => {
+          // no-op
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
+    }
+  }
+
   sortResults(results: RaceResult[]): RaceResult[] {
     const resultsWithTimes = results.filter(
       (result) => result.hours || result.minutes || result.seconds
