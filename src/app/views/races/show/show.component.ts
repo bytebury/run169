@@ -51,8 +51,10 @@ export class ShowComponent implements OnInit {
   }
 
   watch(): void {
+    // LEFT OFF HERE - NEED TO ADD TOGGLE AND INCLUDE WATCHERS ON THE
+    // RESPONSE SO THAT YOU CAN CHECK IF A USER IT WATCHING IT OR NOT
     if (this.race) {
-      this.raceService.removeWatch(this.race.id).subscribe({
+      this.raceService.watch(this.race.id).subscribe({
         next: () => {
           // no-op
         },

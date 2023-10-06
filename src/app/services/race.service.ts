@@ -55,6 +55,12 @@ export class RaceService {
     );
   }
 
+  findWatchers(raceId: string | number): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${environment.backendUrl}/races/${raceId}/watchers`
+    );
+  }
+
   watch(raceId: string | number): Observable<any> {
     return this.http.post<any>(
       `${environment.backendUrl}/races/${raceId}/watchers`,
