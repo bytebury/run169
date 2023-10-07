@@ -1,4 +1,4 @@
-import { Component, OnInit, computed, effect, signal } from '@angular/core';
+import { Component, OnInit, computed, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { forkJoin, map, switchMap, tap } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -42,13 +42,7 @@ export class ShowComponent implements OnInit {
     private auth: AuthenticationService,
     private raceService: RaceService,
     private activatedRoute: ActivatedRoute
-  ) {
-    effect(() => {
-      if (this.isWatching() && this.isRaceOver()) {
-        this.unwatch();
-      }
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe((paramMap) => {
