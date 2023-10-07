@@ -149,7 +149,7 @@
       Watchers ({{ watchers().length }})
     </ng-template>
 
-    <table *ngIf="results().length > 0" mat-table [dataSource]="results()">
+    <table *ngIf="watchers().length > 0" mat-table [dataSource]="watchers()">
       <ng-container matColumnDef="runner">
         <th mat-header-cell *matHeaderCellDef>Runner</th>
         <td mat-cell *matCellDef="let element">
