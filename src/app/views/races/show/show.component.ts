@@ -1,4 +1,5 @@
 import { Component, OnInit, computed, signal } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { forkJoin, map, switchMap, tap } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -41,7 +42,8 @@ export class ShowComponent implements OnInit {
   constructor(
     private auth: AuthenticationService,
     private raceService: RaceService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private snackbar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -76,12 +78,18 @@ export class ShowComponent implements OnInit {
 
   watch(): void {
     this.raceService.watch(this.race()!.id).subscribe(this.updateWatchers());
+    this.snackbar.open('🎉 Added this race to your race list', 'Dismiss', {
+      duration: 1_500,
+    });
   }
 
   unwatch(): void {
     this.raceService
       .removeWatch(this.race()!.id)
       .subscribe(this.updateWatchers());
+    this.snackbar.open('Removed this race from your race list', 'Dismiss', {
+      duration: 1_500,
+    });
   }
 
   sortResults(results: RaceResult[]): RaceResult[] {
