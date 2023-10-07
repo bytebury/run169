@@ -1,6 +1,7 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, computed, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { map, mergeMap } from 'rxjs';
+import { forkJoin, map, switchMap, tap } from 'rxjs';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { RaceResult } from 'src/app/services/race-result.service';
 import { Race, RaceService } from 'src/app/services/race.service';
 
@@ -20,8 +21,17 @@ export class ShowComponent implements OnInit {
 
   race: Race | null = null;
   results = signal<RaceResult[]>([]);
+  watchers = signal<{ user_id: number }[]>([]);
+  isWatching = computed(() => {
+    return (
+      this.watchers().findIndex(
+        ({ user_id }) => user_id === this.auth.currentUser()?.id
+      ) >= 0
+    );
+  });
 
   constructor(
+    private auth: AuthenticationService,
     private raceService: RaceService,
     private activatedRoute: ActivatedRoute
   ) {}
@@ -33,15 +43,21 @@ export class ShowComponent implements OnInit {
       this.raceService
         .find(raceId)
         .pipe(
-          mergeMap((race) => {
+          tap((race) => {
             this.race = race;
-            return this.raceService.findResultsByRace(race.id);
-          })
+          }),
+          switchMap((race) => {
+            return forkJoin([
+              this.raceService.findResultsByRace(race.id),
+              this.raceService.findWatchers(race.id),
+            ]);
+          }),
+          map(([results, watchers]) => [this.sortResults(results), watchers])
         )
-        .pipe(map((results) => this.sortResults(results)))
         .subscribe({
-          next: (results) => {
+          next: ([results, watchers]) => {
             this.results.set(results);
+            this.watchers.set(watchers);
           },
           error: (error) => {
             console.log(error);
@@ -51,18 +67,13 @@ export class ShowComponent implements OnInit {
   }
 
   watch(): void {
-    // LEFT OFF HERE - NEED TO ADD TOGGLE AND INCLUDE WATCHERS ON THE
-    // RESPONSE SO THAT YOU CAN CHECK IF A USER IT WATCHING IT OR NOT
-    if (this.race) {
-      this.raceService.watch(this.race.id).subscribe({
-        next: () => {
-          // no-op
-        },
-        error: (error) => {
-          console.error(error);
-        },
-      });
-    }
+    this.raceService.watch(this.race!.id).subscribe(this.updateWatchers());
+  }
+
+  unwatch(): void {
+    this.raceService
+      .removeWatch(this.race!.id)
+      .subscribe(this.updateWatchers());
   }
 
   sortResults(results: RaceResult[]): RaceResult[] {
@@ -73,5 +84,16 @@ export class ShowComponent implements OnInit {
       (result) => !result.hours && !result.minutes && !result.seconds
     );
     return [...resultsWithTimes, ...resultsWithNoTimes];
+  }
+
+  private updateWatchers(): any {
+    return {
+      next: (watchers: { user_id: number }[]) => {
+        this.watchers.set(watchers);
+      },
+      error: (error: Error) => {
+        console.error(error);
+      },
+    };
   }
 }

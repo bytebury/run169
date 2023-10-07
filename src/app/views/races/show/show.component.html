@@ -29,8 +29,22 @@
       <mat-icon>pin_drop</mat-icon>
       {{ race.town_name }}, CT
     </a>
-    <button mat-flat-button color="accent" (click)="watch()">
+
+    <button
+      *ngIf="!isWatching()"
+      mat-flat-button
+      color="accent"
+      (click)="watch()"
+    >
       <mat-icon>visibility</mat-icon>Watch
+    </button>
+    <button
+      *ngIf="isWatching()"
+      mat-flat-button
+      color="accent"
+      (click)="unwatch()"
+    >
+      <mat-icon>visibility_off</mat-icon>Unwatch
     </button>
   </div>
   <div *ngIf="race.website_url || race.results_url">
