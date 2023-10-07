@@ -1,9 +1,10 @@
-import { Component, OnInit, computed, signal } from '@angular/core';
+import { Component, OnInit, computed, effect, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { forkJoin, map, switchMap, tap } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { RaceResult } from 'src/app/services/race-result.service';
 import { Race, RaceService } from 'src/app/services/race.service';
+import { Runner } from 'src/app/services/runner.service';
 
 @Component({
   templateUrl: './show.component.html',
@@ -19,13 +20,20 @@ export class ShowComponent implements OnInit {
     'kilometer-pace',
   ];
 
-  race: Race | null = null;
+  now = new Date().toISOString();
+  race = signal<Race | null>(null);
   results = signal<RaceResult[]>([]);
-  watchers = signal<{ user_id: number }[]>([]);
+  watchers = signal<Omit<Runner, 'hometown'>[]>([]);
+  isRaceOver = computed(() => {
+    return (
+      this.now.localeCompare(this.race()?.start_time.toString() ?? this.now) >=
+      0
+    );
+  });
   isWatching = computed(() => {
     return (
       this.watchers().findIndex(
-        ({ user_id }) => user_id === this.auth.currentUser()?.id
+        ({ id }) => id === this.auth.currentUser()?.id
       ) >= 0
     );
   });
@@ -34,7 +42,13 @@ export class ShowComponent implements OnInit {
     private auth: AuthenticationService,
     private raceService: RaceService,
     private activatedRoute: ActivatedRoute
-  ) {}
+  ) {
+    effect(() => {
+      if (this.isWatching() && this.isRaceOver()) {
+        this.unwatch();
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe((paramMap) => {
@@ -44,7 +58,7 @@ export class ShowComponent implements OnInit {
         .find(raceId)
         .pipe(
           tap((race) => {
-            this.race = race;
+            this.race.set(race);
           }),
           switchMap((race) => {
             return forkJoin([
@@ -67,12 +81,12 @@ export class ShowComponent implements OnInit {
   }
 
   watch(): void {
-    this.raceService.watch(this.race!.id).subscribe(this.updateWatchers());
+    this.raceService.watch(this.race()!.id).subscribe(this.updateWatchers());
   }
 
   unwatch(): void {
     this.raceService
-      .removeWatch(this.race!.id)
+      .removeWatch(this.race()!.id)
       .subscribe(this.updateWatchers());
   }
 
@@ -88,7 +102,7 @@ export class ShowComponent implements OnInit {
 
   private updateWatchers(): any {
     return {
-      next: (watchers: { user_id: number }[]) => {
+      next: (watchers: Omit<Runner, 'hometown'>[]) => {
         this.watchers.set(watchers);
       },
       error: (error: Error) => {

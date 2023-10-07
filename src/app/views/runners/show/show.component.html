@@ -79,7 +79,9 @@
         </table>
       </mat-tab>
       <mat-tab>
-        <ng-template mat-tab-label> Upcoming Races </ng-template>
+        <ng-template mat-tab-label>
+          Race List ({{ racesBeingWatched().length }})
+        </ng-template>
 
         <table
           *ngIf="racesBeingWatched().length > 0"

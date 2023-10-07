@@ -1,25 +1,25 @@
-<div *ngIf="race" class="wrapper">
+<div *ngIf="race()" class="wrapper">
   <img
-    *ngIf="race.logo_url"
+    *ngIf="race()!.logo_url"
     class="race-logo"
-    [src]="race.logo_url"
+    [src]="race()!.logo_url"
     alt="Race Logo"
   />
   <div class="race-details">
     <h1>
-      {{ race.name }} ({{ race.distance | number : "1.0-3"
-      }}{{ race.distance_unit | distance }})
+      {{ race.name }} ({{ race()!.distance | number : "1.0-3"
+      }}{{ race()!.distance_unit | distance }})
     </h1>
     <div>
       <span>
-        {{ race.start_time | date : "EEEE, MMMM dd, yyyy, h:mm a" }}
+        {{ race()!.start_time | date : "EEEE, MMMM dd, yyyy, h:mm a" }}
       </span>
     </div>
   </div>
   <div class="primary-buttons">
     <a
-      href="https://www.google.com/maps/search/{{ race.address_line_one }} {{
-        race.town_name
+      href="https://www.google.com/maps/search/{{ race()!.address_line_one }} {{
+        race()!.town_name
       }}, CT"
       target="_blank"
       rel="no-referrer"
@@ -27,42 +27,42 @@
       color="primary"
     >
       <mat-icon>pin_drop</mat-icon>
-      {{ race.town_name }}, CT
+      {{ race()!.town_name }}, CT
     </a>
 
     <button
-      *ngIf="!isWatching()"
-      mat-flat-button
+      *ngIf="!isRaceOver() && !isWatching()"
+      mat-stroked-button
       color="accent"
       (click)="watch()"
     >
       <mat-icon>visibility</mat-icon>Watch
     </button>
     <button
-      *ngIf="isWatching()"
-      mat-flat-button
+      *ngIf="!isRaceOver() && isWatching()"
+      mat-stroked-button
       color="accent"
       (click)="unwatch()"
     >
       <mat-icon>visibility_off</mat-icon>Unwatch
     </button>
   </div>
-  <div *ngIf="race.website_url || race.results_url">
+  <div *ngIf="race()!.website_url || race()!.results_url">
     <ul>
-      <li *ngIf="race.website_url">
+      <li *ngIf="race()!.website_url">
         <a
           mat-stroked-button
-          [href]="race.website_url"
+          [href]="race()!.website_url"
           target="_blank"
           rel="no-referrer"
         >
           <mat-icon>open_in_new</mat-icon>Race Website
         </a>
       </li>
-      <li *ngIf="race.results_url">
+      <li *ngIf="race()!.results_url">
         <a
           mat-stroked-button
-          [href]="race.results_url"
+          [href]="race()!.results_url"
           target="_blank"
           rel="no-referrer"
         >
@@ -73,7 +73,7 @@
   </div>
 </div>
 <mat-tab-group>
-  <mat-tab>
+  <mat-tab *ngIf="isRaceOver()">
     <ng-template mat-tab-label> Results ({{ results().length }}) </ng-template>
     <table *ngIf="results().length > 0" mat-table [dataSource]="results()">
       <ng-container matColumnDef="place">
@@ -142,6 +142,31 @@
 
       <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayColumns"></tr>
+    </table>
+  </mat-tab>
+  <mat-tab *ngIf="!isRaceOver()">
+    <ng-template mat-tab-label>
+      Watchers ({{ watchers().length }})
+    </ng-template>
+
+    <table *ngIf="results().length > 0" mat-table [dataSource]="results()">
+      <ng-container matColumnDef="runner">
+        <th mat-header-cell *matHeaderCellDef>Runner</th>
+        <td mat-cell *matCellDef="let element">
+          <a [routerLink]="['/runners', element.runner_id]">
+            <img [src]="element.avatar_url" alt="profile image" />
+            {{ element.first_name }} {{ element.last_name }}
+          </a>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="is-going">
+        <th mat-header-cell *matHeaderCellDef>Is Going?</th>
+        <td mat-cell *matCellDef="let element">Interested</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['runner', 'is-going']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['runner', 'is-going']"></tr>
     </table>
   </mat-tab>
   <mat-tab>
