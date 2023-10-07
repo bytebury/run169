@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { filter, mergeMap, toArray } from 'rxjs';
+import { Race, RaceService } from 'src/app/services/race.service';
 import { RunnerInfo, RunnerService } from 'src/app/services/runner.service';
 
 @Component({
@@ -8,6 +10,7 @@ import { RunnerInfo, RunnerService } from 'src/app/services/runner.service';
 })
 export class ShowComponent implements OnInit {
   runnerInfo: RunnerInfo = {} as RunnerInfo;
+  racesBeingWatched = signal<Race[]>([]);
 
   readonly displayColumns = [
     'name',
@@ -21,6 +24,7 @@ export class ShowComponent implements OnInit {
 
   constructor(
     private runner: RunnerService,
+    private raceService: RaceService,
     private activatedRoute: ActivatedRoute
   ) {}
 
@@ -36,6 +40,23 @@ export class ShowComponent implements OnInit {
           console.error(error);
         },
       });
+
+      this.runner
+        .getWatchList(runnerId)
+        .pipe(
+          mergeMap((watchList) => watchList),
+          filter((item) => !!item.race_id),
+          mergeMap((item) => this.raceService.find(item.race_id!.toString())),
+          toArray()
+        )
+        .subscribe({
+          next: (races) => {
+            this.racesBeingWatched.set(races);
+          },
+          error: (error) => {
+            console.log(error);
+          },
+        });
     });
   }
 }

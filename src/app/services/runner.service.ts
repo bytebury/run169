@@ -3,6 +3,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
+export interface WatchList {
+  id: number;
+  user_id: number;
+  race_id?: number;
+}
+
 export interface Runner {
   id: number;
   runner_id: string;
@@ -59,5 +65,11 @@ export class RunnerService {
 
   findAll(): Observable<Runner[]> {
     return this.http.get<Runner[]>(`${environment.backendUrl}/runners`);
+  }
+
+  getWatchList(runnerId: string): Observable<WatchList[]> {
+    return this.http.get<WatchList[]>(
+      `${environment.backendUrl}/runners/${runnerId}/watchlist`
+    );
   }
 }
