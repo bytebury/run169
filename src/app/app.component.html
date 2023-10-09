@@ -22,6 +22,7 @@
         </div>
       </div>
       <div *ngIf="isLoggedIn()" class="nav-links">
+        <a mat-stroked-button routerLink="/" (click)="drawer.close()"> Home </a>
         <a
           mat-stroked-button
           [routerLink]="['runners', currentUser()?.runner_id]"
