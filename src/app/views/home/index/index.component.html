@@ -1,0 +1,13 @@
+<iframe
+  id="iframe-undefined3"
+  frameborder="0"
+  sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-presentation allow-top-navigation"
+  src='javascript: window.frameElement.getAttribute("srcdoc");'
+  srcdoc='<script>window.onmessage = function(event) {event.source.postMessage({iframeId: event.data, scrollHeight: document.body.getBoundingClientRect().height || document.body.scrollHeight}, event.origin);};</script><body style=&apos;margin: 0;&apos;><div style="display: flex; justify-content: center"><iframe title="12-01-2021-Run169Towns" width="1000" height="500" src="https://app.powerbi.com/view?r=eyJrIjoiOTIzZTA2ODMtOGUwMC00YmQxLTkxMDUtNjBhMjI1M2EyMDdiIiwidCI6IjA5ODlmZDI4LTE0NDgtNGYyYi1iZTExLTA5NmE3OTRjZDUwZCIsImMiOjF9&amp;pageName=ReportSection4ea470777fe23c5dd854" frameborder="0" allowFullScreen="true"></iframe></div></body>'
+  style="
+    width: 100%;
+    overflow: visible;
+    transition: height 1.5s ease 0s;
+    height: 500px;
+  "
+></iframe>

@@ -5,6 +5,12 @@ import { AuthGuard } from './guards/auth.guard';
 const routes: Routes = [
   {
     path: '',
+    pathMatch: 'full',
+    loadChildren: () =>
+      import('./views/home/home.module').then((m) => m.HomeModule),
+  },
+  {
+    path: 'login',
     loadChildren: () =>
       import('./views/auth/auth.module').then((m) => m.AuthModule),
   },
@@ -29,7 +35,7 @@ const routes: Routes = [
   {
     path: '**',
     loadChildren: () =>
-      import('./views/auth/auth.module').then((m) => m.AuthModule),
+      import('./views/home/home.module').then((m) => m.HomeModule),
   },
 ];
 
