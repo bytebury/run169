@@ -122,7 +122,9 @@
       <ng-container matColumnDef="total-time">
         <th mat-header-cell *matHeaderCellDef>Time</th>
         <td mat-cell *matCellDef="let element">
-          {{ element.hours }}:{{ element.minutes }}:{{ element.seconds }}
+          {{ element.hours }}:{{
+            element.minutes.toString().padStart(2, "0")
+          }}:{{ element.seconds.toString().padStart(2, "0") }}
         </td>
       </ng-container>
 
