@@ -44,13 +44,12 @@ export class ShowComponent implements OnInit {
           tap((results) => this.raceResults.set(results)),
           mergeMap(() => this.runner.getWatchList(this.runnerInfo.id)),
           mergeMap((watchlist) => watchlist),
-          filter((item) => !!item.race),
-          mergeMap((item) => this.raceService.find(item.race!.id.toString())),
+          filter((watchList) => !!watchList.race),
           toArray()
         )
         .subscribe({
-          next: (races) => {
-            this.racesBeingWatched.set(races);
+          next: (watchlist) => {
+            this.racesBeingWatched.set(watchlist.map(({ race }) => race!));
           },
           error: (error) => {
             console.error(error);
