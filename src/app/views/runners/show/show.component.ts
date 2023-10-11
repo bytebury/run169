@@ -2,7 +2,7 @@ import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { filter, mergeMap, tap, toArray } from 'rxjs';
 import { RaceResult } from 'src/app/services/race-result.service';
-import { Race, RaceService } from 'src/app/services/race.service';
+import { Race } from 'src/app/services/race.service';
 import { Runner, RunnerService } from 'src/app/services/runner.service';
 
 @Component({
@@ -26,7 +26,6 @@ export class ShowComponent implements OnInit {
 
   constructor(
     private runner: RunnerService,
-    private raceService: RaceService,
     private activatedRoute: ActivatedRoute
   ) {}
 

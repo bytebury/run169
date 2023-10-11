@@ -98,9 +98,9 @@
       <ng-container matColumnDef="runner">
         <th mat-header-cell *matHeaderCellDef>Runner</th>
         <td mat-cell *matCellDef="let element">
-          <a [routerLink]="['/runners', element.runner_id]">
-            <img [src]="element.avatar_url" alt="profile image" />
-            {{ element.first_name }} {{ element.last_name }}
+          <a [routerLink]="['/runners', element.user.runner_id]">
+            <img [src]="element.user.avatar_url" alt="profile image" />
+            {{ element.user.first_name }} {{ element.user.last_name }}
           </a>
         </td>
       </ng-container>
@@ -115,7 +115,7 @@
       <ng-container matColumnDef="sex">
         <th mat-header-cell *matHeaderCellDef>Sex</th>
         <td mat-cell *matCellDef="let element">
-          {{ element.sex | titlecase }}
+          {{ element.user.sex | titlecase }}
         </td>
       </ng-container>
 
