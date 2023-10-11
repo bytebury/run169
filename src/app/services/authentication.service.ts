@@ -36,7 +36,10 @@ export class AuthenticationService {
 
   login(email: string, password: string): void {
     this.http
-      .post(`${environment.backendUrl}/login`, { email, password })
+      .post(`${environment.backendUrl}/auth/login`, {
+        email,
+        password_digest: password,
+      })
       .pipe(take(1))
       .subscribe({
         next: (response: any) => {

@@ -1,16 +1,18 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { filter, mergeMap, toArray } from 'rxjs';
+import { filter, mergeMap, tap, toArray } from 'rxjs';
+import { RaceResult } from 'src/app/services/race-result.service';
 import { Race, RaceService } from 'src/app/services/race.service';
-import { RunnerInfo, RunnerService } from 'src/app/services/runner.service';
+import { Runner, RunnerService } from 'src/app/services/runner.service';
 
 @Component({
   templateUrl: './show.component.html',
   styleUrls: ['./show.component.scss'],
 })
 export class ShowComponent implements OnInit {
-  runnerInfo: RunnerInfo = {} as RunnerInfo;
+  runnerInfo: Runner = {} as Runner;
   racesBeingWatched = signal<Race[]>([]);
+  raceResults = signal<RaceResult[]>([]);
 
   readonly displayColumns = [
     'name',
@@ -19,7 +21,7 @@ export class ShowComponent implements OnInit {
     'distance',
     'mile-pace',
     'kilometer-pace',
-    'date-only',
+    'start-time',
   ];
 
   constructor(
@@ -32,21 +34,18 @@ export class ShowComponent implements OnInit {
     this.activatedRoute.paramMap.subscribe((paramMap) => {
       const runnerId = paramMap.get('runner_id') ?? '';
 
-      this.runner.find(runnerId).subscribe({
-        next: (runner) => {
-          this.runnerInfo = runner;
-        },
-        error: (error) => {
-          console.error(error);
-        },
-      });
-
       this.runner
-        .getWatchList(runnerId)
+        .find(runnerId)
         .pipe(
-          mergeMap((watchList) => watchList),
-          filter((item) => !!item.race_id),
-          mergeMap((item) => this.raceService.find(item.race_id!.toString())),
+          tap((runner) => {
+            this.runnerInfo = runner;
+          }),
+          mergeMap(() => this.runner.getResults(this.runnerInfo.id)),
+          tap((results) => this.raceResults.set(results)),
+          mergeMap(() => this.runner.getWatchList(this.runnerInfo.id)),
+          mergeMap((watchlist) => watchlist),
+          filter((item) => !!item.race),
+          mergeMap((item) => this.raceService.find(item.race!.id.toString())),
           toArray()
         )
         .subscribe({
@@ -54,7 +53,7 @@ export class ShowComponent implements OnInit {
             this.racesBeingWatched.set(races);
           },
           error: (error) => {
-            console.log(error);
+            console.error(error);
           },
         });
     });

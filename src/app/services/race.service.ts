@@ -4,13 +4,13 @@ import { Observable, take } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { RaceResult } from './race-result.service';
 import { AuthenticationService } from './authentication.service';
+import { Town } from './town.service';
 
 export interface Race {
   id: number;
   name: string;
   start_time: Date | string;
-  town_id: number;
-  town_name: string;
+  town: Town;
   distance: string | number;
   distance_unit: 'mi' | 'km';
   logo_url?: string;
@@ -22,7 +22,7 @@ export interface Race {
 }
 
 export interface CreateRace
-  extends Omit<Race, 'id' | 'created_at' | 'updated_at' | 'town_name'> {
+  extends Omit<Race, 'id' | 'created_at' | 'updated_at' | 'town'> {
   town_id: number;
   distance: string | number;
   distance_unit: 'mi' | 'km';

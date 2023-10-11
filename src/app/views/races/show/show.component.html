@@ -19,7 +19,7 @@
   <div class="primary-buttons">
     <a
       href="https://www.google.com/maps/search/{{ race()!.address_line_one }} {{
-        race()!.town_name
+        race()!.town.name
       }}, CT"
       target="_blank"
       rel="no-referrer"
@@ -27,7 +27,7 @@
       color="primary"
     >
       <mat-icon>pin_drop</mat-icon>
-      {{ race()!.town_name }}, CT
+      {{ race()!.town.name }}, CT
     </a>
 
     <button

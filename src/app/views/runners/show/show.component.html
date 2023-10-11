@@ -1,40 +1,45 @@
 <div class="profile-container">
-  <div class="personal-details" *ngIf="runnerInfo.user">
-    <img [src]="runnerInfo.user.avatar_url" alt="profile image" />
+  <div class="personal-details" *ngIf="runnerInfo?.id">
+    <img [src]="runnerInfo.avatar_url" alt="profile image" />
     <div class="name-details">
       <span class="full-name">
-        {{ runnerInfo.user.first_name }} {{ runnerInfo.user.last_name }}
+        {{ runnerInfo.first_name }} {{ runnerInfo.last_name }}
       </span>
     </div>
     <div class="runner-details">
-      <div>{{ runnerInfo.user.hometown_name }}, CT</div>
-      <div>{{ runnerInfo.user.sex | titlecase }}</div>
-      <div>{{ runnerInfo.towns.length }} / 169</div>
+      <div>{{ runnerInfo.town.name }}, CT</div>
+      <div>{{ runnerInfo.sex | titlecase }}</div>
+      <!-- <div>{{ runnerInfo.towns.length }} / 169</div> -->
     </div>
   </div>
   <div class="race-details">
     <mat-tab-group>
       <mat-tab>
         <ng-template mat-tab-label>
-          Results ({{ runnerInfo.results.length }})
+          Results ({{ raceResults().length }})
         </ng-template>
         <table
-          *ngIf="runnerInfo.results"
+          *ngIf="raceResults().length > 0"
           mat-table
-          [dataSource]="runnerInfo.results"
+          [dataSource]="raceResults()"
         >
           <ng-container matColumnDef="bib">
             <th mat-header-cell *matHeaderCellDef>Bib</th>
-            <td mat-cell *matCellDef="let element">{{ element.bib_number }}</td>
+            <td mat-cell *matCellDef="let element">
+              {{ element.bib_number }}
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef>Name</th>
             <td mat-cell *matCellDef="let element">
-              <a class="race-link" [routerLink]="['/', 'races', element.id]">
-                {{ element.name }}
+              <a
+                class="race-link"
+                [routerLink]="['/', 'races', element.race.id]"
+              >
+                {{ element.race.name }}
               </a>
-              <div>{{ element.town_name }}</div>
+              <div>{{ element.race.town.name }}</div>
             </td>
           </ng-container>
 
@@ -48,8 +53,8 @@
           <ng-container matColumnDef="distance">
             <th mat-header-cell *matHeaderCellDef>Distance</th>
             <td mat-cell *matCellDef="let element">
-              {{ element.distance | number : "1.0-3"
-              }}{{ element.distance_unit | distance }}
+              {{ element.race.distance | number : "1.0-3"
+              }}{{ element.race.distance_unit | distance }}
             </td>
           </ng-container>
 
@@ -67,10 +72,12 @@
             </td>
           </ng-container>
 
-          <ng-container matColumnDef="date-only">
-            <th mat-header-cell *matHeaderCellDef>Date</th>
+          <ng-container matColumnDef="start-time">
+            <th mat-header-cell *matHeaderCellDef>Start Time</th>
             <td mat-cell *matCellDef="let element">
-              {{ element.start_time | date : "MMMM dd, yyyy 'at' h:mm a" }}
+              {{
+                element.race.start_time | date : "EEEE, MMMM dd, yyyy, h:mm a"
+              }}
             </td>
           </ng-container>
 
@@ -123,7 +130,7 @@
           ></tr>
         </table>
       </mat-tab>
-      <mat-tab>
+      <!-- <mat-tab>
         <ng-template mat-tab-label>
           Completed Towns ({{ runnerInfo.towns.length }})
         </ng-template>
@@ -145,7 +152,7 @@
           <tr mat-header-row *matHeaderRowDef="['name', 'count']"></tr>
           <tr mat-row *matRowDef="let row; columns: ['name', 'count']"></tr>
         </table>
-      </mat-tab>
+      </mat-tab> -->
     </mat-tab-group>
   </div>
 </div>

@@ -2,11 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Town } from './town.service';
+import { RaceResult } from './race-result.service';
+import { Race } from './race.service';
 
 export interface WatchList {
   id: number;
-  user_id: number;
-  race_id?: number;
+  race?: Race;
 }
 
 export interface Runner {
@@ -15,40 +17,8 @@ export interface Runner {
   first_name: string;
   last_name: string;
   avatar_url?: string;
-  town_id: number;
-  hometown_name: string;
+  town: Town;
   sex: 'male' | 'female';
-}
-
-export interface RunnerInfo {
-  user: Runner;
-  results: {
-    id: number;
-    race_id: number;
-    user_id: number;
-    bib_number: string;
-    hours: number;
-    minutes: number;
-    seconds: number;
-    mile_pace: string;
-    kilometer_pace: string;
-    created_at: Date | string;
-    name: string;
-    distance: string;
-    distance_unit: 'km' | 'mi';
-    address_line_one?: string;
-    town_id: number;
-    town_name: string;
-    start_time: Date | string;
-    source: 'manual' | 'run_signup';
-    website_url?: string;
-    results_url?: string;
-    date_only: Date | string;
-  }[];
-  towns: {
-    count: string;
-    name: string;
-  }[];
 }
 
 @Injectable({
@@ -57,8 +27,8 @@ export interface RunnerInfo {
 export class RunnerService {
   constructor(private http: HttpClient) {}
 
-  find(runnerId: string): Observable<RunnerInfo> {
-    return this.http.get<RunnerInfo>(
+  find(runnerId: string): Observable<Runner> {
+    return this.http.get<Runner>(
       `${environment.backendUrl}/runners/${runnerId}`
     );
   }
@@ -67,9 +37,15 @@ export class RunnerService {
     return this.http.get<Runner[]>(`${environment.backendUrl}/runners`);
   }
 
-  getWatchList(runnerId: string): Observable<WatchList[]> {
+  getWatchList(userId: string | number): Observable<WatchList[]> {
     return this.http.get<WatchList[]>(
-      `${environment.backendUrl}/runners/${runnerId}/watchlist`
+      `${environment.backendUrl}/users/${userId}/watching`
+    );
+  }
+
+  getResults(userId: string | number): Observable<RaceResult[]> {
+    return this.http.get<RaceResult[]>(
+      `${environment.backendUrl}/users/${userId}/results`
     );
   }
 }
