@@ -24,7 +24,7 @@ export class ShowComponent implements OnInit {
   now = new Date().toISOString();
   race = signal<Race | null>(null);
   results = signal<RaceResult[]>([]);
-  watchers = signal<Omit<Runner, 'hometown'>[]>([]);
+  watchers = signal<{ id: number; user: Runner }[]>([]);
   isRaceOver = computed(() => {
     return (
       this.now.localeCompare(this.race()?.start_time.toString() ?? this.now) >=
@@ -34,7 +34,7 @@ export class ShowComponent implements OnInit {
   isWatching = computed(() => {
     return (
       this.watchers().findIndex(
-        ({ id }) => id === this.auth.currentUser()?.id
+        ({ user: { id } }) => id === this.auth.currentUser()?.id
       ) >= 0
     );
   });
@@ -77,19 +77,27 @@ export class ShowComponent implements OnInit {
   }
 
   watch(): void {
-    this.raceService.watch(this.race()!.id).subscribe(this.updateWatchers());
-    this.snackbar.open('🎉 Added this race to your race list', 'Dismiss', {
-      duration: 1_500,
+    this.raceService.watch(this.race()!.id).subscribe({
+      next: () => {
+        this.findWatchers();
+      },
+      error: (error) => {
+        console.error(error);
+      },
     });
+    this.snackbar.open('🎉 Added this race to your race list', 'Dismiss');
   }
 
   unwatch(): void {
-    this.raceService
-      .removeWatch(this.race()!.id)
-      .subscribe(this.updateWatchers());
-    this.snackbar.open('Removed this race from your race list', 'Dismiss', {
-      duration: 1_500,
+    this.raceService.removeWatch(this.race()!.id).subscribe({
+      next: () => {
+        this.findWatchers();
+      },
+      error: (error) => {
+        console.log(error);
+      },
     });
+    this.snackbar.open('Removed this race from your race list', 'Dismiss');
   }
 
   sortResults(results: RaceResult[]): RaceResult[] {
@@ -102,14 +110,14 @@ export class ShowComponent implements OnInit {
     return [...resultsWithTimes, ...resultsWithNoTimes];
   }
 
-  private updateWatchers(): any {
-    return {
-      next: (watchers: Omit<Runner, 'hometown'>[]) => {
+  private findWatchers(): any {
+    this.raceService.findWatchers(this.race()!.id).subscribe({
+      next: (watchers: { id: number; user: Runner }[]) => {
         this.watchers.set(watchers);
       },
       error: (error: Error) => {
         console.error(error);
       },
-    };
+    });
   }
 }
