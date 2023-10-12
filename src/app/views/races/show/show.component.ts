@@ -80,24 +80,26 @@ export class ShowComponent implements OnInit {
     this.raceService.watch(this.race()!.id).subscribe({
       next: () => {
         this.findWatchers();
+        this.snackbar.open('🎉 Added this race to your race calendar', 'Dismiss');
       },
       error: (error) => {
         console.error(error);
+        this.snackbar.open('Unable to add this to your race calendar', 'Dismiss');
       },
     });
-    this.snackbar.open('🎉 Added this race to your race calendar', 'Dismiss');
   }
 
   unwatch(): void {
     this.raceService.removeWatch(this.race()!.id).subscribe({
       next: () => {
         this.findWatchers();
+        this.snackbar.open('Removed this race from your race calendar', 'Dismiss');
       },
       error: (error) => {
         console.log(error);
+        this.snackbar.open('Unable to add this to your race calendar', 'Dismiss');
       },
     });
-    this.snackbar.open('Removed this race from your race calendar', 'Dismiss');
   }
 
   sortResults(results: RaceResult[]): RaceResult[] {
