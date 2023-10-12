@@ -13,6 +13,7 @@ export class ShowComponent implements OnInit {
   runnerInfo: Runner = {} as Runner;
   racesBeingWatched = signal<Race[]>([]);
   raceResults = signal<RaceResult[]>([]);
+  completedTowns = signal<{ town_name: string; count: number }[]>([]);
 
   readonly displayColumns = [
     'name',
@@ -41,6 +42,10 @@ export class ShowComponent implements OnInit {
           }),
           mergeMap(() => this.runner.getResults(this.runnerInfo.id)),
           tap((results) => this.raceResults.set(results)),
+          mergeMap(() => this.runner.getCompletedTowns(this.runnerInfo.id)),
+          tap((results) => {
+            this.completedTowns.set(results);
+          }),
           mergeMap(() => this.runner.getWatchList(this.runnerInfo.id)),
           mergeMap((watchlist) => watchlist),
           filter((watchList) => !!watchList.race),

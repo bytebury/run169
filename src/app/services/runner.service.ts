@@ -48,4 +48,12 @@ export class RunnerService {
       `${environment.backendUrl}/users/${userId}/results`
     );
   }
+
+  getCompletedTowns(
+    userId: string | number
+  ): Observable<{ town_name: string; count: number }[]> {
+    return this.http.get<{ town_name: string; count: number }[]>(
+      `${environment.backendUrl}/users/${userId}/towns`
+    );
+  }
 }
