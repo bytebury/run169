@@ -116,7 +116,7 @@
           <ng-container matColumnDef="going">
             <th mat-header-cell *matHeaderCellDef>Status</th>
             <td mat-cell *matCellDef="let element">
-              {{element.is_going ? 'Is Going' : 'Interested'}}
+              {{element.is_going ? 'Going' : 'Interested'}}
             </td>
           </ng-container>
 
@@ -129,11 +129,11 @@
 
           <tr
             mat-header-row
-            *matHeaderRowDef="['name', 'distance', 'going', 'start-time']"
+            *matHeaderRowDef="['going', 'name', 'distance', 'start-time']"
           ></tr>
           <tr
             mat-row
-            *matRowDef="let row; columns: ['name', 'distance', 'going', 'start-time']"
+            *matRowDef="let row; columns: ['going', 'name', 'distance', 'start-time']"
           ></tr>
         </table>
       </mat-tab>
