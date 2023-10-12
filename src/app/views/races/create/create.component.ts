@@ -27,10 +27,7 @@ export class CreateComponent implements OnInit {
     ]),
     distanceValue: new FormControl(null, [Validators.required]),
     distanceUnit: new FormControl<'km' | 'mi'>('km', [Validators.required]),
-    startTime: new FormControl(
-      new Date().toISOString().slice(0, 10) + ' 09:00',
-      [Validators.required]
-    ),
+    startTime: new FormControl<Date | string | null>(null, [Validators.required]),
     addressLineOne: new FormControl(''),
     logoUrl: new FormControl(''),
     websiteUrl: new FormControl(''),
@@ -68,9 +65,7 @@ export class CreateComponent implements OnInit {
       const race: CreateRace = {
         name: this.form.get('raceName')?.value!,
         town_id: this.form.get('townName')?.value.id!,
-        start_time: new Date(
-          (this.form.get('startTime')?.value! + ':00.000Z').replaceAll(' ', 'T')
-        ).toISOString(),
+        start_time: new Date(this.form.get('startTime')?.value!),
         distance: this.form.get('distanceValue')?.value!,
         distance_unit: this.form.get('distanceUnit')?.value!,
         address_line_one: this.form.get('addressLineOne')?.value ?? '',

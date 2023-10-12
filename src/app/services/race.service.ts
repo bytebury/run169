@@ -26,7 +26,7 @@ export interface CreateRace
   town_id: number;
   distance: string | number;
   distance_unit: 'mi' | 'km';
-  start_time: string;
+  start_time: string | Date;
 }
 
 @Injectable({
