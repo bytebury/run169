@@ -68,9 +68,9 @@ export class CreateComponent implements OnInit {
       const race: CreateRace = {
         name: this.form.get('raceName')?.value!,
         town_id: this.form.get('townName')?.value.id!,
-        start_time: (
-          this.form.get('startTime')?.value! + ':00.000Z'
-        ).replaceAll(' ', 'T'),
+        start_time: new Date(
+          (this.form.get('startTime')?.value! + ':00.000Z').replaceAll(' ', 'T')
+        ).toISOString(),
         distance: this.form.get('distanceValue')?.value!,
         distance_unit: this.form.get('kilometers')?.value! ? 'km' : 'mi',
         address_line_one: this.form.get('addressLineOne')?.value ?? '',

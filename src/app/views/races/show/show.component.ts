@@ -85,7 +85,7 @@ export class ShowComponent implements OnInit {
         console.error(error);
       },
     });
-    this.snackbar.open('🎉 Added this race to your race list', 'Dismiss');
+    this.snackbar.open('🎉 Added this race to your race calendar', 'Dismiss');
   }
 
   unwatch(): void {
@@ -97,7 +97,7 @@ export class ShowComponent implements OnInit {
         console.log(error);
       },
     });
-    this.snackbar.open('Removed this race from your race list', 'Dismiss');
+    this.snackbar.open('Removed this race from your race calendar', 'Dismiss');
   }
 
   sortResults(results: RaceResult[]): RaceResult[] {
