@@ -9,6 +9,7 @@ import { Race } from './race.service';
 export interface WatchList {
   id: number;
   race?: Race;
+  is_going: boolean;
 }
 
 export interface Runner {

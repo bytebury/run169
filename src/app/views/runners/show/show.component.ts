@@ -11,7 +11,7 @@ import { Runner, RunnerService } from 'src/app/services/runner.service';
 })
 export class ShowComponent implements OnInit {
   runnerInfo: Runner = {} as Runner;
-  racesBeingWatched = signal<Race[]>([]);
+  racesBeingWatched = signal<(Race & { is_going: boolean })[]>([]);
   raceResults = signal<RaceResult[]>([]);
   completedTowns = signal<{ town_name: string; count: number }[]>([]);
 
@@ -53,7 +53,7 @@ export class ShowComponent implements OnInit {
         )
         .subscribe({
           next: (watchlist) => {
-            this.racesBeingWatched.set(watchlist.map(({ race }) => race!));
+            this.racesBeingWatched.set(watchlist.map(({ race, is_going }) => ({ ...race, is_going } as any)));
           },
           error: (error) => {
             console.error(error);
