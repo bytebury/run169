@@ -71,6 +71,17 @@ export class RaceService {
     );
   }
 
+  going(raceId: string | number): Observable<any> {
+    return this.http.post<any>(
+      `${environment.backendUrl}/races/${raceId}/watchers`,
+      {
+        race_id: raceId,
+        user_id: this.auth.currentUser()?.id,
+        is_going: true
+      }
+    );
+  }
+
   removeWatch(raceId: string | number): Observable<any> {
     return this.http.delete<any>(
       `${environment.backendUrl}/races/${raceId}/watchers`,

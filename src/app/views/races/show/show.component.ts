@@ -24,7 +24,7 @@ export class ShowComponent implements OnInit {
   now = new Date().toISOString();
   race = signal<Race | null>(null);
   results = signal<RaceResult[]>([]);
-  watchers = signal<{ id: number; user: Runner }[]>([]);
+  watchers = signal<{ id: number; is_going: boolean; user: Runner }[]>([]);
   isRaceOver = computed(() => {
     return (
       this.now.localeCompare(this.race()?.start_time.toString() ?? this.now) >=
@@ -37,6 +37,12 @@ export class ShowComponent implements OnInit {
         ({ user: { id } }) => id === this.auth.currentUser()?.id
       ) >= 0
     );
+  });
+  isGoing = computed(() => {
+    if (this.isWatching()) {
+      return !!this.watchers().find(({ user: { id }}) => id === this.auth.currentUser()?.id)?.is_going;
+    }
+    return false;
   });
 
   constructor(
@@ -89,6 +95,19 @@ export class ShowComponent implements OnInit {
     });
   }
 
+  going(): void {
+    this.raceService.going(this.race()!.id).subscribe({
+      next: () => {
+        this.findWatchers();
+        this.snackbar.open('🎉 Added this race to your race calendar', 'Dismiss');
+      },
+      error: (error) => {
+        console.error(error);
+        this.snackbar.open('Unable to add this to your race calendar', 'Dismiss');
+      },
+    });
+  }
+
   unwatch(): void {
     this.raceService.removeWatch(this.race()!.id).subscribe({
       next: () => {
@@ -114,7 +133,7 @@ export class ShowComponent implements OnInit {
 
   private findWatchers(): any {
     this.raceService.findWatchers(this.race()!.id).subscribe({
-      next: (watchers: { id: number; user: Runner }[]) => {
+      next: (watchers: { id: number; is_going: boolean; user: Runner }[]) => {
         this.watchers.set(watchers);
       },
       error: (error: Error) => {

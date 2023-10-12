@@ -1,10 +1,5 @@
 <div *ngIf="race()" class="wrapper">
-  <img
-    *ngIf="race()!.logo_url"
-    class="race-logo"
-    [src]="race()!.logo_url"
-    alt="Race Logo"
-  />
+  <img *ngIf="race()!.logo_url" class="race-logo" [src]="race()!.logo_url" alt="Race Logo" />
   <div class="race-details">
     <h1>
       {{ race()!.name }} ({{ race()!.distance | number : "1.0-3"
@@ -17,57 +12,38 @@
     </div>
   </div>
   <div class="primary-buttons">
-    <a
-      href="https://www.google.com/maps/search/{{ race()!.address_line_one }} {{
+    <a href="https://www.google.com/maps/search/{{ race()!.address_line_one }} {{
         race()!.town.name
-      }}, CT"
-      target="_blank"
-      rel="no-referrer"
-      mat-flat-button
-      color="primary"
-    >
+      }}, CT" target="_blank" rel="no-referrer" mat-flat-button color="primary">
       <mat-icon>pin_drop</mat-icon>
       {{ race()!.town.name }}, CT
     </a>
 
-    <button
-      *ngIf="!isRaceOver() && !isWatching()"
-      mat-stroked-button
-      color="accent"
-      (click)="watch()"
-    >
-      <mat-icon>visibility</mat-icon>Watch
+    <!-- WATCH BUTTONS -->
+    <button *ngIf="!isRaceOver()" mat-stroked-button color="accent" [matMenuTriggerFor]="watchMenu">
+      <mat-icon>{{ isWatching() ? 'done' : 'expand_more'}}</mat-icon>
+      <span *ngIf="isWatching() && !isGoing()">Interested</span>
+      <span *ngIf="isGoing()">Going</span>
+      <span *ngIf="!isWatching()">Respond</span>
     </button>
-    <button
-      *ngIf="!isRaceOver() && isWatching()"
-      mat-stroked-button
-      color="accent"
-      (click)="unwatch()"
-    >
-      <mat-icon>visibility_off</mat-icon>Unwatch
-    </button>
+
+    <mat-menu #watchMenu="matMenu">
+      <button *ngIf="!isWatching()" mat-menu-item (click)="watch()">Interested</button>
+      <button *ngIf="!isWatching() && !isGoing()" mat-menu-item (click)="going()">Going</button>
+      <button *ngIf="isWatching()" mat-menu-item (click)="unwatch()">Change Response</button>
+    </mat-menu>
+    <!-- END OF WATCH BUTTONS -->
   </div>
   <div *ngIf="race()!.website_url || race()!.results_url">
     <ul>
       <li *ngIf="race()!.website_url">
-        <a
-          mat-stroked-button
-          [href]="race()!.website_url"
-          target="_blank"
-          rel="no-referrer"
-        >
+        <a mat-stroked-button [href]="race()!.website_url" target="_blank" rel="no-referrer">
           <mat-icon>open_in_new</mat-icon>Race Website
         </a>
       </li>
       <li *ngIf="race()!.results_url">
-        <a
-          mat-stroked-button
-          [href]="race()!.results_url"
-          target="_blank"
-          rel="no-referrer"
-        >
-          <mat-icon>open_in_new</mat-icon>Race Results</a
-        >
+        <a mat-stroked-button [href]="race()!.results_url" target="_blank" rel="no-referrer">
+          <mat-icon>open_in_new</mat-icon>Race Results</a>
       </li>
     </ul>
   </div>
@@ -81,14 +57,11 @@
         <td mat-cell *matCellDef="let element; let i = index">
           <div class="placement">
             {{ i + 1 }}
-            <mat-icon
-              *ngIf="i <= 2"
-              [ngClass]="{
+            <mat-icon *ngIf="i <= 2" [ngClass]="{
                 gold: i === 0,
                 silver: i === 1,
                 bronze: i === 2
-              }"
-            >
+              }">
               emoji_events
             </mat-icon>
           </div>
@@ -123,7 +96,7 @@
         <th mat-header-cell *matHeaderCellDef>Time</th>
         <td mat-cell *matCellDef="let element">
           {{ element.hours }}:{{
-            element.minutes.toString().padStart(2, "0")
+          element.minutes.toString().padStart(2, "0")
           }}:{{ element.seconds.toString().padStart(2, "0") }}
         </td>
       </ng-container>
@@ -164,7 +137,7 @@
 
       <ng-container matColumnDef="is-going">
         <th mat-header-cell *matHeaderCellDef>Is Going?</th>
-        <td mat-cell *matCellDef="let element">Interested</td>
+        <td mat-cell *matCellDef="let element">{{ element.is_going ? "Yes" : "Interested"}}</td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="['runner', 'is-going']"></tr>
