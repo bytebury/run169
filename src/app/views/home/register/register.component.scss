@@ -1,0 +1,31 @@
+.paired-fields {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.profile-preview {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 1rem;
+
+  img {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 100%;
+  }
+
+  h1 {
+    margin: 0;
+    padding: 0;
+  }
+
+  span.muted {
+    color: #777;
+  }
+}
+
+.field-with-hint {
+  margin-bottom: 1.25rem;
+}

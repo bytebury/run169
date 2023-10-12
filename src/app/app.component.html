@@ -6,7 +6,7 @@
           <mat-icon>close</mat-icon>
         </button>
       </div>
-      <div class="profile-details-container">
+      <div *ngIf="isLoggedIn()" class="profile-details-container">
         <div>
           <img
             class="profile-image"
@@ -57,12 +57,47 @@
         </a>
         <button mat-flat-button color="warn" (click)="logout()">Logout</button>
       </div>
+      <!-- LOGGED OUT NAV-->
+      <ng-container *ngIf="!isLoggedIn()">
+        <div>
+          <h1>Run169</h1>
+        </div>
+        <div class="nav-links">
+          <a mat-stroked-button routerLink="runners" (click)="drawer.close()">
+            Members
+          </a>
+          <a
+            mat-stroked-button
+            routerLink="races/upcoming"
+            (click)="drawer.close()"
+          >
+            Upcoming Races
+          </a>
+          <a
+            mat-stroked-button
+            color="accent"
+            routerLink="login"
+            (click)="drawer.close()"
+          >
+            Sign into your Account
+          </a>
+
+          <a
+            mat-flat-button
+            color="primary"
+            routerLink="register"
+            (click)="drawer.close()"
+          >
+            Create an Account
+          </a>
+        </div>
+      </ng-container>
     </div>
   </mat-drawer>
   <mat-drawer-content>
     <nav>
       <mat-toolbar color="primary">
-        <button *ngIf="isLoggedIn()" mat-icon-button (click)="drawer.toggle()">
+        <button mat-icon-button (click)="drawer.toggle()">
           <mat-icon>menu</mat-icon>
         </button>
         <span>Run 169</span>

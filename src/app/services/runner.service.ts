@@ -21,6 +21,12 @@ export interface Runner {
   sex: 'male' | 'female';
 }
 
+export interface CreateRunnerRequest extends Omit<Runner, 'id' | 'town'> {
+  town_id: number | string;
+  email: string;
+  password_digest: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -55,5 +61,9 @@ export class RunnerService {
     return this.http.get<{ town_name: string; count: number }[]>(
       `${environment.backendUrl}/users/${userId}/towns`
     );
+  }
+
+  create(request: CreateRunnerRequest): Observable<Runner> {
+    return this.http.post<Runner>(`${environment.backendUrl}/users`, request);
   }
 }
