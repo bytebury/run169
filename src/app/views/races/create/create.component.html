@@ -1,65 +1,36 @@
 <div style="display: block">
   <h1>Create a Race</h1>
-  <form
-    #formGroupDirective="ngForm"
-    class="example-form"
-    [formGroup]="form"
-    (ngSubmit)="handleSubmit(formGroupDirective)"
-    autocomplete="none"
-  >
+  <form #formGroupDirective="ngForm" class="example-form" [formGroup]="form"
+    (ngSubmit)="handleSubmit(formGroupDirective)" autocomplete="none">
     <div>
       <mat-form-field class="full-width">
         <mat-label>Name of Race</mat-label>
-        <input
-          type="text"
-          matInput
-          formControlName="raceName"
-          autocomplete="none"
-        />
+        <input type="text" matInput formControlName="raceName" autocomplete="none" />
       </mat-form-field>
     </div>
     <div>
       <mat-form-field class="full-width">
         <mat-label>Town</mat-label>
-        <input
-          type="text"
-          matInput
-          formControlName="townName"
-          [matAutocomplete]="autoTown"
-          autocomplete="none"
-        />
-        <mat-autocomplete
-          #autoTown="matAutocomplete"
-          autoActiveFirstOption
-          [requireMatch]="true"
-          [displayWith]="displayFn"
-        >
-          <mat-option
-            *ngFor="let option of filteredOptions | async"
-            [value]="option"
-          >
+        <input type="text" matInput formControlName="townName" [matAutocomplete]="autoTown" autocomplete="none" />
+        <mat-autocomplete #autoTown="matAutocomplete" autoActiveFirstOption [requireMatch]="true"
+          [displayWith]="displayFn">
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
             {{ option.name }}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
     </div>
-    <div>
+    <div class="paired">
       <mat-form-field class="full-width">
         <mat-label>Distance</mat-label>
-        <input
-          type="number"
-          step=".01"
-          matInput
-          formControlName="distanceValue"
-          matNativeControl
-        />
+        <input type="number" step=".01" matInput formControlName="distanceValue" matNativeControl />
       </mat-form-field>
-      <mat-slide-toggle
-        color="primary"
-        [checked]="form.get('kilometers')?.value ?? true"
-        formControlName="kilometers"
-        >Kilometers?</mat-slide-toggle
-      >
+      <mat-form-field>
+        <mat-select formControlName="distanceUnit">
+          <mat-option value="km">Kilometers</mat-option>
+          <mat-option value="mi">Miles</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
     <div>
       <mat-form-field class="full-width">

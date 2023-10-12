@@ -7,7 +7,6 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ShowComponent } from './show/show.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,6 +14,7 @@ import { DistancePipe } from '../../pipes/distance.pipe';
 import { UpcomingComponent } from './upcoming/upcoming.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [CreateComponent, ShowComponent, UpcomingComponent],
@@ -26,7 +26,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatFormFieldModule,
     MatButtonModule,
     MatInputModule,
-    MatSlideToggleModule,
+    MatSelectModule,
     MatTableModule,
     MatAutocompleteModule,
     MatSnackBarModule,

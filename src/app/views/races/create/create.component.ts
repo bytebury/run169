@@ -26,7 +26,7 @@ export class CreateComponent implements OnInit {
       this.townMustExistValidator(),
     ]),
     distanceValue: new FormControl(null, [Validators.required]),
-    kilometers: new FormControl(true),
+    distanceUnit: new FormControl<'km' | 'mi'>('km', [Validators.required]),
     startTime: new FormControl(
       new Date().toISOString().slice(0, 10) + ' 09:00',
       [Validators.required]
@@ -72,7 +72,7 @@ export class CreateComponent implements OnInit {
           (this.form.get('startTime')?.value! + ':00.000Z').replaceAll(' ', 'T')
         ).toISOString(),
         distance: this.form.get('distanceValue')?.value!,
-        distance_unit: this.form.get('kilometers')?.value! ? 'km' : 'mi',
+        distance_unit: this.form.get('distanceUnit')?.value!,
         address_line_one: this.form.get('addressLineOne')?.value ?? '',
         logo_url: this.form.get('logoUrl')?.value ?? '',
         website_url: this.form.get('websiteUrl')?.value ?? '',
