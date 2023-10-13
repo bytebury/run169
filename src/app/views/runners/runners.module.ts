@@ -11,6 +11,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { DistancePipe } from '../../pipes/distance.pipe';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [ShowComponent, IndexComponent],
@@ -25,6 +27,8 @@ import { DistancePipe } from '../../pipes/distance.pipe';
     MatInputModule,
     MatButtonModule,
     DistancePipe,
+    MatIconModule,
+    MatDialogModule,
   ],
 })
 export class RunnersModule {}

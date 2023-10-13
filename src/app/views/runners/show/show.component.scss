@@ -10,10 +10,20 @@
   align-items: center;
   gap: 1rem;
 
-  img {
-    width: 6rem;
-    height: 6rem;
-    border-radius: 100%;
+  .profile-image-container {
+    position: relative;
+
+    img {
+      width: 6rem;
+      height: 6rem;
+      border-radius: 100%;
+    }
+
+    button {
+      position: absolute;
+      bottom: 0;
+      right: -0.75rem;
+    }
   }
 
   span.full-name {

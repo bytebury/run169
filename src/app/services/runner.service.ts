@@ -28,6 +28,10 @@ export interface CreateRunnerRequest extends Omit<Runner, 'id' | 'town'> {
   password_digest: string;
 }
 
+export interface UpdateRunnerRequest {
+  avatar_url?: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -62,6 +66,10 @@ export class RunnerService {
     return this.http.get<{ town_name: string; count: number }[]>(
       `${environment.backendUrl}/users/${userId}/towns`
     );
+  }
+
+  update(request: UpdateRunnerRequest): Observable<Runner> {
+    return this.http.put<Runner>(`${environment.backendUrl}/users`, request);
   }
 
   create(request: CreateRunnerRequest): Observable<Runner> {
