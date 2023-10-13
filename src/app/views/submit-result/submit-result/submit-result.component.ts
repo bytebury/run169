@@ -21,6 +21,7 @@ import { Race, RaceService } from 'src/app/services/race.service';
   styleUrls: ['./submit-result.component.scss'],
 })
 export class SubmitResultComponent implements OnInit {
+  isLoading = true;
   filteredRaces = signal<Race[]>([]);
   races = computed(() => this.raceService.races());
 
@@ -46,6 +47,7 @@ export class SubmitResultComponent implements OnInit {
       () => {
         if (this.races().length > 0) {
           this.resultForm.get('race')?.setValue('');
+          this.isLoading = false;
         }
       },
       { allowSignalWrites: true }

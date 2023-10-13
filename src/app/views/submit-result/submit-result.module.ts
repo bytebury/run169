@@ -11,6 +11,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TimeFormatDirective } from 'src/app/directives/time-format.directive';
 import { DistancePipe } from '../../pipes/distance.pipe';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [SubmitResultComponent],
@@ -27,6 +28,7 @@ import { DistancePipe } from '../../pipes/distance.pipe';
     MatAutocompleteModule,
     MatSnackBarModule,
     DistancePipe,
+    MatProgressBarModule,
   ],
 })
 export class SubmitResultModule {}
