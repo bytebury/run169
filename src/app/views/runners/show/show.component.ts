@@ -86,8 +86,9 @@ export class ShowComponent implements OnInit {
         if (avatar_url) {
           this.runner.update({ avatar_url }).subscribe({
             next: (user: Runner) => {
+              const currentUserData = this.auth.currentUser()!;
+              this.auth.currentUser.set({ ...currentUserData, avatar_url });
               this.runnerInfo = user;
-              console.log(user);
             },
             error: (error) => {
               console.error(error);
