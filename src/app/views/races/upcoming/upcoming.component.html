@@ -4,7 +4,10 @@
   you don't see a race listed, you can
   <a routerLink="/races/create">create a race</a>.
 </div>
-<div class="table-wrapper">
+<div class="table-wrapper" *ngIf="isLoading">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+<div class="table-wrapper" *ngIf="!isLoading">
   <table
     *ngIf="upcomingRaces()?.length! > 0"
     mat-table

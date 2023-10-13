@@ -1,5 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { take } from 'rxjs';
+import { finalize, take } from 'rxjs';
 import { Race, RaceService } from 'src/app/services/race.service';
 
 @Component({
@@ -7,6 +7,7 @@ import { Race, RaceService } from 'src/app/services/race.service';
   styleUrls: ['./upcoming.component.scss'],
 })
 export class UpcomingComponent implements OnInit {
+  isLoading = true;
   upcomingRaces = signal<Race[]>([]);
   displayColumns = ['town', 'name', 'distance', 'start-time'];
 
@@ -15,7 +16,10 @@ export class UpcomingComponent implements OnInit {
   ngOnInit(): void {
     this.raceService
       .findUpcomingRaces()
-      .pipe(take(1))
+      .pipe(
+        take(1),
+        finalize(() => (this.isLoading = false))
+      )
       .subscribe({
         next: (races) => {
           this.upcomingRaces.set(races);

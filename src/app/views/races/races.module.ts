@@ -15,7 +15,8 @@ import { UpcomingComponent } from './upcoming/upcoming.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
-import {MatMenuModule} from '@angular/material/menu';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [CreateComponent, ShowComponent, UpcomingComponent],
@@ -34,7 +35,8 @@ import {MatMenuModule} from '@angular/material/menu';
     MatIconModule,
     DistancePipe,
     MatTabsModule,
-    MatMenuModule
+    MatMenuModule,
+    MatProgressBarModule,
   ],
 })
 export class RacesModule {}
