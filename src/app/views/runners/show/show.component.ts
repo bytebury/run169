@@ -13,6 +13,7 @@ import { UpdateAvatarDialog } from './update-avatar-dialog/update-avatar-dialog.
   styleUrls: ['./show.component.scss'],
 })
 export class ShowComponent implements OnInit {
+  isLoading = true;
   runnerInfo: Runner = {} as Runner;
   racesBeingWatched = signal<(Race & { is_going: boolean })[]>([]);
   raceResults = signal<RaceResult[]>([]);
@@ -65,9 +66,11 @@ export class ShowComponent implements OnInit {
                 ({ race, is_going }) => ({ ...race, is_going } as any)
               )
             );
+            this.isLoading = false;
           },
           error: (error) => {
             console.error(error);
+            this.isLoading = false;
           },
         });
     });

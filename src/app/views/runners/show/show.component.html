@@ -1,4 +1,7 @@
 <div class="profile-container">
+  <div class="personal-details" *ngIf="!runnerInfo?.id">
+    <mat-progress-spinner mode="indeterminate"> </mat-progress-spinner>
+  </div>
   <div class="personal-details" *ngIf="runnerInfo?.id">
     <div class="profile-image-container">
       <img [src]="runnerInfo.avatar_url" alt="profile image" />
@@ -22,7 +25,10 @@
       <div>{{ raceResults().length }} / 169</div>
     </div>
   </div>
-  <div class="race-details">
+  <div *ngIf="isLoading">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div>
+  <div class="race-details" *ngIf="!isLoading">
     <mat-tab-group>
       <mat-tab>
         <ng-template mat-tab-label>
