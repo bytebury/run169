@@ -1,7 +1,10 @@
 <h1>
   Search Members <span *ngIf="runners.length > 0">({{ runners.length }})</span>
 </h1>
-<form class="form" (keydown.enter)="onSubmit()">
+<div *ngIf="isLoading">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+<form *ngIf="!isLoading" class="form" (keydown.enter)="onSubmit()">
   <mat-form-field class="full-width">
     <mat-label>Search</mat-label>
     <input

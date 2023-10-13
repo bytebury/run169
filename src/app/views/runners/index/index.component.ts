@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable, startWith, map, of, take } from 'rxjs';
+import { Observable, startWith, map, of, take, finalize } from 'rxjs';
 import { Runner, RunnerService } from 'src/app/services/runner.service';
 
 @Component({
@@ -9,6 +9,7 @@ import { Runner, RunnerService } from 'src/app/services/runner.service';
   styleUrls: ['./index.component.scss'],
 })
 export class IndexComponent implements OnInit {
+  isLoading = true;
   myControl = new FormControl<string | Runner>('');
   runners: Runner[] = [];
   filteredRunners: Observable<Runner[]> = of([]);
@@ -55,7 +56,10 @@ export class IndexComponent implements OnInit {
   private loadRunners(): void {
     this.runnerService
       .findAll()
-      .pipe(take(1))
+      .pipe(
+        take(1),
+        finalize(() => (this.isLoading = false))
+      )
       .subscribe({
         next: (runners) => {
           this.runners = runners;
