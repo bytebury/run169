@@ -38,6 +38,16 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="race-fee">
+      <th mat-header-cell *matHeaderCellDef>Fee</th>
+      <td mat-cell *matCellDef="let element">
+        <ng-container *ngIf="element.race_fee === 0">--</ng-container>
+        <ng-container *ngIf="element.race_fee !== 0">
+          {{ element.race_fee | currency : "USD" : "symbol" : "1.2-2" }}
+        </ng-container>
+      </td>
+    </ng-container>
+
     <ng-container matColumnDef="start-time">
       <th mat-header-cell *matHeaderCellDef>Date</th>
       <td mat-cell *matCellDef="let element">
