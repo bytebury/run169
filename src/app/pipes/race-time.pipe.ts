@@ -10,8 +10,9 @@ export class RaceTimePipe implements PipeTransform {
       return '--';
     }
 
-    const hours = Math.floor(totalTimeInSeconds / 3600) || 1;
-    const minutes = Math.floor(totalTimeInSeconds / hours / 60);
+    const totalMinutes = Math.floor(totalTimeInSeconds / 60);
+    const hours = Math.floor(totalMinutes / 60) || 1;
+    const minutes = totalMinutes % 60;
     const seconds = totalTimeInSeconds % 60;
 
     const times = [minutes, seconds];
