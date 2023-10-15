@@ -39,13 +39,6 @@
           mat-table
           [dataSource]="raceResults()"
         >
-          <ng-container matColumnDef="bib">
-            <th mat-header-cell *matHeaderCellDef>Bib</th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.bib_number }}
-            </td>
-          </ng-container>
-
           <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef>Name</th>
             <td mat-cell *matCellDef="let element">
@@ -55,7 +48,12 @@
               >
                 {{ element.race.name }}
               </a>
-              <div>{{ element.race.town.name }}</div>
+              <div>
+                {{ element.race.town.name }}
+                <span *ngIf="element.bib_number">
+                  | Bib#{{ element.bib_number }}
+                </span>
+              </div>
             </td>
           </ng-container>
 

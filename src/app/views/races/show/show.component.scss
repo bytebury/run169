@@ -101,3 +101,9 @@ a {
     flex-shrink: 0;
   }
 }
+
+.mat-column-bib,
+.mat-column-total-time,
+.mat-column-place {
+  width: 0;
+}

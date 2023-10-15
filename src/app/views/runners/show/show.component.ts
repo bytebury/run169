@@ -22,7 +22,6 @@ export class ShowComponent implements OnInit {
 
   readonly displayColumns = [
     'name',
-    'bib',
     'total-time',
     'distance',
     'mile-pace',

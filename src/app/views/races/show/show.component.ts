@@ -16,6 +16,7 @@ export class ShowComponent implements OnInit {
     'place',
     'total-time',
     'runner',
+    'bib',
     'sex',
     'mile-pace',
     'kilometer-pace',
