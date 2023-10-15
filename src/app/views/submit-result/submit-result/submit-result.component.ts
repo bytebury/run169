@@ -81,9 +81,7 @@ export class SubmitResultComponent implements OnInit {
     const result: CreateRaceResult = {
       race_id: this.resultForm.get('race')?.value!.id,
       user_id: this.authenticationService.currentUser()?.id ?? 0,
-      hours: Number(this.resultForm.get('totalTime')?.value?.slice(0, 2)),
-      minutes: Number(this.resultForm.get('totalTime')?.value?.slice(3, 5)),
-      seconds: Number(this.resultForm.get('totalTime')?.value?.slice(-2)),
+      time_in_seconds: this.getTimeInSeconds(),
       bib_number: this.resultForm.get('bibNumber')?.value!,
     };
 
@@ -127,5 +125,15 @@ export class SubmitResultComponent implements OnInit {
       }
       return null; // Validation passes
     };
+  }
+
+  private getTimeInSeconds(): number {
+    const hours = Number(this.resultForm.get('totalTime')?.value?.slice(0, 2));
+    const minutes = Number(
+      this.resultForm.get('totalTime')?.value?.slice(3, 5)
+    );
+    const seconds = Number(this.resultForm.get('totalTime')?.value?.slice(-2));
+
+    return hours * 3600 + minutes * 60 + seconds;
   }
 }

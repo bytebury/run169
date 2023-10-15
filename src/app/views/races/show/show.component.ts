@@ -40,7 +40,9 @@ export class ShowComponent implements OnInit {
   });
   isGoing = computed(() => {
     if (this.isWatching()) {
-      return !!this.watchers().find(({ user: { id }}) => id === this.auth.currentUser()?.id)?.is_going;
+      return !!this.watchers().find(
+        ({ user: { id } }) => id === this.auth.currentUser()?.id
+      )?.is_going;
     }
     return false;
   });
@@ -86,11 +88,17 @@ export class ShowComponent implements OnInit {
     this.raceService.watch(this.race()!.id).subscribe({
       next: () => {
         this.findWatchers();
-        this.snackbar.open('🎉 Added this race to your race calendar', 'Dismiss');
+        this.snackbar.open(
+          '🎉 Added this race to your race calendar',
+          'Dismiss'
+        );
       },
       error: (error) => {
         console.error(error);
-        this.snackbar.open('Unable to add this to your race calendar', 'Dismiss');
+        this.snackbar.open(
+          'Unable to add this to your race calendar',
+          'Dismiss'
+        );
       },
     });
   }
@@ -99,11 +107,17 @@ export class ShowComponent implements OnInit {
     this.raceService.going(this.race()!.id).subscribe({
       next: () => {
         this.findWatchers();
-        this.snackbar.open('🎉 Added this race to your race calendar', 'Dismiss');
+        this.snackbar.open(
+          '🎉 Added this race to your race calendar',
+          'Dismiss'
+        );
       },
       error: (error) => {
         console.error(error);
-        this.snackbar.open('Unable to add this to your race calendar', 'Dismiss');
+        this.snackbar.open(
+          'Unable to add this to your race calendar',
+          'Dismiss'
+        );
       },
     });
   }
@@ -112,11 +126,17 @@ export class ShowComponent implements OnInit {
     this.raceService.removeWatch(this.race()!.id).subscribe({
       next: () => {
         this.findWatchers();
-        this.snackbar.open('Removed this race from your race calendar', 'Dismiss');
+        this.snackbar.open(
+          'Removed this race from your race calendar',
+          'Dismiss'
+        );
       },
       error: (error) => {
         console.log(error);
-        this.snackbar.open('Unable to add this to your race calendar', 'Dismiss');
+        this.snackbar.open(
+          'Unable to add this to your race calendar',
+          'Dismiss'
+        );
       },
     });
   }

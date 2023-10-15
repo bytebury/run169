@@ -62,7 +62,7 @@
           <ng-container matColumnDef="total-time">
             <th mat-header-cell *matHeaderCellDef>Total Time</th>
             <td mat-cell *matCellDef="let element">
-              {{ element.hours }}:{{ element.minutes }}:{{ element.seconds }}
+              {{ element.time_in_seconds | raceTime }}
             </td>
           </ng-container>
 

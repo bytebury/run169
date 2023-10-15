@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { RaceTimePipe } from '../../pipes/race-time.pipe';
 
 @NgModule({
   declarations: [ShowComponent, IndexComponent],
@@ -33,6 +34,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatDialogModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
+    RaceTimePipe,
   ],
 })
 export class RunnersModule {}

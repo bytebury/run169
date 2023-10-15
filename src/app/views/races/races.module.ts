@@ -17,6 +17,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { RaceTimePipe } from '../../pipes/race-time.pipe';
 
 @NgModule({
   declarations: [CreateComponent, ShowComponent, UpcomingComponent],
@@ -37,6 +38,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatTabsModule,
     MatMenuModule,
     MatProgressBarModule,
+    RaceTimePipe,
   ],
 })
 export class RacesModule {}

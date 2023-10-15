@@ -17,10 +17,8 @@ export interface RaceResult {
 export interface CreateRaceResult {
   race_id: number;
   user_id: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
   bib_number: string;
+  time_in_seconds: number;
 }
 
 @Injectable({
