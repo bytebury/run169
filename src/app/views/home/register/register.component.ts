@@ -17,6 +17,7 @@ import { Town, TownService } from 'src/app/services/town.service';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
+  allTowns = computed(() => this.townService.towns());
   towns = computed(() => {
     const towns = this.townService.towns();
     return [...towns, { id: 0, name: 'Out of State' }];
@@ -32,14 +33,13 @@ export class RegisterComponent implements OnInit {
     email: new FormControl('', [Validators.email, Validators.required]),
     sex: new FormControl<'male' | 'female' | ''>('', [Validators.required]),
     avatarUrl: new FormControl(
-      'https://img1.wsimg.com/isteam/ip/8523ecca-e58e-40b8-8e18-385a14f302eb/favicon/62c34b6b-68b2-4c53-9b6f-2ee4c0854556.PNG/:/rs=w:320,h:320,m',
+      'https://www.shareicon.net/data/512x512/2017/02/15/878685_user_512x512.png',
       [Validators.required]
     ),
     runnerId: new FormControl('', [
       Validators.required,
       Validators.pattern(/\d+/),
     ]),
-
     password: new FormControl('', [Validators.required]),
   });
 

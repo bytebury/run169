@@ -68,9 +68,9 @@
   </div>
   <div class="paired-fields">
     <mat-form-field class="full-width field-with-hint">
-      <mat-label>Membership ID</mat-label>
+      <mat-label>Member ID</mat-label>
       <input type="number" matInput formControlName="runnerId" />
-      <mat-hint>Your Run169Towns ID</mat-hint>
+      <mat-hint>Your Run169Towns Member ID</mat-hint>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Sex</mat-label>
@@ -113,5 +113,20 @@
       <mat-hint>Can be any public image URL</mat-hint>
     </mat-form-field>
   </div>
-  <button mat-flat-button color="primary" type="submit">Create Account</button>
+  <div class="bordered-card">
+    <h2>Select Towns Where You've Already Run Races</h2>
+    <ul class="towns-already-ran">
+      <li *ngFor="let town of allTowns()">
+        <mat-checkbox>{{ town.name }}</mat-checkbox>
+      </li>
+    </ul>
+  </div>
+  <button
+    mat-flat-button
+    color="primary"
+    type="submit"
+    [disabled]="registerForm.invalid"
+  >
+    Create Account
+  </button>
 </form>
