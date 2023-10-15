@@ -17,7 +17,10 @@ import { Town, TownService } from 'src/app/services/town.service';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
-  towns = computed(() => this.townService.towns());
+  towns = computed(() => {
+    const towns = this.townService.towns();
+    return [...towns, { id: 0, name: 'Out of State' }];
+  });
 
   registerForm = new FormGroup({
     hometown: new FormControl<string | any>('', [
@@ -77,7 +80,7 @@ export class RegisterComponent implements OnInit {
         sex: this.registerForm.get('sex')!.value! as 'male' | 'female',
         avatar_url: this.registerForm.get('avatarUrl')!.value!,
         runner_id: this.registerForm.get('runnerId')!.value!.toString(),
-        town_id: this.registerForm.get('hometown')!.value!.id,
+        hometown: this.registerForm.get('hometown')!.value!.name,
         password_digest: this.registerForm.get('password')!.value!,
       })
       .subscribe({

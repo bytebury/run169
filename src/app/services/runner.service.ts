@@ -18,12 +18,12 @@ export interface Runner {
   first_name: string;
   last_name: string;
   avatar_url?: string;
-  town: Town;
+  hometown: string;
   sex: 'male' | 'female';
 }
 
 export interface CreateRunnerRequest extends Omit<Runner, 'id' | 'town'> {
-  town_id: number | string;
+  hometown: string;
   email: string;
   password_digest: string;
 }
