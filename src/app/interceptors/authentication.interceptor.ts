@@ -9,10 +9,15 @@ import {
 import { Observable, catchError, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
-  constructor(private router: Router, private auth: AuthenticationService) {}
+  constructor(
+    private router: Router,
+    private auth: AuthenticationService,
+    private snackbar: MatSnackBar
+  ) {}
 
   intercept(
     request: HttpRequest<unknown>,
@@ -28,6 +33,10 @@ export class AuthenticationInterceptor implements HttpInterceptor {
         if (error.status === 401) {
           this.auth.logout();
           this.router.navigate(['/login']);
+          this.snackbar.open(
+            'You need to log in again to do this action',
+            'Dismiss'
+          );
         }
 
         return throwError(() => error);
