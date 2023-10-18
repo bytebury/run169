@@ -135,19 +135,19 @@
           <ng-container matColumnDef="start-time">
             <th mat-header-cell *matHeaderCellDef>Date</th>
             <td mat-cell *matCellDef="let element">
-              {{ element.start_time | date : "MMMM dd, yyyy 'at' h:mm a" }}
+              {{ element.start_time | date : "MMM dd, yyyy 'at' h:mm a" }}
             </td>
           </ng-container>
 
           <tr
             mat-header-row
-            *matHeaderRowDef="['going', 'name', 'distance', 'start-time']"
+            *matHeaderRowDef="['start-time', 'name', 'distance', 'going']"
           ></tr>
           <tr
             mat-row
             *matRowDef="
               let row;
-              columns: ['going', 'name', 'distance', 'start-time']
+              columns: ['start-time', 'name', 'distance', 'going']
             "
           ></tr>
         </table>
