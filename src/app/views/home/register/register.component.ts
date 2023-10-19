@@ -69,6 +69,11 @@ export class RegisterComponent implements OnInit {
         return name ? this._filter(name as string) : this.towns().slice();
       })
     );
+
+    for (let i = 1; i < 170; i++) {
+      // TODO(Marcello): Add the labels for the checkboxes
+      // Then we will need to create a lot of requests for creating each town race.
+    }
   }
 
   createAccount(): void {
