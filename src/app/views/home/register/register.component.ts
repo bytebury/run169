@@ -1,6 +1,7 @@
 import { Component, OnInit, computed, effect } from '@angular/core';
 import {
   AbstractControl,
+  FormBuilder,
   FormControl,
   FormGroup,
   ValidatorFn,
@@ -8,9 +9,10 @@ import {
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Observable, of, startWith, map } from 'rxjs';
+import { Observable, of, startWith, map, tap } from 'rxjs';
 import { RunnerService } from 'src/app/services/runner.service';
 import { Town, TownService } from 'src/app/services/town.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   templateUrl: './register.component.html',
@@ -43,6 +45,8 @@ export class RegisterComponent implements OnInit {
     password: new FormControl('', [Validators.required]),
   });
 
+  completedTownsForm: FormGroup = new FormGroup({});
+
   filteredOptions: Observable<{ name: string; id: number }[]> = of([]);
 
   hide = true;
@@ -51,11 +55,24 @@ export class RegisterComponent implements OnInit {
     private runner: RunnerService,
     private townService: TownService,
     private snackbar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private formBuilder: FormBuilder
   ) {
     effect(() => {
       if (this.towns().length > 0) {
         this.registerForm.get('hometown')!.setValue('');
+      }
+    });
+
+    effect(() => {
+      for (let i = 1; i < 170; i++) {
+        const formControls = {} as any;
+
+        for (const town of this.allTowns()) {
+          formControls[town.id] = this.formBuilder.control(false);
+        }
+
+        this.completedTownsForm = this.formBuilder.group(formControls);
       }
     });
   }
@@ -69,11 +86,6 @@ export class RegisterComponent implements OnInit {
         return name ? this._filter(name as string) : this.towns().slice();
       })
     );
-
-    for (let i = 1; i < 170; i++) {
-      // TODO(Marcello): Add the labels for the checkboxes
-      // Then we will need to create a lot of requests for creating each town race.
-    }
   }
 
   createAccount(): void {
@@ -88,6 +100,7 @@ export class RegisterComponent implements OnInit {
         hometown: this.registerForm.get('hometown')!.value!.name,
         password_digest: this.registerForm.get('password')!.value!,
       })
+      .pipe(tap((runner) => this.submitPreviousTowns(runner.id)))
       .subscribe({
         next: () => {
           this.snackbar.open(
@@ -104,6 +117,24 @@ export class RegisterComponent implements OnInit {
 
   displayFn(town: Town): string {
     return town?.name ? town.name : '';
+  }
+
+  private submitPreviousTowns(userId: string | number): void {
+    const selectedTowns = Object.keys(this.completedTownsForm.value).filter(
+      (town) => this.completedTownsForm.value[town]
+    );
+
+    const requests = selectedTowns.map((townId) =>
+      fetch(`${environment.backendUrl}/results/phantom`, {
+        method: 'POST',
+        body: JSON.stringify({
+          user_id: Number(userId),
+          town_id: Number(townId),
+        }),
+      })
+    );
+
+    Promise.all(requests);
   }
 
   private _filter(name: string): any[] {

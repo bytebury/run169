@@ -115,11 +115,15 @@
   </div>
   <div class="bordered-card">
     <h2>Select Towns Where You've Already Run Races</h2>
-    <ul class="towns-already-ran">
-      <li *ngFor="let town of allTowns()">
-        <mat-checkbox>{{ town.name }}</mat-checkbox>
-      </li>
-    </ul>
+    <form [formGroup]="completedTownsForm">
+      <ul class="towns-already-ran">
+        <li *ngFor="let town of allTowns()">
+          <mat-checkbox [formControlName]="town.id">{{
+            town.name
+          }}</mat-checkbox>
+        </li>
+      </ul>
+    </form>
   </div>
   <button
     mat-flat-button
