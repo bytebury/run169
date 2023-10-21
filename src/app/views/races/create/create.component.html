@@ -1,20 +1,43 @@
 <div style="display: block">
   <h1>Create a Race</h1>
-  <form #formGroupDirective="ngForm" class="example-form" [formGroup]="form"
-    (ngSubmit)="handleSubmit(formGroupDirective)" autocomplete="none">
+  <form
+    #formGroupDirective="ngForm"
+    class="example-form"
+    [formGroup]="form"
+    (ngSubmit)="handleSubmit(formGroupDirective)"
+    autocomplete="none"
+  >
     <div>
       <mat-form-field class="full-width">
         <mat-label>Name of Race</mat-label>
-        <input type="text" matInput formControlName="raceName" autocomplete="none" />
+        <input
+          type="text"
+          matInput
+          formControlName="raceName"
+          autocomplete="none"
+        />
       </mat-form-field>
     </div>
     <div>
       <mat-form-field class="full-width">
         <mat-label>Town</mat-label>
-        <input type="text" matInput formControlName="townName" [matAutocomplete]="autoTown" autocomplete="none" />
-        <mat-autocomplete #autoTown="matAutocomplete" autoActiveFirstOption [requireMatch]="true"
-          [displayWith]="displayFn">
-          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+        <input
+          type="text"
+          matInput
+          formControlName="townName"
+          [matAutocomplete]="autoTown"
+          autocomplete="none"
+        />
+        <mat-autocomplete
+          #autoTown="matAutocomplete"
+          autoActiveFirstOption
+          [requireMatch]="true"
+          [displayWith]="displayFn"
+        >
+          <mat-option
+            *ngFor="let option of filteredOptions | async"
+            [value]="option"
+          >
             {{ option.name }}
           </mat-option>
         </mat-autocomplete>
@@ -23,7 +46,13 @@
     <div class="paired">
       <mat-form-field class="full-width">
         <mat-label>Distance</mat-label>
-        <input type="number" step=".01" matInput formControlName="distanceValue" matNativeControl />
+        <input
+          type="number"
+          step=".01"
+          matInput
+          formControlName="distanceValue"
+          matNativeControl
+        />
       </mat-form-field>
       <mat-form-field>
         <mat-select formControlName="distanceUnit">
@@ -62,6 +91,13 @@
         <input type="text" matInput formControlName="resultsUrl" />
       </mat-form-field>
     </div>
-    <button mat-raised-button color="primary" type="submit">Create Race</button>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="form.invalid"
+    >
+      Create Race
+    </button>
   </form>
 </div>

@@ -1,0 +1,20 @@
+h1 {
+  margin: 0;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+iframe {
+  margin: 15px 0;
+}
+
+a:link,
+a:active,
+a:hover,
+a:visited {
+  color: blue;
+}

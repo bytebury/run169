@@ -46,7 +46,7 @@ export class AuthenticationService {
           localStorage.setItem('auth_token', response.token);
           localStorage.setItem('current_user', JSON.stringify(response.user));
           this.currentUser.set(response.user);
-          this.router.navigateByUrl('/submit-result');
+          this.router.navigateByUrl('/');
         },
         error: (error: any) => {
           console.error(error);

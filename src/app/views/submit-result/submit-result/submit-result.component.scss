@@ -9,3 +9,26 @@
     font-size: 0.9rem;
   }
 }
+
+h1 {
+  margin: 0;
+}
+
+.banner {
+  border-radius: 5px;
+  padding: 15px;
+  background: #dbedfe;
+  border: 1px solid #00000020;
+  margin: 15px 0;
+}
+
+.hint {
+  margin-bottom: 15px;
+}
+
+a:link,
+a:active,
+a:visited,
+a:hover {
+  color: blue;
+}

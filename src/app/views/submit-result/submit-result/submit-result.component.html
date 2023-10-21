@@ -1,5 +1,9 @@
 <div style="display: block; width: 100%">
   <h1>Submit a Race</h1>
+  <div class="banner">
+    🎉 Congratulations on another race! This form will submit the race to
+    Run169Towns for you.
+  </div>
   <div *ngIf="isLoading">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   </div>
@@ -11,7 +15,7 @@
     *ngIf="!isLoading"
   >
     <div>
-      <mat-form-field class="full-width">
+      <mat-form-field class="full-width hint">
         <mat-label>Race</mat-label>
         <input
           type="text"
@@ -41,6 +45,10 @@
             </div>
           </mat-option>
         </mat-autocomplete>
+        <mat-hint
+          >Don't see your race? You can
+          <a routerLink="/races/create">create one</a>.</mat-hint
+        >
       </mat-form-field>
     </div>
     <div>
@@ -69,7 +77,13 @@
         />
       </mat-form-field>
     </div>
-    <button mat-raised-button color="primary" type="submit" type="submit">
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      type="submit"
+      [disabled]="resultForm.invalid"
+    >
       Submit Result
     </button>
   </form>

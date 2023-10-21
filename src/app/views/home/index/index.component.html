@@ -1,13 +1,39 @@
-<iframe
-  id="iframe-undefined3"
-  frameborder="0"
-  sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-presentation allow-top-navigation"
-  src='javascript: window.frameElement.getAttribute("srcdoc");'
-  srcdoc='<script>window.onmessage = function(event) {event.source.postMessage({iframeId: event.data, scrollHeight: document.body.getBoundingClientRect().height || document.body.scrollHeight}, event.origin);};</script><body style=&apos;margin: 0;&apos;><div style="display: flex; justify-content: center"><iframe title="12-01-2021-Run169Towns" width="1000" height="500" src="https://app.powerbi.com/view?r=eyJrIjoiOTIzZTA2ODMtOGUwMC00YmQxLTkxMDUtNjBhMjI1M2EyMDdiIiwidCI6IjA5ODlmZDI4LTE0NDgtNGYyYi1iZTExLTA5NmE3OTRjZDUwZCIsImMiOjF9&amp;pageName=ReportSection4ea470777fe23c5dd854" frameborder="0" allowFullScreen="true"></iframe></div></body>'
-  style="
-    width: 100%;
-    overflow: visible;
-    transition: height 1.5s ease 0s;
-    height: 500px;
-  "
-></iframe>
+<div class="wrapper">
+  <section>
+    <h1>Welcome to Run169</h1>
+    We are a service that provides insights and tools to the members of the
+    <a href="https://run169towns.org">Run169Towns Society</a>. To sign up for
+    this website, you will need to make an account there first since that is the
+    official database for running the 169 towns. This website makes it easier
+    for you to submit towns, share your results, and has more tools for those
+    data-nerds out there. We are in no way associated to the official
+    Run169Towns website.
+  </section>
+  <section>
+    <h1>Features</h1>
+    <ul>
+      <li>Easily submit towns to Run169Society</li>
+      <li>Race Calendars</li>
+      <li>Upcoming Races from RunSignup</li>
+      <li>Runner Profiles</li>
+      <li>Race Results and Ranks within 169</li>
+      <li>Analysis on your progress and races</li>
+    </ul>
+  </section>
+  <section>
+    <h1>Run169Towns Map</h1>
+    <iframe
+      id="iframe-undefined3"
+      frameborder="0"
+      sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-presentation allow-top-navigation"
+      src='javascript: window.frameElement.getAttribute("srcdoc");'
+      srcdoc='<script>window.onmessage = function(event) {event.source.postMessage({iframeId: event.data, scrollHeight: document.body.getBoundingClientRect().height || document.body.scrollHeight}, event.origin);};</script><body style=&apos;margin: 0;&apos;><div style="display: flex; justify-content: center"><iframe title="12-01-2021-Run169Towns" width="1000" height="500" src="https://app.powerbi.com/view?r=eyJrIjoiOTIzZTA2ODMtOGUwMC00YmQxLTkxMDUtNjBhMjI1M2EyMDdiIiwidCI6IjA5ODlmZDI4LTE0NDgtNGYyYi1iZTExLTA5NmE3OTRjZDUwZCIsImMiOjF9&amp;pageName=ReportSection4ea470777fe23c5dd854" frameborder="0" allowFullScreen="true"></iframe></div></body>'
+      style="
+        width: 100%;
+        overflow: visible;
+        transition: height 1.5s ease 0s;
+        height: 500px;
+      "
+    ></iframe>
+  </section>
+</div>
