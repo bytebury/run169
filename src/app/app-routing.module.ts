@@ -22,6 +22,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'passwords',
+    loadChildren: () =>
+      import('./views/passwords/passwords.module').then(
+        (m) => m.PasswordsModule
+      ),
+  },
+  {
     path: 'races',
     loadChildren: () =>
       import('./views/races/races.module').then((m) => m.RacesModule),
