@@ -1,13 +1,16 @@
 <form [formGroup]="form" (ngSubmit)="submitForm()">
   <h1>Enter your recovery E-mail</h1>
   <mat-form-field class="full-width">
-    <mat-label>Email</mat-label>
+    <mat-label>Password</mat-label>
+    <input type="password" matInput required formControlName="password" />
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <mat-label>Password Confirmation</mat-label>
     <input
-      type="email"
+      type="password"
       matInput
       required
-      autocomplete="email"
-      formControlName="email"
+      formControlName="confirmPassword"
     />
   </mat-form-field>
   <button
@@ -16,6 +19,6 @@
     type="submit"
     [disabled]="form.invalid"
   >
-    Send Recovery E-mail
+    Reset Password
   </button>
 </form>

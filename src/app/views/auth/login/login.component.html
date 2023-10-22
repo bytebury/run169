@@ -22,5 +22,15 @@
       />
     </mat-form-field>
   </div>
-  <button mat-raised-button color="primary" type="submit">Login</button>
+  <div class="forgot-email">
+    Forgot your password? <a routerLink="/passwords/forgot">Reset it here.</a>
+  </div>
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [disabled]="loginForm.invalid"
+  >
+    Login
+  </button>
 </form>
