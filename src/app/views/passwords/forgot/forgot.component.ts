@@ -27,7 +27,7 @@ export class ForgotComponent {
           this.snackbar.open(response.message, 'Dismiss');
         },
         error: (error) => {
-          this.snackbar.open(error, 'Dismiss');
+          this.snackbar.open(error.error.message, 'Dismiss');
         },
       });
   }
