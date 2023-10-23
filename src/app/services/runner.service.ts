@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Town } from './town.service';
 import { RaceResult } from './race-result.service';
 import { Race } from './race.service';
 
@@ -25,7 +24,7 @@ export interface Runner {
 export interface CreateRunnerRequest extends Omit<Runner, 'id' | 'town'> {
   hometown: string;
   email: string;
-  password_digest: string;
+  password: string;
 }
 
 export interface UpdateRunnerRequest {

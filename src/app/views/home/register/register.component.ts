@@ -98,7 +98,7 @@ export class RegisterComponent implements OnInit {
         avatar_url: this.registerForm.get('avatarUrl')!.value!,
         runner_id: this.registerForm.get('runnerId')!.value!.toString(),
         hometown: this.registerForm.get('hometown')!.value!.name,
-        password_digest: this.registerForm.get('password')!.value!,
+        password: this.registerForm.get('password')!.value!,
       })
       .pipe(tap((runner) => this.submitPreviousTowns(runner.id)))
       .subscribe({
