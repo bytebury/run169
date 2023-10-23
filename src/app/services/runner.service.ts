@@ -24,7 +24,7 @@ export interface Runner {
 export interface CreateRunnerRequest extends Omit<Runner, 'id' | 'town'> {
   hometown: string;
   email: string;
-  password: string;
+  password_digest: string;
 }
 
 export interface UpdateRunnerRequest {
