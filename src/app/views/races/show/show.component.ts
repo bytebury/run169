@@ -143,10 +143,12 @@ export class ShowComponent implements OnInit {
   }
 
   sortResults(results: RaceResult[]): RaceResult[] {
-    const resultsWithTimes = results.filter(Boolean);
-    const resultsWithNoTimes = results.filter(
-      (result) => !result.time_in_seconds
-    );
+    const resultsWithTimes = results.filter((result) => {
+      return result.time_in_seconds > 0;
+    });
+    const resultsWithNoTimes = results.filter((result) => {
+      return result.time_in_seconds <= 0;
+    });
     return [...resultsWithTimes, ...resultsWithNoTimes];
   }
 
