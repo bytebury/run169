@@ -19,6 +19,7 @@ export interface Race {
   address_line_one?: string;
   created_at: Date;
   updated_at: Date;
+  number_of_runners?: number;
 }
 
 export interface CreateRace

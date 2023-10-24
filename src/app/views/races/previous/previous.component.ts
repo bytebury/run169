@@ -16,7 +16,7 @@ import { Race, RaceService } from 'src/app/services/race.service';
 export class PreviousComponent implements OnInit {
   isLoading = signal(true);
   previousRaces = signal<Race[]>([]);
-  displayColumns = ['name', 'distance', 'start-time'];
+  displayColumns = ['number-of-runners', 'name', 'distance', 'start-time'];
 
   constructor(private race: RaceService) {}
 
