@@ -3,6 +3,7 @@ import { finalize, take } from 'rxjs';
 import { Race, RaceService } from 'src/app/services/race.service';
 
 @Component({
+  selector: 'app-upcoming',
   templateUrl: './upcoming.component.html',
   styleUrls: ['./upcoming.component.scss'],
 })

@@ -49,6 +49,10 @@ export class RaceService {
     return this.http.get<Race[]>(`${environment.backendUrl}/races/upcoming`);
   }
 
+  findPreviousRaces(): Observable<Race[]> {
+    return this.http.get<Race[]>(`${environment.backendUrl}/races/previous`);
+  }
+
   findResultsByRace(raceId: string | number): Observable<RaceResult[]> {
     return this.http.get<RaceResult[]>(
       `${environment.backendUrl}/races/${raceId}/results`
@@ -77,7 +81,7 @@ export class RaceService {
       {
         race_id: raceId,
         user_id: this.auth.currentUser()?.id,
-        is_going: true
+        is_going: true,
       }
     );
   }

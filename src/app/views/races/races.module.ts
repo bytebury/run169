@@ -18,9 +18,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RaceTimePipe } from '../../pipes/race-time.pipe';
+import { PreviousComponent } from './previous/previous.component';
+import { IndexComponent } from './index/index.component';
 
 @NgModule({
-  declarations: [CreateComponent, ShowComponent, UpcomingComponent],
+  declarations: [CreateComponent, ShowComponent, UpcomingComponent, PreviousComponent, IndexComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
