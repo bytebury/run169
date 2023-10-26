@@ -20,9 +20,16 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RaceTimePipe } from '../../pipes/race-time.pipe';
 import { PreviousComponent } from './previous/previous.component';
 import { IndexComponent } from './index/index.component';
+import { TownTypeaheadComponent } from 'src/app/components/town-typeahead/town-typeahead.component';
 
 @NgModule({
-  declarations: [CreateComponent, ShowComponent, UpcomingComponent, PreviousComponent, IndexComponent],
+  declarations: [
+    CreateComponent,
+    ShowComponent,
+    UpcomingComponent,
+    PreviousComponent,
+    IndexComponent,
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
@@ -41,6 +48,7 @@ import { IndexComponent } from './index/index.component';
     MatMenuModule,
     MatProgressBarModule,
     RaceTimePipe,
+    TownTypeaheadComponent,
   ],
 })
 export class RacesModule {}

@@ -1,0 +1,26 @@
+<form [formGroup]="form">
+  <mat-form-field class="full-width field-with-hint">
+    <mat-label>{{ label }}</mat-label>
+    <input
+      type="text"
+      matInput
+      [formControlName]="controlName"
+      [matAutocomplete]="auto"
+      autocomplete="none"
+    />
+    <mat-autocomplete
+      #auto="matAutocomplete"
+      autoActiveFirstOption
+      [requireMatch]="true"
+      [displayWith]="displayFn"
+      (optionSelected)="emitOptionSelected()"
+    >
+      <mat-option
+        *ngFor="let option of filteredOptions | async"
+        [value]="option"
+      >
+        {{ option.name }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>

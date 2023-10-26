@@ -46,8 +46,10 @@ export class RaceService {
     return this.http.get<Race>(`${environment.backendUrl}/races/${raceId}`);
   }
 
-  findUpcomingRaces(): Observable<Race[]> {
-    return this.http.get<Race[]>(`${environment.backendUrl}/races/upcoming`);
+  findUpcomingRaces(query = ''): Observable<Race[]> {
+    return this.http.get<Race[]>(
+      `${environment.backendUrl}/races/upcoming?${query}`
+    );
   }
 
   findPreviousRaces(): Observable<Race[]> {
