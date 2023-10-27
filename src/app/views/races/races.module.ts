@@ -21,6 +21,8 @@ import { RaceTimePipe } from '../../pipes/race-time.pipe';
 import { PreviousComponent } from './previous/previous.component';
 import { IndexComponent } from './index/index.component';
 import { TownTypeaheadComponent } from 'src/app/components/town-typeahead/town-typeahead.component';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,8 @@ import { TownTypeaheadComponent } from 'src/app/components/town-typeahead/town-t
     MatProgressBarModule,
     RaceTimePipe,
     TownTypeaheadComponent,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
 })
 export class RacesModule {}

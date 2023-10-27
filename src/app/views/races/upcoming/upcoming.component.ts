@@ -10,13 +10,16 @@ import { Town, TownService } from 'src/app/services/town.service';
   styleUrls: ['./upcoming.component.scss'],
 })
 export class UpcomingComponent implements OnInit {
+  now = new Date();
   isLoading = true;
   allRaces = signal<Race[]>([]);
   upcomingRaces = signal<Race[]>([]);
   displayColumns = ['town', 'name', 'distance', 'race-fee', 'start-time'];
+
   filterForm = new FormGroup({
     town: new FormControl(''),
   });
+
   allAvailableTowns = computed(() =>
     this.towns.towns().filter((town) => {
       return this.allRaces()
@@ -24,6 +27,11 @@ export class UpcomingComponent implements OnInit {
         .includes(town.name);
     })
   );
+
+  campaignOne = new FormGroup({
+    start: new FormControl(),
+    end: new FormControl(),
+  });
 
   constructor(private towns: TownService, private raceService: RaceService) {}
 
@@ -60,8 +68,20 @@ export class UpcomingComponent implements OnInit {
       });
   }
 
+  filterDates(): void {
+    const start = new Date(this.campaignOne.get('start')?.value).toISOString();
+    const end = new Date(this.campaignOne.get('end')?.value).toISOString();
+
+    this.upcomingRaces.update((races) => {
+      return races.filter((race) => {
+        return race.start_time >= start && race.start_time <= end;
+      });
+    });
+  }
+
   clearFilter(): void {
     this.filterForm.get('town')?.setValue('');
+    this.campaignOne.reset();
     this.upcomingRaces.set(this.allRaces());
   }
 }

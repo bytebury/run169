@@ -12,9 +12,32 @@
       label="Filter by Town"
       (optionSelected)="filterTowns($event)"
     ></app-town-typeahead>
-    <button mat-flat-button color="accent" (click)="clearFilter()">
-      Clear Filter
-    </button>
+    <!-- Date Picker -->
+    <mat-form-field class="full-width hint">
+      <mat-label>Between</mat-label>
+      <mat-date-range-input
+        [formGroup]="campaignOne"
+        [rangePicker]="campaignOnePicker"
+      >
+        <input matStartDate placeholder="Start date" formControlName="start" />
+        <input matEndDate placeholder="End date" formControlName="end" />
+      </mat-date-range-input>
+      <mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="campaignOnePicker"
+      ></mat-datepicker-toggle>
+      <mat-date-range-picker #campaignOnePicker></mat-date-range-picker>
+    </mat-form-field>
+    <!-- Date Picker -->
+    <div class="submit-buttons">
+      <button mat-flat-button color="primary" (click)="filterDates()">
+        Apply
+      </button>
+      <button mat-flat-button color="basic" (click)="clearFilter()">
+        Clear Filter
+      </button>
+    </div>
   </form>
 </div>
 <div class="table-wrapper" *ngIf="isLoading">
