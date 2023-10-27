@@ -1,8 +1,8 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, computed, signal } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { finalize, take } from 'rxjs';
 import { Race, RaceService } from 'src/app/services/race.service';
-import { Town } from 'src/app/services/town.service';
+import { Town, TownService } from 'src/app/services/town.service';
 
 @Component({
   selector: 'app-upcoming',
@@ -17,10 +17,18 @@ export class UpcomingComponent implements OnInit {
   filterForm = new FormGroup({
     town: new FormControl(''),
   });
+  allAvailableTowns = computed(() =>
+    this.towns.towns().filter((town) => {
+      return this.allRaces()
+        .map((race) => race.town.name)
+        .includes(town.name);
+    })
+  );
 
-  constructor(private raceService: RaceService) {}
+  constructor(private towns: TownService, private raceService: RaceService) {}
 
   ngOnInit(): void {
+    this.towns.loadTowns();
     this.raceService
       .findUpcomingRaces()
       .pipe(

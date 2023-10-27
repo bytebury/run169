@@ -5,22 +5,17 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
-  computed,
-  effect,
+  SimpleChanges,
 } from '@angular/core';
-import {
-  ValidatorFn,
-  AbstractControl,
-  FormGroup,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Observable, of, startWith, map } from 'rxjs';
-import { Town, TownService } from 'src/app/services/town.service';
+import { Town } from 'src/app/services/town.service';
 
 @Component({
   standalone: true,
@@ -37,33 +32,30 @@ import { Town, TownService } from 'src/app/services/town.service';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TownTypeaheadComponent implements OnInit {
+export class TownTypeaheadComponent implements OnInit, OnChanges {
   @Input() label = 'Town Name';
+  @Input() towns: Town[] = [];
   @Input({ required: true }) form!: FormGroup;
   @Input({ required: true }) controlName!: string;
 
   @Output() optionSelected = new EventEmitter<Town>();
 
-  towns = computed(() => this.townService.towns());
   filteredOptions: Observable<{ name: string; id: number }[]> = of([]);
 
-  constructor(private townService: TownService) {
-    effect(() => {
-      if (this.towns().length > 0) {
-        this.form.get(this.controlName)!.setValue('');
-      }
-    });
-  }
-
   ngOnInit(): void {
-    this.townService.loadTowns();
     this.filteredOptions = this.form.get(this.controlName)!.valueChanges.pipe(
       startWith(''),
       map((value) => {
         const name = typeof value === 'string' ? value : value?.name;
-        return name ? this._filter(name as string) : this.towns().slice();
+        return name ? this._filter(name as string) : this.towns.slice();
       })
     );
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['towns'].currentValue.length > 0) {
+      this.form.get(this.controlName)!.setValue('');
+    }
   }
 
   displayFn(town: Town): string {
@@ -72,7 +64,7 @@ export class TownTypeaheadComponent implements OnInit {
 
   private _filter(name: string): any[] {
     const filterValue = name.toLowerCase();
-    return this.towns().filter((town: Town) =>
+    return this.towns.filter((town: Town) =>
       town.name.toLowerCase().includes(filterValue)
     );
   }

@@ -6,6 +6,7 @@
 <div class="filter-form">
   <form [formGroup]="filterForm">
     <app-town-typeahead
+      [towns]="allAvailableTowns()"
       [form]="filterForm"
       controlName="town"
       label="Filter by Town"
