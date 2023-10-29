@@ -51,10 +51,10 @@ export class SubmitResultComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadPreviousRaces();
     const today = new Date();
     this.tomorrow = new Date(today);
     this.tomorrow.setDate(today.getDate() + 1);
+    this.loadPreviousRaces();
     this.resultForm
       .get('race')
       ?.valueChanges.pipe(
