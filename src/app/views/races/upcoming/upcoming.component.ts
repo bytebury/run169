@@ -1,6 +1,6 @@
 import { Component, OnInit, computed, signal } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { finalize, take } from 'rxjs';
+import { finalize, take, tap } from 'rxjs';
 import {
   PaginatedResponse,
   Race,
@@ -46,23 +46,7 @@ export class UpcomingComponent implements OnInit {
   ngOnInit(): void {
     this.towns.loadTowns();
     this.loadAllRaces();
-    this.raceService
-      .search({
-        after: new Date().toISOString().slice(0, 10),
-      })
-      .pipe(
-        take(1),
-        finalize(() => (this.isLoading = false))
-      )
-      .subscribe({
-        next: (response: PaginatedResponse<Race>) => {
-          this.upcomingRaces.set(response.results);
-          this.totalCount = response.total_count;
-        },
-        error: (error) => {
-          console.error(error);
-        },
-      });
+    this.updateTableData();
   }
 
   loadAllRaces(): void {
@@ -71,9 +55,15 @@ export class UpcomingComponent implements OnInit {
         after: new Date().toISOString().slice(0, 10),
         pageSize: 100_000,
       })
-      .pipe(take(1))
+      .pipe(
+        take(1),
+        tap(() => {
+          this.isLoading = true;
+        })
+      )
       .subscribe((response) => {
         this.allRaces.set(response.results);
+        this.isLoading = false;
       });
   }
 
@@ -103,11 +93,17 @@ export class UpcomingComponent implements OnInit {
         page: this.pageNumber,
         pageSize: this.pageSize,
       })
-      .pipe(take(1))
+      .pipe(
+        take(1),
+        tap(() => {
+          this.isLoading = true;
+        })
+      )
       .subscribe({
         next: (response: PaginatedResponse<Race>) => {
           this.upcomingRaces.set(response.results);
           this.totalCount = response.total_count;
+          this.isLoading = false;
         },
         error: (error) => {
           console.log(error);
