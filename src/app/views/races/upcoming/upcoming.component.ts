@@ -45,6 +45,7 @@ export class UpcomingComponent implements OnInit {
 
   ngOnInit(): void {
     this.towns.loadTowns();
+    this.loadAllRaces();
     this.raceService
       .search({
         after: new Date().toISOString().slice(0, 10),
@@ -55,13 +56,24 @@ export class UpcomingComponent implements OnInit {
       )
       .subscribe({
         next: (response: PaginatedResponse<Race>) => {
-          this.allRaces.set(response.results);
           this.upcomingRaces.set(response.results);
           this.totalCount = response.total_count;
         },
         error: (error) => {
           console.error(error);
         },
+      });
+  }
+
+  loadAllRaces(): void {
+    this.raceService
+      .search({
+        after: new Date().toISOString().slice(0, 10),
+        pageSize: 100_000,
+      })
+      .pipe(take(1))
+      .subscribe((response) => {
+        this.allRaces.set(response.results);
       });
   }
 
