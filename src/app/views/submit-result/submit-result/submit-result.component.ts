@@ -8,7 +8,7 @@ import {
   AbstractControl,
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { map, startWith, take } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, startWith, take } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import {
   CreateRaceResult,
@@ -55,6 +55,8 @@ export class SubmitResultComponent implements OnInit {
       .get('race')
       ?.valueChanges.pipe(
         startWith(''),
+        debounceTime(300),
+        distinctUntilChanged(),
         map((value) => {
           const name = typeof value === 'string' ? value : value?.name;
 
