@@ -41,6 +41,7 @@ interface RaceSearchParams {
   page?: number;
   before?: string;
   after?: string;
+  name?: string;
   townName?: string;
   order?: 'ASC' | 'DESC';
 }
@@ -54,7 +55,7 @@ export class RaceService {
   constructor(private http: HttpClient, private auth: AuthenticationService) {}
 
   create(race: CreateRace) {
-    return this.http.post(`${environment.backendUrl}/races`, race);
+    return this.http.post<Race>(`${environment.backendUrl}/races`, race);
   }
 
   find(raceId: string): Observable<Race> {
@@ -114,19 +115,5 @@ export class RaceService {
         },
       }
     );
-  }
-
-  loadPreviousRaces(): void {
-    this.http
-      .get<Race[]>(`${environment.backendUrl}/races/previous`)
-      .pipe(take(1))
-      .subscribe({
-        next: (races: Race[]) => {
-          this.races.set(races);
-        },
-        error: (error) => {
-          console.error(error);
-        },
-      });
   }
 }

@@ -30,7 +30,7 @@
           [requireMatch]="true"
           [displayWith]="raceDisplayFn"
         >
-          <mat-option *ngFor="let race of filteredRaces()" [value]="race">
+          <mat-option *ngFor="let race of races()" [value]="race">
             <div class="race-option">
               <div>
                 {{ race.name }}

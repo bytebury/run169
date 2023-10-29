@@ -1,4 +1,4 @@
-import { Component, OnInit, computed, effect, signal } from '@angular/core';
+import { Component, OnInit, effect, signal } from '@angular/core';
 import {
   FormGroup,
   FormControl,
@@ -22,8 +22,7 @@ import { Race, RaceService } from 'src/app/services/race.service';
 })
 export class SubmitResultComponent implements OnInit {
   isLoading = true;
-  filteredRaces = signal<Race[]>([]);
-  races = computed(() => this.raceService.races());
+  races = signal<Race[]>([]);
 
   resultForm = new FormGroup({
     race: new FormControl<string | any>('', [
@@ -43,32 +42,43 @@ export class SubmitResultComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private snackBar: MatSnackBar
   ) {
-    effect(
-      () => {
-        if (this.races().length > 0) {
-          this.resultForm.get('race')?.setValue('');
-          this.isLoading = false;
-        }
-      },
-      { allowSignalWrites: true }
-    );
+    effect(() => {
+      if (this.races().length > 0) {
+        this.isLoading = false;
+      }
+    });
   }
 
   ngOnInit(): void {
-    this.raceService.loadPreviousRaces();
-
+    this.loadPreviousRaces();
     this.resultForm
       .get('race')
       ?.valueChanges.pipe(
         startWith(''),
         map((value) => {
           const name = typeof value === 'string' ? value : value?.name;
-          return name ? this._filterRaces(name as string) : this.races();
+
+          if (name) {
+            return this._filterRaces(name as string);
+          }
+
+          return this.races();
         })
       )
+      .subscribe();
+  }
+
+  loadPreviousRaces(): void {
+    this.raceService
+      .search({
+        before: new Date().toISOString().slice(0, 10),
+        order: 'DESC',
+      })
+      .pipe(take(1))
       .subscribe({
-        next: (value) => {
-          this.filteredRaces.set(value);
+        next: (response) => this.races.set(response.results),
+        error: (error) => {
+          console.log(error);
         },
       });
   }
@@ -107,11 +117,17 @@ export class SubmitResultComponent implements OnInit {
     return race?.name ? race.name : '';
   }
 
-  private _filterRaces(name: string): any[] {
-    const filterValue = name.toLowerCase();
-    return this.races().filter((race: Race) => {
-      return race.name.toLowerCase().includes(filterValue);
-    });
+  private _filterRaces(name: string) {
+    this.raceService
+      .search({
+        before: new Date().toISOString().slice(0, 10),
+        name,
+        order: 'DESC',
+      })
+      .pipe(take(1))
+      .subscribe((response) => {
+        this.races.set(response.results);
+      });
   }
 
   private raceMustExistValidator(): ValidatorFn {

@@ -8,8 +8,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { Observable, of, startWith, map } from 'rxjs';
-import { CreateRace, RaceService } from 'src/app/services/race.service';
+import { CreateRace, Race, RaceService } from 'src/app/services/race.service';
 import { Town, TownService } from 'src/app/services/town.service';
 
 @Component({
@@ -27,7 +28,9 @@ export class CreateComponent implements OnInit {
     ]),
     distanceValue: new FormControl(null, [Validators.required]),
     distanceUnit: new FormControl<'km' | 'mi'>('km', [Validators.required]),
-    startTime: new FormControl<Date | string | null>(null, [Validators.required]),
+    startTime: new FormControl<Date | string | null>(null, [
+      Validators.required,
+    ]),
     addressLineOne: new FormControl(''),
     logoUrl: new FormControl(''),
     websiteUrl: new FormControl(''),
@@ -39,6 +42,7 @@ export class CreateComponent implements OnInit {
   constructor(
     private townService: TownService,
     private raceService: RaceService,
+    private router: Router,
     private snackbar: MatSnackBar
   ) {
     effect(() => {
@@ -75,11 +79,11 @@ export class CreateComponent implements OnInit {
       };
 
       this.raceService.create(race).subscribe({
-        next: (_response) => {
+        next: (race: Race) => {
           this.form.reset();
-          this.raceService.loadPreviousRaces();
           directive.resetForm();
           this.snackbar.open('Successfully created your race', 'Dismiss');
+          this.router.navigate(['/races', race.id]);
         },
         error: ({ error }) => {
           this.snackbar.open(error.message, 'Dismiss');
