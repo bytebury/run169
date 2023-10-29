@@ -23,6 +23,7 @@ import { Race, RaceService } from 'src/app/services/race.service';
 export class SubmitResultComponent implements OnInit {
   isLoading = true;
   races = signal<Race[]>([]);
+  tomorrow = new Date();
 
   resultForm = new FormGroup({
     race: new FormControl<string | any>('', [
@@ -51,6 +52,9 @@ export class SubmitResultComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadPreviousRaces();
+    const today = new Date();
+    this.tomorrow = new Date(today);
+    this.tomorrow.setDate(today.getDate() + 1);
     this.resultForm
       .get('race')
       ?.valueChanges.pipe(
@@ -122,7 +126,7 @@ export class SubmitResultComponent implements OnInit {
   private _filterRaces(name: string) {
     this.raceService
       .search({
-        before: new Date().toISOString().slice(0, 10),
+        before: this.tomorrow.toISOString().slice(0, 10),
         name,
         order: 'DESC',
       })
