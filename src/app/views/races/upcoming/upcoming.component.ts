@@ -1,7 +1,11 @@
 import { Component, OnInit, computed, signal } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { finalize, take } from 'rxjs';
-import { Race, RaceService } from 'src/app/services/race.service';
+import {
+  PaginatedResponse,
+  Race,
+  RaceService,
+} from 'src/app/services/race.service';
 import { Town, TownService } from 'src/app/services/town.service';
 
 @Component({
@@ -10,6 +14,10 @@ import { Town, TownService } from 'src/app/services/town.service';
   styleUrls: ['./upcoming.component.scss'],
 })
 export class UpcomingComponent implements OnInit {
+  pageSize = 10;
+  pageNumber = 1;
+  pageIndex = this.pageNumber - 1;
+  totalCount = 0;
   now = new Date();
   isLoading = true;
   allRaces = signal<Race[]>([]);
@@ -17,7 +25,7 @@ export class UpcomingComponent implements OnInit {
   displayColumns = ['town', 'name', 'distance', 'race-fee', 'start-time'];
 
   filterForm = new FormGroup({
-    town: new FormControl(''),
+    town: new FormControl<Town | string>(''),
   });
 
   allAvailableTowns = computed(() =>
@@ -38,15 +46,18 @@ export class UpcomingComponent implements OnInit {
   ngOnInit(): void {
     this.towns.loadTowns();
     this.raceService
-      .findUpcomingRaces()
+      .search({
+        after: new Date().toISOString().slice(0, 10),
+      })
       .pipe(
         take(1),
         finalize(() => (this.isLoading = false))
       )
       .subscribe({
-        next: (races) => {
-          this.allRaces.set(races);
-          this.upcomingRaces.set(races);
+        next: (response: PaginatedResponse<Race>) => {
+          this.allRaces.set(response.results);
+          this.upcomingRaces.set(response.results);
+          this.totalCount = response.total_count;
         },
         error: (error) => {
           console.error(error);
@@ -54,13 +65,37 @@ export class UpcomingComponent implements OnInit {
       });
   }
 
-  filterTowns(town: Town): void {
+  handlePageEvent($event: any): void {
+    this.pageSize = $event.pageSize;
+    this.pageNumber = $event.pageIndex + 1;
+
+    this.updateTableData();
+  }
+
+  updateTableData(): void {
+    let startDate =
+      this.campaignOne.get('start')?.value ??
+      new Date().toISOString().slice(0, 10);
+    let endDate = this.campaignOne.get('end')?.value ?? '';
+
+    if (startDate && endDate) {
+      startDate = new Date(startDate).toISOString().slice(0, 10);
+      endDate = new Date(endDate).toISOString().slice(0, 10);
+    }
+
     this.raceService
-      .findUpcomingRaces(`town=${town.name}`)
+      .search({
+        townName: (this.filterForm.get('town')?.value as Town)!.name ?? '',
+        before: endDate,
+        after: startDate,
+        page: this.pageNumber,
+        pageSize: this.pageSize,
+      })
       .pipe(take(1))
       .subscribe({
-        next: (races: Race[]) => {
-          this.upcomingRaces.set(races);
+        next: (response: PaginatedResponse<Race>) => {
+          this.upcomingRaces.set(response.results);
+          this.totalCount = response.total_count;
         },
         error: (error) => {
           console.log(error);
@@ -68,20 +103,9 @@ export class UpcomingComponent implements OnInit {
       });
   }
 
-  filterDates(): void {
-    const start = new Date(this.campaignOne.get('start')?.value).toISOString();
-    const end = new Date(this.campaignOne.get('end')?.value).toISOString();
-
-    this.upcomingRaces.update((races) => {
-      return races.filter((race) => {
-        return race.start_time >= start && race.start_time <= end;
-      });
-    });
-  }
-
   clearFilter(): void {
     this.filterForm.get('town')?.setValue('');
     this.campaignOne.reset();
-    this.upcomingRaces.set(this.allRaces());
+    this.updateTableData();
   }
 }

@@ -23,6 +23,7 @@ import { IndexComponent } from './index/index.component';
 import { TownTypeaheadComponent } from 'src/app/components/town-typeahead/town-typeahead.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     TownTypeaheadComponent,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatPaginatorModule,
   ],
 })
 export class RacesModule {}

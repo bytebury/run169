@@ -6,6 +6,11 @@ import { RaceResult } from './race-result.service';
 import { AuthenticationService } from './authentication.service';
 import { Town } from './town.service';
 
+export interface PaginatedResponse<T> {
+  results: T[];
+  total_count: number;
+}
+
 export interface Race {
   id: number;
   name: string;
@@ -30,6 +35,16 @@ export interface CreateRace
   start_time: string | Date;
 }
 
+interface RaceSearchParams {
+  [key: string]: string | number | undefined;
+  pageSize?: number;
+  page?: number;
+  before?: string;
+  after?: string;
+  townName?: string;
+  order?: 'ASC' | 'DESC';
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -46,14 +61,15 @@ export class RaceService {
     return this.http.get<Race>(`${environment.backendUrl}/races/${raceId}`);
   }
 
-  findUpcomingRaces(query = ''): Observable<Race[]> {
-    return this.http.get<Race[]>(
-      `${environment.backendUrl}/races/upcoming?${query}`
+  search(searchParams: RaceSearchParams): Observable<PaginatedResponse<Race>> {
+    const query = Object.keys(searchParams)
+      .map((key) => {
+        return `${key}=${searchParams[key]}`;
+      })
+      .join('&');
+    return this.http.get<PaginatedResponse<Race>>(
+      `${environment.backendUrl}/races/search?${query}`
     );
-  }
-
-  findPreviousRaces(): Observable<Race[]> {
-    return this.http.get<Race[]>(`${environment.backendUrl}/races/previous`);
   }
 
   findResultsByRace(raceId: string | number): Observable<RaceResult[]> {
