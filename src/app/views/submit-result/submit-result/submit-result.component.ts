@@ -77,7 +77,7 @@ export class SubmitResultComponent implements OnInit {
   loadPreviousRaces(): void {
     this.raceService
       .search({
-        before: new Date().toISOString().slice(0, 10),
+        before: this.tomorrow.toISOString().slice(0, 10),
         order: 'DESC',
       })
       .pipe(take(1))
