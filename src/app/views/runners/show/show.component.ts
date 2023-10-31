@@ -23,11 +23,12 @@ export class ShowComponent implements OnInit {
   readonly displayColumns = [
     'name',
     'total-time',
-    'distance',
     'mile-pace',
     'kilometer-pace',
     'start-time',
   ];
+
+  readonly watchListDisplayColumns = ['going', 'name'];
 
   constructor(
     private auth: AuthenticationService,

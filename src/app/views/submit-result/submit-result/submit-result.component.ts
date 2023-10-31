@@ -15,6 +15,7 @@ import {
   RaceResultService,
 } from 'src/app/services/race-result.service';
 import { Race, RaceService } from 'src/app/services/race.service';
+import { getYearMonthDay } from 'src/app/utils/date';
 
 @Component({
   templateUrl: './submit-result.component.html',
@@ -23,7 +24,6 @@ import { Race, RaceService } from 'src/app/services/race.service';
 export class SubmitResultComponent implements OnInit {
   isLoading = true;
   races = signal<Race[]>([]);
-  tomorrow = new Date();
 
   resultForm = new FormGroup({
     race: new FormControl<string | any>('', [
@@ -51,9 +51,6 @@ export class SubmitResultComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const today = new Date();
-    this.tomorrow = new Date(today);
-    this.tomorrow.setDate(today.getDate() + 1);
     this.loadPreviousRaces();
     this.resultForm
       .get('race')
@@ -77,7 +74,7 @@ export class SubmitResultComponent implements OnInit {
   loadPreviousRaces(): void {
     this.raceService
       .search({
-        before: this.tomorrow.toISOString().slice(0, 10),
+        before: getYearMonthDay(new Date()),
         order: 'DESC',
       })
       .pipe(take(1))
@@ -126,7 +123,7 @@ export class SubmitResultComponent implements OnInit {
   private _filterRaces(name: string) {
     this.raceService
       .search({
-        before: this.tomorrow.toISOString().slice(0, 10),
+        before: getYearMonthDay(new Date()),
         name,
         order: 'DESC',
       })

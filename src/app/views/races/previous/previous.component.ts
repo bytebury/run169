@@ -10,6 +10,7 @@ import {
   Race,
   RaceService,
 } from 'src/app/services/race.service';
+import { getYearMonthDay } from 'src/app/utils/date';
 
 @Component({
   selector: 'app-previous',
@@ -35,7 +36,7 @@ export class PreviousComponent implements OnInit {
   updateTableData(): void {
     this.race
       .search({
-        before: new Date().toISOString().slice(0, 10),
+        before: getYearMonthDay(new Date()),
         page: this.pageNumber,
         pageSize: this.pageSize,
         order: 'DESC',

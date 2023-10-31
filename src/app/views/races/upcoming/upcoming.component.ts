@@ -1,12 +1,13 @@
 import { Component, OnInit, computed, signal } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { finalize, take, tap } from 'rxjs';
+import { take, tap } from 'rxjs';
 import {
   PaginatedResponse,
   Race,
   RaceService,
 } from 'src/app/services/race.service';
 import { Town, TownService } from 'src/app/services/town.service';
+import { getYearMonthDay } from 'src/app/utils/date';
 
 @Component({
   selector: 'app-upcoming',
@@ -52,7 +53,7 @@ export class UpcomingComponent implements OnInit {
   loadAllRaces(): void {
     this.raceService
       .search({
-        after: new Date().toISOString().slice(0, 10),
+        after: getYearMonthDay(new Date()),
         pageSize: 100_000,
       })
       .pipe(
@@ -76,13 +77,12 @@ export class UpcomingComponent implements OnInit {
 
   updateTableData(): void {
     let startDate =
-      this.campaignOne.get('start')?.value ??
-      new Date().toISOString().slice(0, 10);
+      this.campaignOne.get('start')?.value ?? getYearMonthDay(new Date());
     let endDate = this.campaignOne.get('end')?.value ?? '';
 
     if (startDate && endDate) {
-      startDate = new Date(startDate).toISOString().slice(0, 10);
-      endDate = new Date(endDate).toISOString().slice(0, 10);
+      startDate = getYearMonthDay(new Date(startDate));
+      endDate = getYearMonthDay(new Date(endDate));
     }
 
     this.raceService
