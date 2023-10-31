@@ -10,23 +10,12 @@
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef>Name</th>
       <td mat-cell *matCellDef="let element">
-        <a [routerLink]="['/races/', element.id]"> {{ element.name }} </a><br />
-        {{ element.town.name }}
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="number-of-runners">
-      <th mat-header-cell *matHeaderCellDef>Runners</th>
-      <td mat-cell *matCellDef="let element">
-        {{ element.number_of_runners | number }}
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="distance">
-      <th mat-header-cell *matHeaderCellDef>Distance</th>
-      <td mat-cell *matCellDef="let element">
-        {{ element.distance | number : "1.0-3"
-        }}{{ element.distance_unit | distance }}
+        <a [routerLink]="['/races/', element.id]">
+          {{ element.name }} ({{ element.distance | number : "1.0-3"
+          }}{{ element.distance_unit | distance }}) </a
+        ><br />
+        {{ element.town.name }} | {{ element.number_of_runners }}
+        {{ element.number_of_runners === 1 ? "Runner" : "Runners" }}
       </td>
     </ng-container>
 

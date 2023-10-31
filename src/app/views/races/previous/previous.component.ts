@@ -25,7 +25,7 @@ export class PreviousComponent implements OnInit {
   pageNumber = 1;
   pageIndex = this.pageNumber - 1;
   totalCount = 0;
-  displayColumns = ['number-of-runners', 'name', 'distance', 'start-time'];
+  displayColumns = ['name', 'start-time'];
 
   constructor(private race: RaceService) {}
 
