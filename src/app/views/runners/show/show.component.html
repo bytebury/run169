@@ -49,7 +49,9 @@
                 {{ element.race.name }}
               </a>
               <div>
-                {{ element.race.town.name }}
+                {{ element.race.town.name }} |
+                {{ element.race.distance | number
+                }}{{ element.race.distance_unit | distance }}
                 <span *ngIf="element.bib_number">
                   | Bib#{{ element.bib_number }}
                 </span>
