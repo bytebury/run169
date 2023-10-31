@@ -23,6 +23,7 @@
       <div>{{ runnerInfo.hometown }}</div>
       <div>{{ runnerInfo.sex | titlecase }}</div>
       <div>{{ completedTowns().length }} / 169</div>
+      <div>#{{ runnerInfo.runner_id }}</div>
     </div>
   </div>
   <div *ngIf="isLoading">
