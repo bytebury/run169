@@ -5,10 +5,13 @@ import {
   ElementRef,
   HostListener,
   Input,
+  Signal,
   ViewChild,
+  computed,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as d3 from 'd3';
+import { CompletedTownsService } from 'src/app/views/runners/show/completed-towns.service';
 
 @Component({
   selector: 'app-connecticut-map',
@@ -16,26 +19,33 @@ import * as d3 from 'd3';
   imports: [CommonModule],
   templateUrl: `./connecticut-map.component.html`,
   styleUrls: ['./connecticut-map.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConnecticutMapComponent implements AfterViewInit {
   @ViewChild('map', { static: true }) private mapContainer!: ElementRef;
-
-  @Input() completedTowns: { town_name: string }[] = [];
 
   private svg: any;
   private g: any;
   private projection: any;
   private townData: any; // GeoJSON data
+  private towns: { town_name: string }[] = [];
+
+  constructor(private completedTowns: CompletedTownsService) {}
 
   ngAfterViewInit() {
-    this.initializeMap();
+    this.completedTowns.completedTowns$.subscribe((towns) => {
+      this.towns = [...towns];
+      this.initializeMap();
+    });
   }
 
   private initializeMap() {
     // Set up the map container
     const width = this.mapContainer.nativeElement.offsetWidth; // Adjust as needed
     const height = this.mapContainer.nativeElement.offsetHeight; // Adjust as needed
+
+    if (this.svg) {
+      this.svg.remove();
+    }
 
     this.svg = d3
       .select(this.mapContainer.nativeElement)
@@ -54,7 +64,7 @@ export class ConnecticutMapComponent implements AfterViewInit {
 
     // Set up a path generator
     const path = d3.geoPath().projection(this.projection);
-    const completedTowns = this.completedTowns.map((town) => town.town_name);
+    const completedTowns = this.towns.map((town) => town.town_name);
 
     const tooltip = d3
       .select(this.mapContainer.nativeElement)

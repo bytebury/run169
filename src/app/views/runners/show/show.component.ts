@@ -1,4 +1,4 @@
-import { Component, OnInit, computed, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { filter, mergeMap, take, tap, toArray } from 'rxjs';
@@ -8,20 +8,22 @@ import { Race } from 'src/app/services/race.service';
 import { Runner, RunnerService } from 'src/app/services/runner.service';
 import { UpdateAvatarDialog } from './update-avatar-dialog/update-avatar-dialog.component';
 import { TownService } from 'src/app/services/town.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CompletedTownsService } from './completed-towns.service';
 
 @Component({
   templateUrl: './show.component.html',
   styleUrls: ['./show.component.scss'],
 })
-export class ShowComponent implements OnInit {
+export class ShowComponent {
   isLoading = true;
   runnerInfo: Runner = {} as Runner;
   racesBeingWatched = signal<(Race & { is_going: boolean })[]>([]);
   raceResults = signal<RaceResult[]>([]);
-  completedTowns = signal<{ town_name: string; count: number }[]>([]);
   isMyProfile = false;
+  completedTownsSignal = signal<{ town_name: string; count: number }[]>([]);
   completedTownsData = computed(() => {
-    const numCompletedTowns = this.completedTowns().length;
+    const numCompletedTowns = this.completedTownsSignal().length;
     const numRemainingTowns = this.towns.towns().length - numCompletedTowns;
     const percentComplete = parseFloat(
       ((numCompletedTowns / numRemainingTowns) * 100).toString()
@@ -57,47 +59,48 @@ export class ShowComponent implements OnInit {
     private runner: RunnerService,
     private activatedRoute: ActivatedRoute,
     private towns: TownService,
-    public dialog: MatDialog
-  ) {}
-
-  ngOnInit(): void {
+    public dialog: MatDialog,
+    private completedTowns: CompletedTownsService
+  ) {
     this.towns.loadTowns();
-    this.activatedRoute.paramMap.subscribe((paramMap) => {
-      const runnerId = paramMap.get('runner_id') ?? '';
+    this.activatedRoute.paramMap
+      .pipe(takeUntilDestroyed())
+      .subscribe((paramMap) => {
+        const runnerId = paramMap.get('runner_id') ?? '';
 
-      this.runner
-        .find(runnerId)
-        .pipe(
-          tap((runner) => {
-            this.runnerInfo = runner;
-            this.isMyProfile = this.auth.currentUser()?.id === runner.id;
-          }),
-          mergeMap(() => this.runner.getResults(this.runnerInfo.id)),
-          tap((results) => this.raceResults.set(results)),
-          mergeMap(() => this.runner.getCompletedTowns(this.runnerInfo.id)),
-          tap((results) => {
-            this.completedTowns.set(results);
-          }),
-          mergeMap(() => this.runner.getWatchList(this.runnerInfo.id)),
-          mergeMap((watchlist) => watchlist),
-          filter((watchList) => !!watchList.race),
-          toArray()
-        )
-        .subscribe({
-          next: (watchlist) => {
-            this.racesBeingWatched.set(
-              watchlist.map(
-                ({ race, is_going }) => ({ ...race, is_going } as any)
-              )
-            );
-            this.isLoading = false;
-          },
-          error: (error) => {
-            console.error(error);
-            this.isLoading = false;
-          },
-        });
-    });
+        this.runner
+          .find(runnerId)
+          .pipe(
+            tap((runner) => {
+              this.runnerInfo = runner;
+              this.isMyProfile = this.auth.currentUser()?.id === runner.id;
+            }),
+            mergeMap(() => this.runner.getResults(this.runnerInfo.id)),
+            tap((results) => this.raceResults.set(results)),
+            mergeMap(() => this.runner.getCompletedTowns(this.runnerInfo.id)),
+            tap((results) => {
+              this.completedTowns.setCompletedTowns(results);
+            }),
+            mergeMap(() => this.runner.getWatchList(this.runnerInfo.id)),
+            mergeMap((watchlist) => watchlist),
+            filter((watchList) => !!watchList.race),
+            toArray()
+          )
+          .subscribe({
+            next: (watchlist) => {
+              this.racesBeingWatched.set(
+                watchlist.map(
+                  ({ race, is_going }) => ({ ...race, is_going } as any)
+                )
+              );
+              this.isLoading = false;
+            },
+            error: (error) => {
+              console.error(error);
+              this.isLoading = false;
+            },
+          });
+      });
   }
 
   openUpdateAvatarDialog(): void {
