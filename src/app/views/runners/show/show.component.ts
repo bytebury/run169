@@ -1,6 +1,6 @@
 import { Component, computed, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { filter, mergeMap, take, tap, toArray } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { RaceResult } from 'src/app/services/race-result.service';
@@ -16,6 +16,9 @@ import { CompletedTownsService } from './completed-towns.service';
   styleUrls: ['./show.component.scss'],
 })
 export class ShowComponent {
+  readonly tabs = ['Overview', 'Results', 'Calendar', 'Towns'];
+  activeTab = 0;
+
   isLoading = true;
   runnerInfo: Runner = {} as Runner;
   racesBeingWatched = signal<(Race & { is_going: boolean })[]>([]);
@@ -59,10 +62,23 @@ export class ShowComponent {
     private runner: RunnerService,
     private activatedRoute: ActivatedRoute,
     private towns: TownService,
+    private router: Router,
     public dialog: MatDialog,
     private completedTowns: CompletedTownsService
   ) {
     this.towns.loadTowns();
+    this.activatedRoute.queryParamMap
+      .pipe(takeUntilDestroyed())
+      .subscribe((paramMap) => {
+        const tab = paramMap.get('tab') as string | null;
+
+        this.activeTab = this.tabs.findIndex((t) => t === tab ?? 'Overview');
+
+        if (this.activeTab < 0) {
+          this.activeTab = 0;
+        }
+      });
+
     this.activatedRoute.paramMap
       .pipe(takeUntilDestroyed())
       .subscribe((paramMap) => {
@@ -127,5 +143,13 @@ export class ShowComponent {
           });
         }
       });
+  }
+
+  setTab(index: number): void {
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: { tab: this.tabs[index] },
+      queryParamsHandling: 'merge',
+    });
   }
 }

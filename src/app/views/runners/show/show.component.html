@@ -30,7 +30,10 @@
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   </div>
   <div class="race-details" *ngIf="!isLoading">
-    <mat-tab-group>
+    <mat-tab-group
+      (selectedIndexChange)="setTab($event)"
+      [selectedIndex]="activeTab"
+    >
       <mat-tab>
         <ng-template mat-tab-label> Overview </ng-template>
         <div class="overview-wrapper">
