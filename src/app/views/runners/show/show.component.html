@@ -78,14 +78,24 @@
           <ng-container matColumnDef="mile-pace">
             <th mat-header-cell *matHeaderCellDef>Mile Pace</th>
             <td mat-cell *matCellDef="let element">
-              {{ element.mile_pace }}
+              {{
+                element.time_in_seconds
+                  | milePace
+                    : element.race.distance
+                    : element.race.distance_unit
+              }}
             </td>
           </ng-container>
 
           <ng-container matColumnDef="kilometer-pace">
             <th mat-header-cell *matHeaderCellDef>Kilometer Pace</th>
             <td mat-cell *matCellDef="let element">
-              {{ element.kilometer_pace }}
+              {{
+                element.time_in_seconds
+                  | kilometerPace
+                    : element.race.distance
+                    : element.race.distance_unit
+              }}
             </td>
           </ng-container>
 
