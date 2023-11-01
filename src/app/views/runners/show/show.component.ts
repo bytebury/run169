@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, computed, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { filter, mergeMap, take, tap, toArray } from 'rxjs';
@@ -7,6 +7,7 @@ import { RaceResult } from 'src/app/services/race-result.service';
 import { Race } from 'src/app/services/race.service';
 import { Runner, RunnerService } from 'src/app/services/runner.service';
 import { UpdateAvatarDialog } from './update-avatar-dialog/update-avatar-dialog.component';
+import { TownService } from 'src/app/services/town.service';
 
 @Component({
   templateUrl: './show.component.html',
@@ -19,6 +20,27 @@ export class ShowComponent implements OnInit {
   raceResults = signal<RaceResult[]>([]);
   completedTowns = signal<{ town_name: string; count: number }[]>([]);
   isMyProfile = false;
+  completedTownsData = computed(() => {
+    const numCompletedTowns = this.completedTowns().length;
+    const numRemainingTowns = this.towns.towns().length - numCompletedTowns;
+    const percentComplete = parseFloat(
+      ((numCompletedTowns / numRemainingTowns) * 100).toString()
+    ).toFixed();
+    const percentRemaining = 100 - parseInt(percentComplete);
+
+    return {
+      labels: [
+        `Completed ${percentComplete}%`,
+        `Remaining ${percentRemaining}%`,
+      ],
+      datasets: [
+        {
+          data: [numCompletedTowns, numRemainingTowns],
+          backgroundColor: ['#637ab0', '#aebfe6'],
+        },
+      ],
+    };
+  });
 
   readonly displayColumns = [
     'name',
@@ -34,10 +56,12 @@ export class ShowComponent implements OnInit {
     private auth: AuthenticationService,
     private runner: RunnerService,
     private activatedRoute: ActivatedRoute,
+    private towns: TownService,
     public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
+    this.towns.loadTowns();
     this.activatedRoute.paramMap.subscribe((paramMap) => {
       const runnerId = paramMap.get('runner_id') ?? '';
 

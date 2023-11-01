@@ -14,8 +14,6 @@ export class MilePacePipe implements PipeTransform {
       distance = this.convertKilometersToMiles(distance);
     }
 
-    debugger;
-
     const minutesPerMile = totalSeconds / distance / 60;
     const minutes = Math.floor(minutesPerMile);
     const seconds = Math.floor((minutesPerMile % minutes) * 60);

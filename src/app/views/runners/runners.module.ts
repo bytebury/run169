@@ -18,6 +18,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RaceTimePipe } from '../../pipes/race-time.pipe';
 import { MilePacePipe } from '../../pipes/mile-pace.pipe';
 import { KilometerPacePipe } from '../../pipes/kilometer-pace.pipe';
+import { MatCardModule } from '@angular/material/card';
+import { DonutChartComponent } from '../../components/charts/donut-chart/donut-chart.component';
+import { ConnecticutMapComponent } from '../../components/charts/connecticut-map/connecticut-map.component';
 
 @NgModule({
   declarations: [ShowComponent, IndexComponent],
@@ -26,6 +29,7 @@ import { KilometerPacePipe } from '../../pipes/kilometer-pace.pipe';
     RunnersRoutingModule,
     MatTabsModule,
     MatTableModule,
+    MatCardModule,
     MatAutocompleteModule,
     MatFormFieldModule,
     ReactiveFormsModule,
@@ -39,6 +43,8 @@ import { KilometerPacePipe } from '../../pipes/kilometer-pace.pipe';
     RaceTimePipe,
     MilePacePipe,
     KilometerPacePipe,
+    DonutChartComponent,
+    ConnecticutMapComponent,
   ],
 })
 export class RunnersModule {}
