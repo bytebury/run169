@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  HostListener,
   Input,
   ViewChild,
 } from '@angular/core';
@@ -31,10 +32,13 @@ export class ConnecticutMapComponent implements AfterViewInit {
     this.initializeMap();
   }
 
+  @HostListener('window:resize', ['$event'])
   private initializeMap() {
     // Set up the map container
     const width = this.mapContainer.nativeElement.offsetWidth; // Adjust as needed
     const height = this.mapContainer.nativeElement.offsetHeight; // Adjust as needed
+
+    this.mapContainer.nativeElement.innerHTML = '';
 
     this.svg = d3
       .select(this.mapContainer.nativeElement)
@@ -74,7 +78,7 @@ export class ConnecticutMapComponent implements AfterViewInit {
         .attr('d', path)
         .style('fill', (feature: any) => {
           return completedTowns.includes(feature.properties.name)
-            ? 'blue'
+            ? '#3850d6'
             : 'white';
         })
         .style('stroke', 'black')
