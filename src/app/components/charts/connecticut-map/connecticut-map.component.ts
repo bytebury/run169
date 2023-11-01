@@ -74,7 +74,7 @@ export class ConnecticutMapComponent implements AfterViewInit {
         .append('path')
         .attr('d', path)
         .style('fill', (feature: any) => {
-          return completedTowns.includes(feature.properties.name)
+          return completedTowns.includes(feature.properties.town)
             ? '#3850d6'
             : 'white';
         })
@@ -85,7 +85,7 @@ export class ConnecticutMapComponent implements AfterViewInit {
           // Show the tooltip on hover
           tooltip.transition().duration(200).style('opacity', 1);
           tooltip
-            .html(feature.properties.name)
+            .html(feature.properties.town)
             .style('left', event.pageX - 60 + 'px')
             .style('top', event.pageY - 350 + 'px')
             .style('font-weight', 'bold');
