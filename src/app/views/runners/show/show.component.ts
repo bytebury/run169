@@ -80,6 +80,7 @@ export class ShowComponent {
             mergeMap(() => this.runner.getCompletedTowns(this.runnerInfo.id)),
             tap((results) => {
               this.completedTowns.setCompletedTowns(results);
+              this.completedTownsSignal.set(results);
             }),
             mergeMap(() => this.runner.getWatchList(this.runnerInfo.id)),
             mergeMap((watchlist) => watchlist),
