@@ -35,7 +35,6 @@ export class ConnecticutMapComponent implements AfterViewInit {
     // Set up the map container
     const width = this.mapContainer.nativeElement.offsetWidth; // Adjust as needed
     const height = this.mapContainer.nativeElement.offsetHeight; // Adjust as needed
-    console.log(width);
 
     this.svg = d3
       .select(this.mapContainer.nativeElement)
@@ -87,7 +86,7 @@ export class ConnecticutMapComponent implements AfterViewInit {
           tooltip
             .html(feature.properties.name)
             .style('left', event.pageX - 60 + 'px')
-            .style('top', event.pageY - height + 'px')
+            .style('top', event.pageY - 350 + 'px')
             .style('font-weight', 'bold');
         })
         .on('mouseout', () => {
