@@ -26,10 +26,11 @@ export class ShowComponent {
   isMyProfile = false;
   completedTownsSignal = signal<{ town_name: string; count: number }[]>([]);
   completedTownsData = computed(() => {
+    const numberOfTowns = this.towns.towns().length;
     const numCompletedTowns = this.completedTownsSignal().length;
-    const numRemainingTowns = this.towns.towns().length - numCompletedTowns;
+    const numRemainingTowns = numberOfTowns - numCompletedTowns;
     const percentComplete = parseFloat(
-      ((numCompletedTowns / numRemainingTowns) * 100).toString()
+      ((numCompletedTowns / numberOfTowns) * 100).toString()
     ).toFixed();
     const percentRemaining = 100 - parseInt(percentComplete);
 
